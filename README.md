@@ -1,1 +1,1 @@
-Now Posh App
+CUTTING_EDGES
