@@ -23,6 +23,11 @@ import ProfileScreen from './profile/ProfileScreen';
 import NotificationScreen from './notification/NotificationScreen';
 import LikeScreen from './like/LikeScreen';
 import AddToCardScreen from './AddToCard/AddToCardScreen';
+
+import NewAppointment from './home/appointments/NewAppointment';
+import ApointmentScreen from './home/appointments/Appointments';
+import NewPackage from './home/packages/NewPackage';
+import AllPackages from './home/packages/AllPackages';
 export {
   HomeScreen,
   ProfileScreen,
@@ -45,5 +50,9 @@ export {
   VerifyProduct,
   WinRewards,
   RadeemReward,
-  SpinAndWin
+  SpinAndWin,
+  NewAppointment,
+  ApointmentScreen,
+  NewPackage,
+  AllPackages
 };

@@ -3,21 +3,6 @@ import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import {Colors, Fonts} from '../../constants';
 
 const ComplainCards = ({title, date, status, onPress}: any) => {
-    let bgColor, textColor;
-
-    switch (status) {
-      case 'Approved':
-        bgColor = 'rgba(227, 255, 233, 1)';
-        textColor = 'rgba(41, 172, 68, 1)';
-        break;
-      case 'Rejected':
-        bgColor = 'rgba(255, 226, 226, 1)';
-        textColor = 'rgba(255, 65, 65, 1)';
-        break;
-      default:
-        bgColor = 'rgba(255, 248, 214, 1)';
-        textColor = 'rgba(233, 202, 40, 1)';
-    }
   return (
     <View style={styles.card}>
       <View style={styles.rowContainer}>
@@ -34,21 +19,22 @@ const ComplainCards = ({title, date, status, onPress}: any) => {
           style={[
             styles.button,
             {
-              backgroundColor: bgColor,
+              backgroundColor: "rgba(227, 255, 233, 1)",
+              marginRight:10
             },
           ]}>
           <Text
             style={[
               styles.buttonText,
               {
-                color: textColor,
+                color: "rgba(41, 172, 68, 1)",
               },
             ]}>
-            {status}
+            Accept
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={()=>{onPress(status)}} style={styles.button}>
-          <Text style={styles.buttonText}>Details</Text>
+        <TouchableOpacity style={styles.button}>
+          <Text style={styles.buttonText}>Reject</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -68,8 +54,7 @@ const styles = StyleSheet.create({
   },
   rowContainer: {
     flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-end',
   },
 
   titleDescriptionContainer: {
@@ -94,11 +79,11 @@ const styles = StyleSheet.create({
   button: {
     paddingVertical: 8,
     paddingHorizontal: 16,
-    backgroundColor: Colors.DEFAULT_BLACK,
+    backgroundColor:"rgba(255, 226, 226, 1)",
     borderRadius: 10,
   },
   buttonText: {
-    color: Colors.DEFAULT_WHITE,
+    color: "rgba(255, 65, 65, 1)",
     fontSize: 12,
     fontFamily: Fonts.POPPINS_REGULAR,
   },

@@ -3,12 +3,16 @@ import {createStackNavigator} from '@react-navigation/stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import BottomTabNavigation from './BottomTabNavigation';
 import {
+  AllPackages,
   AllProducts,
+  ApointmentScreen,
   ComplainCenterScreen,
   ComplainDetails,
   LicenseIdScreen,
   NearByStores,
+  NewAppointment,
   NewComplain,
+  NewPackage,
   PrivacyAndPolicyScreen,
   ProductDetails,
   RadeemReward,
@@ -51,19 +55,20 @@ const StackNavigator = () => {
 
   return (
     <Stack.Navigator>
-      {initialLaunch ? (
+      {/* {initialLaunch ? (
         <Stack.Screen
           name="SplashScreen"
           component={SplashScreen}
           options={{headerShown: false}}
         />
-      ) : null}
+      ) : null} */}
 
+      {/* 
       <Stack.Screen
         name="BottomTabNavigation"
         component={BottomTabNavigation}
         options={{headerShown: false}}
-      />
+      /> 
       <Stack.Screen
         name="AllProducts"
         component={AllProducts}
@@ -73,25 +78,45 @@ const StackNavigator = () => {
         name="ProductDetails"
         component={ProductDetails}
         options={{headerShown: false}}
+      /> 
+      */}
+      <Stack.Screen
+        name="AllPackageScreen"
+        component={AllPackages}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="ApointmentScreen"
+        component={ApointmentScreen}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="NewAppointmentScreen"
+        component={NewAppointment}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="NewPackageScreen"
+        component={NewPackage}
+        options={{headerShown: false}}
       />
       <Stack.Screen
         name="AllStores"
         component={StoreScreen}
         options={{headerShown: false}}
       />
-
-      <Stack.Screen
+      {/* <Stack.Screen
         name="NearByStores"
         component={NearByStores}
         options={{headerShown: false}}
-      />
+      /> */}
 
       <Stack.Screen
         name="ComplainCenterScreen"
         component={ComplainCenterScreen}
         options={{headerShown: false}}
       />
-      
+
       <Stack.Screen
         name="NewComplainScreen"
         component={NewComplain}
@@ -104,7 +129,7 @@ const StackNavigator = () => {
         options={{headerShown: false}}
       />
 
-      <Stack.Screen
+      {/* <Stack.Screen
         name="RadeemRewardScreen"
         component={RadeemReward}
         options={{headerShown: false}}
@@ -126,7 +151,7 @@ const StackNavigator = () => {
         name="SpinAndWinScreen"
         component={SpinAndWin}
         options={{headerShown: false}}
-      />
+      /> */}
 
       {!isAuthenticated && (
         <>
@@ -140,7 +165,7 @@ const StackNavigator = () => {
             component={SignUpScreen}
             options={{headerShown: false}}
           />
-          <Stack.Screen
+          {/* <Stack.Screen
             name="TermAndConditionScreen"
             component={TermAndConditionScreen}
             options={{headerShown: false}}
@@ -154,7 +179,7 @@ const StackNavigator = () => {
             name="LicenseIdScreen"
             component={LicenseIdScreen}
             options={{headerShown: false}}
-          />
+          /> */}
         </>
       )}
     </Stack.Navigator>
