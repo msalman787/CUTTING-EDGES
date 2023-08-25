@@ -11,7 +11,11 @@ import Images from '../../../constants/Images';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useDispatch} from 'react-redux';
 import {setAuthenticated} from '../../../store/auth/authSlice';
-import {DynamicStatusBar, ValidationModel} from '../../../components';
+import {
+  AnimatedInput,
+  DynamicStatusBar,
+  ValidationModel,
+} from '../../../components';
 import apiResponseGenerator from '../../../service/apiGenerator';
 import {showModal} from '../../../store/model/modelSlice';
 
@@ -48,22 +52,23 @@ const SignInScreen = ({navigation}: any) => {
   };
 
   const HandleSignIn = async (data: any) => {
-    try {
-      setDisabled(true);
-      const response = await apiResponseGenerator({
-        method: 'post',
-        url: '/api/auth/login',
-        body: data,
-      });
-      if (response) {
-        await AsyncStorage.setItem('authenticated', response.remember_token);
-        dispatch(setAuthenticated(true));
-        navigation.navigate('BottomTabNavigation');
-      }
-    } catch (error: any) {
-      dispatch(showModal({description: error.message}));
-      setDisabled(false);
-    }
+    console.log(data)
+    // try {
+    //   setDisabled(true);
+    //   const response = await apiResponseGenerator({
+    //     method: 'post',
+    //     url: '/api/auth/login',
+    //     body: data,
+    //   });
+    //   if (response) {
+    //     await AsyncStorage.setItem('authenticated', response.remember_token);
+    //     dispatch(setAuthenticated(true));
+    //     navigation.navigate('BottomTabNavigation');
+    //   }
+    // } catch (error: any) {
+    //   dispatch(showModal({description: error.message}));
+    //   setDisabled(false);
+    // }
   };
 
   const handleHideModal = () => {
@@ -89,58 +94,56 @@ const SignInScreen = ({navigation}: any) => {
         mainHeaderText={'Welcome'}
         subHeaderText={'Sign in to continue'}
       />
-      <Controller
-        control={control}
-        rules={{
-          required: true,
-          pattern: {
-            value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
-            message: 'Invalid email address',
-          },
-        }}
-        render={({field: {onChange, onBlur, value}}) => (
-          <InputField
-            ref={emailRef}
-            returnKeyType={'next'}
-            icon={Images.Message}
-            keyboardType="email-address"
-            placeholder="Email"
-            secureTextEntry={false}
-            onChange={onChange}
-            value={value}
-            onBlur={onBlur}
-            onSubmitEditing={handleEmailNext}
-            errorMsg={errors.email?.message && errors.email?.message}
-          />
-        )}
-        name="email"
-      />
 
-      <Controller
-        control={control}
-        rules={{
-          required: true,
-          minLength: 8,
-        }}
-        render={({field: {onChange, onBlur, value}}) => (
-          <InputField
-            ref={passwordRef}
-            returnKeyType={'done'}
-            placeholder="Password"
-            icon={Images.Lock}
-            secureTextEntry={true}
-            onChange={onChange}
-            value={value}
-            onBlur={onBlur}
-            errorMsg={errors.password?.message && errors.password?.message}
-          />
-        )}
-        name="password"
-      />
-
-      <TouchableOpacity style={styles.forgotContainer}>
-        <Text style={styles.forgotText}>Forgot Password?</Text>
-      </TouchableOpacity>
+      <View style={[styles.input,{marginTop:-20}]}>
+        <Controller
+          control={control}
+          rules={{
+            required: true,
+            pattern: {
+              value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+              message: 'Invalid email address',
+            },
+          }}
+          render={({field: {onChange, onBlur, value}}) => (
+            <AnimatedInput
+              keyboardType={'email-address'}
+              label="Email address"
+              ref={emailRef}
+              returnKeyType={'next'}
+              onSubmitEditing={handleEmailNext}
+              value={value}
+              leftIcon={"email"}
+              onChangeText={onChange}
+              errorMsg={errors.email?.message}
+            />
+          )}
+          name="email"
+          defaultValue=""
+        />
+      </View>
+      <View style={styles.input}>
+        <Controller
+          control={control}
+          rules={{
+            required: true,
+          }}
+          render={({field: {onChange, onBlur, value}}) => (
+            <AnimatedInput
+              ref={passwordRef}
+              returnKeyType={'done'}
+              label="Password"
+              keyboardType={'default'}
+              value={value}
+              onChangeText={onChange}
+              secureTextEntry={true}
+              errorMsg={errors.password?.message}
+            />
+          )}
+          name="password"
+          defaultValue=""
+        />
+      </View>
 
       <TouchableOpacity style={styles.signInButton}>
         <LargeButton
@@ -163,14 +166,18 @@ const SignInScreen = ({navigation}: any) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'flex-start',
+    justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 20,
     backgroundColor: Colors.DEFAULT_WHITE,
   },
+  input: {
+    marginBottom: 8,
+    width: '100%',
+  },
   forgotContainer: {
     alignSelf: 'flex-end',
-    marginBottom: 15,
+    marginBottom: 20,
   },
   forgotText: {
     color: Colors.DEFAULT_BLACK,
@@ -178,6 +185,7 @@ const styles = StyleSheet.create({
   },
   signInButton: {
     width: '100%',
+    marginTop:25
   },
   footerTextContainer: {
     flexDirection: 'row',

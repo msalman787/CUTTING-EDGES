@@ -15,6 +15,7 @@ const AnimatedInput = forwardRef(
       secureTextEntry,
       onSubmitEditing,
       returnKeyType,
+      leftIcon
     }: any,
     ref: any,
   ) => {
@@ -50,16 +51,25 @@ const AnimatedInput = forwardRef(
           style={[styles.textInput]}
           value={value}
           secureTextEntry={secureTextEntry && !passwordVisible}
-          right={
-            secureTextEntry ? (
-              <TextInput.Icon
-                style={{marginTop: 6}}
-                color={Colors.DEFAULT_BLACK}
-                icon={passwordVisible ? 'eye-off' : 'eye'}
-                onPress={() => setPasswordVisible(!passwordVisible)}
-              />
-            ) : null
-          }
+          // right={
+          //   secureTextEntry ? (
+          //     <TextInput.Icon
+          //       style={{marginTop: 6}}
+          //       color={Colors.DEFAULT_BLACK}
+          //       icon={passwordVisible ? 'eye-off' : 'eye'}
+          //       onPress={() => setPasswordVisible(!passwordVisible)}
+          //     />
+          //   ) : null
+          // }
+          // left={
+          //   leftIcon ? (
+          //     <TextInput.Icon
+          //       style={{marginTop: 6}}
+          //       color={Colors.DEFAULT_BLACK}
+          //       icon={leftIcon}
+          //     />
+          //   ) : null
+          // }
           onChangeText={onChangeText}
           theme={theme}
         />
