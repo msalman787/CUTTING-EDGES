@@ -7,7 +7,7 @@ import InputField from './Input/Input';
 import Model from './Model/Model';
 import Banners from './Sliders/Banners';
 import HeaderWithSearchInput from './Header/HeaderWithInput';
-import StoreCards from './Cards/StoreCards';
+import PackageCards from './Cards/PackageCards';
 import DetailSlider from './Sliders/DetailSlider'
 import ComplainCards from './Cards/ComplainCards';
 import DynamicStatusBar from './DynamicStatusBar/DynamicStatusBar';
@@ -25,7 +25,7 @@ export {
   Model,
   Banners,
   HeaderWithSearchInput,
-  StoreCards,
+  PackageCards,
   DetailSlider,
   ComplainCards,
   DynamicStatusBar,

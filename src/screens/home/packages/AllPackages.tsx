@@ -10,7 +10,7 @@ import {
   DynamicStatusBar,
   HeaderWithSearchInput,
   Model,
-  StoreCards,
+  PackageCards,
 } from '../../../components';
 import {Colors, Images} from '../../../constants';
 import {verticalScale} from '../../../utils/Dimentions';
@@ -26,51 +26,51 @@ const AllPackages = ({navigation}: any) => {
   const data = [
     {
       id: '1',
-      image: Images.StoreImg,
-      title: 'Smoke shop superstore ',
-      description: '5701 w 29th ave, illinois, 60559',
+      image: Images.New_Look1,
+      title: "Gentleman's Grooming Deluxe",
+      description: 'Ultimate grooming with tailored haircut, beard styling, hot towel treatment, and scalp massage for a refreshed, refined look.',
       price: 300,
     },
     {
       id: '2',
-      image: Images.StoreImg,
-      title: 'Smoke shop superstore ',
-      description: '5701 w 29th ave, illinois, 60559',
+      image: Images.New_Look2,
+      title: "Suave Swagger Package",
+      description: 'Elevate your charm with a sleek haircut, suave beard shaping, eyebrow grooming, and a cooling mint facial mask. Step out exuding irresistible charisma and confidence.',
       price: 300,
     },
     {
       id: '3',
-      image: Images.StoreImg,
-      title: 'Smoke shop superstore ',
-      description: '5701 w 29th ave, illinois, 60559',
+      image: Images.New_Look1,
+      title: "Gentleman's Grooming Deluxe",
+      description: 'Ultimate grooming with tailored haircut, beard styling, hot towel treatment, and scalp massage for a refreshed, refined look.',
       price: 300,
     },
     {
       id: '4',
-      image: Images.StoreImg,
-      title: 'Smoke shop superstore ',
-      description: '5701 w 29th ave, illinois, 60559',
+      image: Images.New_Look2,
+      title: "Suave Swagger Package",
+      description: 'Elevate your charm with a sleek haircut, suave beard shaping, eyebrow grooming, and a cooling mint facial mask. Step out exuding irresistible charisma and confidence.',
       price: 300,
     },
     {
       id: '5',
-      image: Images.StoreImg,
-      title: 'Smoke shop superstore ',
-      description: '5701 w 29th ave, illinois, 60559',
+      image: Images.New_Look1,
+      title: "Gentleman's Grooming Deluxe",
+      description: 'Ultimate grooming with tailored haircut, beard styling, hot towel treatment, and scalp massage for a refreshed, refined look.',
       price: 300,
     },
     {
       id: '6',
-      image: Images.StoreImg,
-      title: 'Smoke shop superstore ',
-      description: '5701 w 29th ave, illinois, 60559',
+      image: Images.New_Look2,
+      title: "Suave Swagger Package",
+      description: 'Elevate your charm with a sleek haircut, suave beard shaping, eyebrow grooming, and a cooling mint facial mask. Step out exuding irresistible charisma and confidence.',
       price: 300,
     },
     {
       id: '7',
-      image: Images.StoreImg,
-      title: 'Smoke shop superstore ',
-      description: '5701 w 29th ave, illinois, 60559',
+      image: Images.New_Look1,
+      title: "Gentleman's Grooming Deluxe",
+      description: 'Ultimate grooming with tailored haircut, beard styling, hot towel treatment, and scalp massage for a refreshed, refined look.',
       price: 300,
     },
   ];
@@ -99,7 +99,7 @@ const AllPackages = ({navigation}: any) => {
   };
 
   const renderCardRow = ({item}: any) => (
-    <StoreCards
+    <PackageCards
       title={item.title}
       description={item.description}
       image={item.image}

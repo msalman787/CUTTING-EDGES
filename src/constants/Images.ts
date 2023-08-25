@@ -70,6 +70,8 @@ export default {
   Share,
   InviteUser,
   PoshMaker:require('../assets/images/poshmarker.png'),
+  New_Look1:require('../assets/images/new-look1.jpg'),
+  New_Look2:require('../assets/images/new-look2.jpg'),
   Logo : require('../assets/images/logo.png'),
   WinRewards : require('../assets/images/win_rewards.png')
 };

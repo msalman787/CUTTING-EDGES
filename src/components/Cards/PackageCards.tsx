@@ -6,30 +6,28 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
+  Image,
 } from 'react-native';
 import {Colors, Fonts, Images} from '../../constants';
 
-const StoreCards = ({title, description, price, image,onPress}: any) => {
-  const StoreImage = image;
+const PackageCards = ({title, description, price, image,onPress}: any) => {
 
   return (
     <View style={styles.card}>
       <View style={styles.rowContainer}>
-        <StoreImage style={styles.image} resizeMode="cover" />
+        <Image source={image} style={styles.image} resizeMode="cover" />
         <View style={styles.titleDescriptionContainer}>
           <Text style={styles.title}>{title}</Text>
             <View style={{flexDirection: 'row'}}>
-              {/* <Images.LocationIcon style={styles.icon} resizeMode="cover" /> */}
             <Text style={styles.description}>{description}</Text>
           </View>
         </View>
       </View>
       <View style={styles.horizontalBorder} />
       <View style={styles.rowContainer}>
-        {/* <Images.PhoneIcon resizeMode="cover" /> */}
-        <Text style={styles.phoneNo}>PKR: {price}</Text>
+        <Text style={styles.phoneNo}>Price: {price} Pkr</Text>
         <TouchableOpacity style={styles.button} onPress={onPress} >
-          <Text style={styles.buttonText}>New Look</Text>
+          <Text style={styles.buttonText}>Book Appointment</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -99,4 +97,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default StoreCards;
+export default PackageCards;
