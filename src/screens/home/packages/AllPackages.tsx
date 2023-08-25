@@ -117,7 +117,7 @@ const AllPackages = ({navigation}: any) => {
           modalImage={Images.CreateAmount}
           title={'Create an Account'}
           description={
-            "with us and you'll be able to book appointments."
+            " Discover personalized experiences and exclusive benefits, sign up today to join our community! 🌟📲"
           }
           buttonText={'Create'}
           onClose={handleHideModal}

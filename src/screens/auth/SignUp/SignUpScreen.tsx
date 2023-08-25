@@ -273,7 +273,7 @@ const SignUpScreen = ({navigation}: any) => {
             render={({field: {onChange, onBlur, value}}) => (
               <AnimatedInput
                 keyboardType={'email-address'}
-                label="Email address"
+                label="Email"
                 ref={refs.email}
                 returnKeyType={'next'}
                 onSubmitEditing={() => handleNext(refs.email.current)}
@@ -499,7 +499,7 @@ const styles = StyleSheet.create({
   },
   SignUpBtn: {
     width: '100%',
-    marginVertical: 20,
+    marginVertical: 30,
     paddingHorizontal: 10,
   },
   footerTextContainer: {

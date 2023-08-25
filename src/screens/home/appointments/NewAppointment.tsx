@@ -108,7 +108,7 @@ const NewAppointment = ({navigation}: any) => {
   };
 
   const onPageRedirect = async () => {
-    await navigation.navigate('ComplainCenterScreen');
+    await navigation.goBack();
   };
 
   const HandleNewAppo = async (data: any) => {
@@ -116,7 +116,7 @@ const NewAppointment = ({navigation}: any) => {
       ...prevState,
       title: 'Success',
       image: Images.SucessIcon,
-      description: 'Your complain has submitted.',
+      description: 'Your appointment has submitted.',
       bgColor: 'rgba(41, 172, 68, 1)',
       isValidate: true,
     }));

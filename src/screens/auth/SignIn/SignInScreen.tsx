@@ -109,7 +109,7 @@ const SignInScreen = ({navigation}: any) => {
           render={({field: {onChange, onBlur, value}}) => (
             <AnimatedInput
               keyboardType={'email-address'}
-              label="Email address"
+              label="Email"
               ref={emailRef}
               returnKeyType={'next'}
               onSubmitEditing={handleEmailNext}
