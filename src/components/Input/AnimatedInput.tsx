@@ -44,7 +44,8 @@ const AnimatedInput = forwardRef(
           keyboardType={keyboardType}
           cursorColor={Colors.LIGHT_GRAY}
           outlineColor={Colors.INPUT_BORDER}
-          mode="outlined"
+          mode="flat"
+          underlineColor={Colors.DEFAULT_BLACK}
           label={label}
           style={[styles.textInput]}
           value={value}
@@ -76,6 +77,7 @@ const styles = StyleSheet.create({
   },
   textInput: {
     width: '100%',
+    backgroundColor:Colors.DEFAULT_WHITE
   },
   errorMsg: {
     marginTop: 3,

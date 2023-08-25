@@ -71,10 +71,12 @@ const SignUpScreen = ({navigation}: any) => {
   };
 
   const refs: any = {
-    registrationNo: useRef(null),
     firstName: useRef(null),
     lastName: useRef(null),
     email: useRef(null),
+    phone: useRef(null),
+    cnic: useRef(null),
+    gender: useRef(null),
     password: useRef(null),
     confirmPassword: useRef(null),
   };
@@ -135,26 +137,27 @@ const SignUpScreen = ({navigation}: any) => {
         description: 'Date Of Birth is required.',
       }));
     }
-    let dateToTimeStamp = new Date(date.simple).toISOString();
+    console.log(data)
+    // let dateToTimeStamp = new Date(date.simple).toISOString();
 
-    data.dateOfBirth = dateToTimeStamp;
-    data.phoneNo = phone;
-    data.role_id = 2;
-    try {
-      setDisabled(true);
-      delete data.Confirm_Password;
-      const response = await apiResponseGenerator({
-        method: 'post',
-        url: '/api/auth/signup',
-        body: data,
-      });
-      if (response) {
-        navigation.navigate('SignInScreen');
-      }
-    } catch (error: any) {
-      dispatch(showModal({description: error.message}));
-      setDisabled(false);
-    }
+    // data.dateOfBirth = dateToTimeStamp;
+    // data.phoneNo = phone;
+    // data.role_id = 2;
+    // try {
+    //   setDisabled(true);
+    //   delete data.Confirm_Password;
+    //   const response = await apiResponseGenerator({
+    //     method: 'post',
+    //     url: '/api/auth/signup',
+    //     body: data,
+    //   });
+    //   if (response) {
+    //     navigation.navigate('SignInScreen');
+    //   }
+    // } catch (error: any) {
+    //   dispatch(showModal({description: error.message}));
+    //   setDisabled(false);
+    // }
   };
 
   return (
@@ -176,7 +179,7 @@ const SignUpScreen = ({navigation}: any) => {
           />
         </View>
 
-        <View style={styles.dropdownContainer}>
+        {/* <View style={styles.dropdownContainer}>
           <DropDown
             label={'Signup As'}
             itemList={signUpList}
@@ -186,9 +189,9 @@ const SignUpScreen = ({navigation}: any) => {
             showDropDown={showDropDown}
             setShowDropDown={setShowDropDown}
           />
-        </View>
+        </View> */}
 
-        <View style={styles.input}>
+        {/* <View style={styles.input}>
           <Controller
             control={control}
             rules={{
@@ -209,7 +212,7 @@ const SignUpScreen = ({navigation}: any) => {
             name="registrationNumber"
             defaultValue=""
           />
-        </View>
+        </View> */}
 
         <View style={styles.input}>
           <Controller
@@ -222,7 +225,7 @@ const SignUpScreen = ({navigation}: any) => {
                 ref={refs.firstName}
                 returnKeyType={'next'}
                 onSubmitEditing={() => handleNext(refs.firstName.current)}
-                label="First Name"
+                label="First name"
                 keyboardType={'default'}
                 value={value}
                 onChangeText={onChange}
@@ -244,7 +247,7 @@ const SignUpScreen = ({navigation}: any) => {
               <AnimatedInput
                 ref={refs.lastName}
                 onSubmitEditing={() => handleNext(refs.lastName.current)}
-                label="Last Name"
+                label="Last name"
                 returnKeyType={'next'}
                 keyboardType={'default'}
                 value={value}
@@ -283,8 +286,74 @@ const SignUpScreen = ({navigation}: any) => {
             defaultValue=""
           />
         </View>
-
         <View style={styles.input}>
+          <Controller
+            control={control}
+            rules={{
+              required: true,
+            }}
+            render={({field: {onChange, onBlur, value}}) => (
+              <AnimatedInput
+                ref={refs.phone}
+                onSubmitEditing={() => handleNext(refs.phone.current)}
+                label="Phone number"
+                returnKeyType={'next'}
+                keyboardType={'phone-pad'}
+                value={value}
+                onChangeText={onChange}
+                errorMsg={errors.phone?.message}
+              />
+            )}
+            name="phone"
+            defaultValue=""
+          />
+        </View>
+        <View style={styles.input}>
+          <Controller
+            control={control}
+            rules={{
+              required: true,
+            }}
+            render={({field: {onChange, onBlur, value}}) => (
+              <AnimatedInput
+                ref={refs.cnic}
+                onSubmitEditing={() => handleNext(refs.cnic.current)}
+                label="CNIC number"
+                returnKeyType={'next'}
+                keyboardType={'phone-pad'}
+                value={value}
+                onChangeText={onChange}
+                errorMsg={errors.cnic?.message}
+              />
+            )}
+            name="cnic"
+            defaultValue=""
+          />
+        </View>
+        <View style={styles.input}>
+          <Controller
+            control={control}
+            // rules={{
+            //   required: true,
+            // }}
+            render={({field: {onChange, onBlur, value}}) => (
+              <AnimatedInput
+                ref={refs.gender}
+                onSubmitEditing={() => handleNext(refs.gender.current)}
+                label="Gender"
+                returnKeyType={'next'}
+                keyboardType={'default'}
+                value={value}
+                onChangeText={onChange}
+                errorMsg={errors.gender?.message}
+              />
+            )}
+            name="gender"
+            defaultValue=""
+          />
+        </View>
+       
+        {/* <View style={styles.input}>
           <View
             style={{
               borderColor: Colors.INPUT_BORDER,
@@ -300,7 +369,7 @@ const SignUpScreen = ({navigation}: any) => {
               onChangeFormattedText={text => setPhone(text)}
             />
           </View>
-        </View>
+        </View> */}
 
         <View style={styles.input}>
           <TouchableOpacity onPress={showDatePicker}>
@@ -367,7 +436,7 @@ const SignUpScreen = ({navigation}: any) => {
           />
         </View>
 
-        <View style={styles.footerTextContainer}>
+        {/* <View style={styles.footerTextContainer}>
           <View style={{marginLeft:-20}}>
             <Checkbox
               status={checked ? 'checked' : 'unchecked'}
@@ -390,7 +459,7 @@ const SignUpScreen = ({navigation}: any) => {
               <Text style={styles.boldTouchableText}>Privacy Policy</Text>
             </TouchableOpacity>
           </View>
-        </View>
+        </View> */}
 
         <TouchableOpacity
           style={styles.SignUpBtn}>
