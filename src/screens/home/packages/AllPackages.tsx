@@ -9,12 +9,20 @@ import {
 import {
   DynamicStatusBar,
   HeaderWithSearchInput,
+  Model,
   StoreCards,
 } from '../../../components';
 import {Colors, Images} from '../../../constants';
 import {verticalScale} from '../../../utils/Dimentions';
+import { useSelector } from 'react-redux';
 
 const AllPackages = ({navigation}: any) => {
+  const [isConfirmationVisible, setConfirmationVisible] = useState(false);
+  const isAuthenticated = useSelector(
+    (state: any) => state.auth.isAuthenticated,
+  );
+  console.log({isAuthenticated});
+  console.log({isConfirmationVisible});
   const data = [
     {
       id: '1',
@@ -75,19 +83,47 @@ const AllPackages = ({navigation}: any) => {
     navigation.navigate('NewAppointmentScreen');
   };
 
+  const handleNavigation = () => {
+    setConfirmationVisible(true);
+    if (isAuthenticated) {
+      navigation.navigate('NewAppointmentScreen');
+    }
+  };
+  const handleCreateAccount = async () => {
+    setConfirmationVisible(false);
+    await navigation.navigate('SignInScreen');
+  };
+
+  const handleHideModal = () => {
+    setConfirmationVisible(false);
+  };
+
   const renderCardRow = ({item}: any) => (
     <StoreCards
       title={item.title}
       description={item.description}
       image={item.image}
       price={item.price}
-      onPress={goToSignUpScreen}
+      onPress={handleNavigation}
     />
   );
 
   return (
     <View style={styles.container}>
       <DynamicStatusBar />
+      {!isAuthenticated && isConfirmationVisible && (
+        <Model
+          isVisible={isConfirmationVisible}
+          modalImage={Images.CreateAmount}
+          title={'Create an Account'}
+          description={
+            "with us and you'll be able to book appointments."
+          }
+          buttonText={'Create'}
+          onClose={handleHideModal}
+          onPageRedirect={handleCreateAccount}
+        />
+      )}
       <View style={styles.header}>
         <HeaderWithSearchInput
           onIconPress={handleToggleInput}

@@ -62,35 +62,6 @@ const StackNavigator = () => {
           options={{headerShown: false}}
         />
       ) : null} */}
-      {!isAuthenticated && (
-        <>
-          <Stack.Screen
-            name="SignInScreen"
-            component={SignInScreen}
-            options={{headerShown: false}}
-          />
-          <Stack.Screen
-            name="SignUpScreen"
-            component={SignUpScreen}
-            options={{headerShown: false}}
-          />
-          {/* <Stack.Screen
-            name="TermAndConditionScreen"
-            component={TermAndConditionScreen}
-            options={{headerShown: false}}
-          />
-          <Stack.Screen
-            name="PrivacyAndPolicyScreen"
-            component={PrivacyAndPolicyScreen}
-            options={{headerShown: false}}
-          />
-          <Stack.Screen
-            name="LicenseIdScreen"
-            component={LicenseIdScreen}
-            options={{headerShown: false}}
-          /> */}
-        </>
-      )}
       {/* 
       <Stack.Screen
         name="BottomTabNavigation"
@@ -128,6 +99,20 @@ const StackNavigator = () => {
         component={NewPackage}
         options={{headerShown: false}}
       />
+       {!isAuthenticated && (
+        <>
+          <Stack.Screen
+            name="SignInScreen"
+            component={SignInScreen}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="SignUpScreen"
+            component={SignUpScreen}
+            options={{headerShown: false}}
+          />
+        </>
+      )}
       {/* <Stack.Screen
         name="AllStores"
         component={StoreScreen}

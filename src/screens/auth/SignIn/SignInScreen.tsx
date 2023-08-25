@@ -61,8 +61,9 @@ const SignInScreen = ({navigation}: any) => {
     //     body: data,
     //   });
     //   if (response) {
-    //     await AsyncStorage.setItem('authenticated', response.remember_token);
-    //     dispatch(setAuthenticated(true));
+        // await AsyncStorage.setItem('authenticated', response.remember_token);
+        await AsyncStorage.setItem('authenticated', "response.remember_token");
+        dispatch(setAuthenticated(true));
     //     navigation.navigate('BottomTabNavigation');
     //   }
     // } catch (error: any) {
