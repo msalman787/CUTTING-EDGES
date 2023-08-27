@@ -9,7 +9,7 @@ import Banners from './Sliders/Banners';
 import HeaderWithSearchInput from './Header/HeaderWithInput';
 import PackageCards from './Cards/PackageCards';
 import DetailSlider from './Sliders/DetailSlider'
-import ComplainCards from './Cards/ComplainCards';
+import AppointmentCards from './Cards/AppointmentCards';
 import DynamicStatusBar from './DynamicStatusBar/DynamicStatusBar';
 import ValidationModel from './Model/ValidationModel';
 import TextSeemore from './TextMore/TextSeemore';
@@ -27,7 +27,7 @@ export {
   HeaderWithSearchInput,
   PackageCards,
   DetailSlider,
-  ComplainCards,
+  AppointmentCards,
   DynamicStatusBar,
   ValidationModel,
   TextSeemore,

@@ -2,74 +2,86 @@ import {FlatList, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import {Colors} from '../../../constants';
 import {
-  ComplainCards,
+  AppointmentCards,
   DynamicStatusBar,
   HeaderWithSearchInput,
 } from '../../../components';
 import {verticalScale} from '../../../utils/Dimentions';
 import {FAB} from 'react-native-paper';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { setAuthenticated } from '../../../store/auth/authSlice';
+import { CommonActions } from '@react-navigation/native';
+import { useDispatch } from 'react-redux';
 
 const ApointmentScreen = ({navigation}: any) => {
-  const complain_data = [
+  const dispatch = useDispatch();
+  const appointment_data = [
     {
       id: 1,
-      title: 'Nowposh Fake Vaping Device',
+      title: "Gentleman's Grooming Deluxe",
       date: '16 May 2023',
-      status: 'Pending',
     },
     {
       id: 2,
-      title: 'Nowposh Fake Vaping Device',
+      title: "Suave Swagger Package",
       date: '16 May 2023',
-      status: 'Approved',
     },
     {
       id: 3,
-      title: 'Nowposh Fake Vaping Device',
+      title: "Gentleman's Grooming Deluxe",
       date: '16 May 2023',
       status: 'Rejected',
     },
     {
       id: 4,
-      title: 'Nowposh Fake Vaping Device',
+      title: "Suave Swagger Package",
       date: '16 May 2023',
-      status: 'Pending',
     },
     {
       id: 5,
-      title: 'Nowposh Fake Vaping Device',
+      title: "Gentleman's Grooming Deluxe",
       date: '16 May 2023',
-      status: 'Approved',
     },
     {
       id: 6,
-      title: 'Nowposh Fake Vaping Device',
+      title: "Suave Swagger Package",
       date: '16 May 2023',
-      status: 'Pending',
     },
     {
       id: 7,
-      title: 'Nowposh Fake Vaping Device',
+      title: "Gentleman's Grooming Deluxe",
       date: '16 May 2023',
       status: 'Rejected',
     },
   ];
 
-  const handleCloseInput = () => {
-    navigation.goBack();
-  };
+  const handleLogout = async () => {
+    await AsyncStorage.removeItem('authenticated');
+    dispatch(setAuthenticated(false));
+    const resetAction = CommonActions.reset({
+      index: 0,
+      routes: [{name: 'SignInScreen'}],
+    });
+    navigation.dispatch(resetAction);
+  };;
 
-  const goToDetailScreen = (value: any) => {
-    navigation.navigate('ComplainDetailScreen', {status: value});
-  };
+
 
   const handlePress = () => {
     navigation.navigate('NewPackageScreen');
   };
 
+  const handleAccept = () => {
+    console.log("handle accept")
+  };
+  const handleReject = () => {
+    console.log("handle reject")
+  };
+
   const renderCardRow = ({item}: any) => (
-    <ComplainCards
-      onPress={goToDetailScreen}
+    <AppointmentCards
+      onAccept={handleAccept}
+      onReject={handleReject}
       title={item.title}
       status={item.status}
       date={item.date}
@@ -83,13 +95,13 @@ const ApointmentScreen = ({navigation}: any) => {
           title="APPOINTMENTS"
           showIcon={true}
           image={"log-out"}
-          onIconPress={handlePress}
+          onIconPress={handleLogout}
           titleStyle={-55}
         />
       </View>
       <View style={styles.cardsContainer}>
         <FlatList
-          data={complain_data}
+          data={appointment_data}
           renderItem={renderCardRow}
           keyExtractor={(item: any) => item.id}
         />

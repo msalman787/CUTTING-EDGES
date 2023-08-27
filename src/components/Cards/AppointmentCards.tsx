@@ -2,7 +2,7 @@ import React from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import {Colors, Fonts} from '../../constants';
 
-const ComplainCards = ({title, date, status, onPress}: any) => {
+const AppointmentCards = ({title, date, onAccept , onReject}: any) => {
   return (
     <View style={styles.card}>
       <View style={styles.rowContainer}>
@@ -16,6 +16,7 @@ const ComplainCards = ({title, date, status, onPress}: any) => {
       <View style={styles.horizontalBorder} />
       <View style={styles.rowContainer}>
         <TouchableOpacity
+        onPress={onAccept}
           style={[
             styles.button,
             {
@@ -33,7 +34,7 @@ const ComplainCards = ({title, date, status, onPress}: any) => {
             Accept
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity onPress={onReject} style={styles.button}>
           <Text style={styles.buttonText}>Reject</Text>
         </TouchableOpacity>
       </View>
@@ -89,4 +90,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ComplainCards;
+export default AppointmentCards;
