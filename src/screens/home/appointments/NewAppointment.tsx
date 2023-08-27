@@ -14,9 +14,13 @@ import {yupResolver} from '@hookform/resolvers/yup';
 import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
 import ImagePicker from 'react-native-image-crop-picker';
 import { appointmentInputSchema } from '../../../validations/Appointment';
+import apiResponseGenerator from '../../../service/apiGenerator';
+import { useDispatch } from 'react-redux';
+import { finishLoading, startLoading } from '../../../store/apiLoader/apiLoaderSlice';
+import { showModal } from '../../../store/model/modelSlice';
 
 const NewAppointment = ({navigation}: any) => {
-  const [showModal, setShowModal] = useState<boolean>(false);
+  const [showModel, setShowModal] = useState<boolean>(false);
   const [state, setState] = useState({
     title: 'Sorry!',
     bgColor: '',
@@ -27,6 +31,8 @@ const NewAppointment = ({navigation}: any) => {
   });
 
   const [images, setImages]: any = useState([]);
+  const dispatch = useDispatch();
+
   const {
     control,
     handleSubmit,
@@ -112,15 +118,21 @@ const NewAppointment = ({navigation}: any) => {
   };
 
   const HandleNewAppo = async (data: any) => {
-    setState(prevState => ({
-      ...prevState,
-      title: 'Success',
-      image: Images.SucessIcon,
-      description: 'Your appointment has submitted.',
-      bgColor: 'rgba(41, 172, 68, 1)',
-      isValidate: true,
-    }));
-    console.log(data);
+    try {
+      data.descsion="pending"
+      dispatch(startLoading());
+      const response = await apiResponseGenerator({
+        url: 'api/addappointment',
+        method: 'post',
+        body: data,
+      });
+      if (response) {
+        dispatch(finishLoading());
+        return handleCloseInput()
+      }
+    } catch (error: any) {
+      dispatch(showModal({description: error.message}));
+    }
   };
 
   return (
@@ -137,7 +149,7 @@ const NewAppointment = ({navigation}: any) => {
         onPageRedirect={onPageRedirect}
       />
       {/* Image Picker Model */}
-      <Modal animationType="fade" transparent={true} visible={showModal}>
+      <Modal animationType="fade" transparent={true} visible={showModel}>
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <View style={styles.modelButtons}>
@@ -304,7 +316,7 @@ const NewAppointment = ({navigation}: any) => {
 
           </TouchableOpacity>
         </View>
-        {images.map((image: any, index: number) => (
+        {/* {images.map((image: any, index: number) => (
           <View style={styles.imageContainer} key={index}>
             <View style={{flexDirection: 'row', justifyContent:"space-between"}}>
               <View>
@@ -331,7 +343,7 @@ const NewAppointment = ({navigation}: any) => {
               </TouchableOpacity>
             </View>
           </View>
-        ))}
+        ))} */}
         <View style={{marginHorizontal: 10}}>
           <LargeButton
             onPress={handleSubmit(HandleNewAppo)}
