@@ -1,4 +1,4 @@
-const BASE_URL = 'http://posh-app-apis-dev.eu-north-1.elasticbeanstalk.com';
+const BASE_URL = 'https://api.thesafetytags.com/';
 
 import Fonts from './Fonts';
 import Colors from './Colors';

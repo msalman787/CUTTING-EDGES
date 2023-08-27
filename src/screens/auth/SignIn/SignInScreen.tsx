@@ -1,6 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
-import InputField from '../../../components/Input/Input';
 import LargeButton from '../../../components/Buttons/Button';
 import {Fonts, Colors} from '../../../constants';
 import Header from '../../../components/Header/Header';
@@ -28,8 +27,6 @@ const SignInScreen = ({navigation}: any) => {
     buttonText: 'Ok',
     isValidate: false,
   });
-  const emailRef = useRef(null);
-  const passwordRef: any = useRef(null);
 
   const [disabled, setDisabled] = useState(false);
   const {
@@ -47,36 +44,39 @@ const SignInScreen = ({navigation}: any) => {
   };
 
   const HandleSignIn = async (data: any) => {
-    console.log(data)
-    if (
-      data.email === 'admin@cuttingedges.com' &&
-      data.password == 'admin123'
-    ) {
-      await AsyncStorage.setItem('authenticated', 'response.remember_token');
-      dispatch(setAuthenticated(true));
-      navigation.navigate('ApointmentScreen');
-    } else {
-      await AsyncStorage.setItem('authenticated', 'response.remember_token');
-      dispatch(setAuthenticated(true));
-      navigation.navigate('AllPackageScreen');
-    }
-    // try {
-    //   setDisabled(true);
-    //   const response = await apiResponseGenerator({
-    //     method: 'post',
-    //     url: '/api/auth/login',
-    //     body: data,
-    //   });
-    //   if (response) {
-        // await AsyncStorage.setItem('authenticated', response.remember_token);
-        // await AsyncStorage.setItem('authenticated', "response.remember_token");
-        // dispatch(setAuthenticated(true));
-    //     navigation.navigate('BottomTabNavigation');
-    //   }
-    // } catch (error: any) {
-    //   dispatch(showModal({description: error.message}));
-    //   setDisabled(false);
+    console.log(data);
+    // if (
+    //   data.email === 'admin@cuttingedges.com' &&
+    //   data.password == 'admin123'
+    // ) {
+    //   await AsyncStorage.setItem('authenticated', 'response.remember_token');
+    //   dispatch(setAuthenticated(true));
+    //   navigation.navigate('ApointmentScreen');
     // }
+    try {
+      setDisabled(true);
+      const response = await apiResponseGenerator({
+        method: 'post',
+        url: 'api/login',
+        body: data,
+      });
+      if (response) {
+        if (response.data.role === 'admin') {
+          await AsyncStorage.setItem('authenticated', response.token);
+          dispatch(setAuthenticated(true));
+          navigation.navigate('ApointmentScreen');
+        } else {
+          // sufiyankhanzada12541@gmail.com
+          // 1123456789
+          await AsyncStorage.setItem('authenticated', response.token);
+          dispatch(setAuthenticated(true));
+          navigation.navigate('AllPackageScreen');
+        }
+      }
+    } catch (error: any) {
+      dispatch(showModal({description: error.message}));
+      setDisabled(false);
+    }
   };
 
   const handleHideModal = () => {
@@ -103,7 +103,7 @@ const SignInScreen = ({navigation}: any) => {
         subHeaderText={'Sign in to continue'}
       />
 
-      <View style={[styles.input,{marginTop:-20}]}>
+      <View style={[styles.input, {marginTop: -20}]}>
         <Controller
           control={control}
           rules={{
@@ -187,7 +187,7 @@ const styles = StyleSheet.create({
   },
   signInButton: {
     width: '100%',
-    marginTop:25
+    marginTop: 25,
   },
   footerTextContainer: {
     flexDirection: 'row',

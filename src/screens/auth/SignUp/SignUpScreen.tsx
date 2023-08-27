@@ -80,24 +80,29 @@ const SignUpScreen = ({navigation}: any) => {
       }));
     }
     let dateToTimeStamp = new Date(date.simple).toISOString();
-    
+
     data.DOB = dateToTimeStamp;
-    data.role = "Customer";
+    data.role = 'Customer';
     console.log(data);
-    // try {
-    //   setDisabled(true);
-    //   const response = await apiResponseGenerator({
-    //     method: 'post',
-    //     url: '/api/auth/signup',
-    //     body: data,
-    //   });
-    //   if (response) {
-        navigation.navigate('SignInScreen');
-    //   }
-    // } catch (error: any) {
-    //   dispatch(showModal({description: error.message}));
-    //   setDisabled(false);
-    // }
+    try {
+      setDisabled(true);
+      const response = await apiResponseGenerator({
+        method: 'post',
+        url: 'api/register',
+        body: data,
+      });
+      if (response) {
+        if (!response.success) {
+          dispatch(showModal({description: response.errors.email}));
+          setDisabled(false);
+        } else {
+          navigation.navigate('SignInScreen');
+        }
+      }
+    } catch (error: any) {
+      dispatch(showModal({description: error.message}));
+      setDisabled(false);
+    }
   };
 
   return (
