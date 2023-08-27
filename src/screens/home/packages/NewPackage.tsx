@@ -14,9 +14,18 @@ import {yupResolver} from '@hookform/resolvers/yup';
 import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
 import ImagePicker from 'react-native-image-crop-picker';
 import {packageInputSchema} from '../../../validations/Package';
+import {
+  finishLoading,
+  startLoading,
+} from '../../../store/apiLoader/apiLoaderSlice';
+import apiResponseGenerator from '../../../service/apiGenerator';
+import {useDispatch} from 'react-redux';
+import {showModal} from '../../../store/model/modelSlice';
 
 const NewPackage = ({navigation}: any) => {
-  const [showModal, setShowModal] = useState<boolean>(false);
+  const [showModel, setShowModal] = useState<boolean>(false);
+  const dispatch = useDispatch();
+
   const [state, setState] = useState({
     title: 'Sorry!',
     bgColor: '',
@@ -112,15 +121,20 @@ const NewPackage = ({navigation}: any) => {
   };
 
   const HandleNewPackage = async (data: any) => {
-    setState(prevState => ({
-      ...prevState,
-      title: 'Success',
-      image: Images.SucessIcon,
-      description: 'Your complain has submitted.',
-      bgColor: 'rgba(41, 172, 68, 1)',
-      isValidate: true,
-    }));
-    console.log(data);
+    try {
+      dispatch(startLoading());
+      const response = await apiResponseGenerator({
+        url: 'api/addpricing',
+        method: 'post',
+        body: data,
+      });
+      if (response) {
+        dispatch(finishLoading());
+        return handleCloseInput()
+      }
+    } catch (error: any) {
+      dispatch(showModal({description: error.message}));
+    }
   };
 
   return (
@@ -137,7 +151,7 @@ const NewPackage = ({navigation}: any) => {
         onPageRedirect={onPageRedirect}
       />
       {/* Image Picker Model */}
-      <Modal animationType="fade" transparent={true} visible={showModal}>
+      <Modal animationType="fade" transparent={true} visible={showModel}>
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <View style={styles.modelButtons}>
@@ -267,7 +281,7 @@ const NewPackage = ({navigation}: any) => {
             <Text style={styles.text}>Upload Package image</Text>
           </TouchableOpacity>
         </View>
-        {images.map((image: any, index: number) => (
+        {/* {images.map((image: any, index: number) => (
           <View style={styles.imageContainer} key={index}>
             <View
               style={{flexDirection: 'row', justifyContent: 'space-between'}}>
@@ -295,7 +309,7 @@ const NewPackage = ({navigation}: any) => {
               </TouchableOpacity>
             </View>
           </View>
-        ))}
+        ))} */}
         <View style={{marginHorizontal: 10}}>
           <LargeButton
             onPress={handleSubmit(HandleNewPackage)}

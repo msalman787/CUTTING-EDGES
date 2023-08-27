@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   FlatList,
   Image,
@@ -14,70 +14,48 @@ import {
 } from '../../../components';
 import {Colors, Images} from '../../../constants';
 import {verticalScale} from '../../../utils/Dimentions';
-import { useDispatch, useSelector } from 'react-redux';
-import { setAuthenticated } from '../../../store/auth/authSlice';
+import {useDispatch, useSelector} from 'react-redux';
+import {setAuthenticated} from '../../../store/auth/authSlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { CommonActions } from '@react-navigation/native';
+import {CommonActions} from '@react-navigation/native';
+import {
+  finishLoading,
+  startLoading,
+} from '../../../store/apiLoader/apiLoaderSlice';
+import apiResponseGenerator from '../../../service/apiGenerator';
+import {showModal} from '../../../store/model/modelSlice';
 
 const AllPackages = ({navigation}: any) => {
   const [isConfirmationVisible, setConfirmationVisible] = useState(false);
+  const [packages, setPackages] = useState([]);
   const dispatch = useDispatch();
   const isAuthenticated = useSelector(
     (state: any) => state.auth.isAuthenticated,
   );
+
+  useEffect(() => {
+    getAllProducts();
+    return () => {
+      dispatch(finishLoading());
+    };
+  }, []);
+
+  const getAllProducts = async () => {
+    try {
+      dispatch(startLoading());
+      const response = await apiResponseGenerator({
+        url: 'api/allpricing',
+      });
+      if (response) {
+        setPackages(response.data);
+        return dispatch(finishLoading());
+      }
+    } catch (error: any) {
+      dispatch(showModal({description: error.message}));
+    }
+  };
   console.log({isAuthenticated});
   console.log({isConfirmationVisible});
-  const data = [
-    {
-      id: '1',
-      image: Images.New_Look1,
-      title: "Gentleman's Grooming Deluxe",
-      description: 'Ultimate grooming with tailored haircut, beard styling, hot towel treatment, and scalp massage for a refreshed, refined look.',
-      price: 300,
-    },
-    {
-      id: '2',
-      image: Images.New_Look2,
-      title: "Suave Swagger Package",
-      description: 'Elevate your charm with a sleek haircut, suave beard shaping, eyebrow grooming, and a cooling mint facial mask. Step out exuding irresistible charisma and confidence.',
-      price: 300,
-    },
-    {
-      id: '3',
-      image: Images.New_Look1,
-      title: "Gentleman's Grooming Deluxe",
-      description: 'Ultimate grooming with tailored haircut, beard styling, hot towel treatment, and scalp massage for a refreshed, refined look.',
-      price: 300,
-    },
-    {
-      id: '4',
-      image: Images.New_Look2,
-      title: "Suave Swagger Package",
-      description: 'Elevate your charm with a sleek haircut, suave beard shaping, eyebrow grooming, and a cooling mint facial mask. Step out exuding irresistible charisma and confidence.',
-      price: 300,
-    },
-    {
-      id: '5',
-      image: Images.New_Look1,
-      title: "Gentleman's Grooming Deluxe",
-      description: 'Ultimate grooming with tailored haircut, beard styling, hot towel treatment, and scalp massage for a refreshed, refined look.',
-      price: 300,
-    },
-    {
-      id: '6',
-      image: Images.New_Look2,
-      title: "Suave Swagger Package",
-      description: 'Elevate your charm with a sleek haircut, suave beard shaping, eyebrow grooming, and a cooling mint facial mask. Step out exuding irresistible charisma and confidence.',
-      price: 300,
-    },
-    {
-      id: '7',
-      image: Images.New_Look1,
-      title: "Gentleman's Grooming Deluxe",
-      description: 'Ultimate grooming with tailored haircut, beard styling, hot towel treatment, and scalp massage for a refreshed, refined look.',
-      price: 300,
-    },
-  ];
 
   const handleLogout = async () => {
     await AsyncStorage.removeItem('authenticated');
@@ -106,10 +84,10 @@ const AllPackages = ({navigation}: any) => {
 
   const renderCardRow = ({item}: any) => (
     <PackageCards
-      title={item.title}
-      description={item.description}
-      image={item.image}
-      price={item.price}
+      title={item.Plan_title}
+      description={item.Plan_description}
+      image={item.id % 2 === 0 ? Images.New_Look1 : Images.New_Look2 }
+      price={item.Plan_price}
       onPress={handleNavigation}
     />
   );
@@ -123,7 +101,7 @@ const AllPackages = ({navigation}: any) => {
           modalImage={Images.CreateAmount}
           title={'Create an Account'}
           description={
-            "Discover personalized experiences and exclusive benefits, sign up today to join our community! 🌟📲"
+            'Discover personalized experiences and exclusive benefits, sign up today to join our community! 🌟📲'
           }
           buttonText={'Create'}
           onClose={handleHideModal}
@@ -136,14 +114,14 @@ const AllPackages = ({navigation}: any) => {
           showIcon={isAuthenticated}
           image={'log-out'}
           title="PACKAGES"
-          titleStyle={isAuthenticated ? -55  :-35}
+          titleStyle={isAuthenticated ? -55 : -35}
         />
       </View>
       <View style={styles.cardsContainer}>
         <FlatList
-          data={data}
+          data={packages}
           renderItem={renderCardRow}
-          keyExtractor={item => item.id}
+          keyExtractor={(item: any) => item.id}
         />
       </View>
     </View>
