@@ -31,11 +31,6 @@ const SignInScreen = ({navigation}: any) => {
   const emailRef = useRef(null);
   const passwordRef: any = useRef(null);
 
-  const handleEmailNext = () => {
-    if (passwordRef.current) {
-      passwordRef.current.focus();
-    }
-  };
   const [disabled, setDisabled] = useState(false);
   const {
     control,
@@ -110,11 +105,7 @@ const SignInScreen = ({navigation}: any) => {
             <AnimatedInput
               keyboardType={'email-address'}
               label="Email"
-              ref={emailRef}
-              returnKeyType={'next'}
-              onSubmitEditing={handleEmailNext}
               value={value}
-              leftIcon={"email"}
               onChangeText={onChange}
               errorMsg={errors.email?.message}
             />
@@ -131,8 +122,6 @@ const SignInScreen = ({navigation}: any) => {
           }}
           render={({field: {onChange, onBlur, value}}) => (
             <AnimatedInput
-              ref={passwordRef}
-              returnKeyType={'done'}
               label="Password"
               keyboardType={'default'}
               value={value}

@@ -14,10 +14,14 @@ import {
 } from '../../../components';
 import {Colors, Images} from '../../../constants';
 import {verticalScale} from '../../../utils/Dimentions';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { setAuthenticated } from '../../../store/auth/authSlice';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { CommonActions } from '@react-navigation/native';
 
 const AllPackages = ({navigation}: any) => {
   const [isConfirmationVisible, setConfirmationVisible] = useState(false);
+  const dispatch = useDispatch();
   const isAuthenticated = useSelector(
     (state: any) => state.auth.isAuthenticated,
   );
@@ -75,12 +79,14 @@ const AllPackages = ({navigation}: any) => {
     },
   ];
 
-  const handleToggleInput = () => {
-    navigation.navigate('NearByStores');
-  };
-
-  const goToSignUpScreen = () => {
-    navigation.navigate('NewAppointmentScreen');
+  const handleLogout = async () => {
+    await AsyncStorage.removeItem('authenticated');
+    dispatch(setAuthenticated(false));
+    const resetAction = CommonActions.reset({
+      index: 0,
+      routes: [{name: 'SignInScreen'}],
+    });
+    navigation.dispatch(resetAction);
   };
 
   const handleNavigation = () => {
@@ -117,7 +123,7 @@ const AllPackages = ({navigation}: any) => {
           modalImage={Images.CreateAmount}
           title={'Create an Account'}
           description={
-            " Discover personalized experiences and exclusive benefits, sign up today to join our community! 🌟📲"
+            "Discover personalized experiences and exclusive benefits, sign up today to join our community! 🌟📲"
           }
           buttonText={'Create'}
           onClose={handleHideModal}
@@ -126,11 +132,11 @@ const AllPackages = ({navigation}: any) => {
       )}
       <View style={styles.header}>
         <HeaderWithSearchInput
-          onIconPress={handleToggleInput}
-          showIcon={true}
+          onIconPress={handleLogout}
+          showIcon={isAuthenticated}
           image={'log-out'}
           title="PACKAGES"
-          titleStyle={-55}
+          titleStyle={isAuthenticated ? -55  :-35}
         />
       </View>
       <View style={styles.cardsContainer}>

@@ -28,7 +28,13 @@ const HeaderWithSearchInput = ({
     <View style={styles.container}>
       {onBackBtnPress && <BackButton onBackBtnPress={onBackBtnPress} />}
       {!isInputVisible && (
-        <View style={styles.titleContainer}>
+        <View
+          style={[
+            styles.titleContainer,
+            {
+              paddingVertical: !showIcon ? 10 : 0,
+            },
+          ]}>
           <Text
             style={[
               styles.title,
@@ -39,7 +45,7 @@ const HeaderWithSearchInput = ({
             ]}>
             {title}
           </Text>
-          {onIconPress && (
+          {showIcon && (
             <TouchableOpacity style={styles.icon} onPress={onIconPress}>
               {/* <Icon color="black" style={styles.searchIcon} /> */}
               <ButtonIcon name={image} size={24} color="black" />

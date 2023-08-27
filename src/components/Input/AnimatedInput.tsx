@@ -24,9 +24,9 @@ const AnimatedInput = forwardRef(
       ...DefaultTheme,
       colors: {
         ...DefaultTheme.colors,
-        primary: Colors.LIGHT_GRAY,
+        primary: Colors.DEFAULT_BLACK,
         background: Colors.DEFAULT_WHITE,
-        text: Colors.LIGHT_GRAY,
+        text: Colors.DEFAULT_BLACK,
       },
       fonts: {
         ...DefaultTheme.fonts,
@@ -43,7 +43,7 @@ const AnimatedInput = forwardRef(
           onSubmitEditing={onSubmitEditing}
           editable={editable}
           keyboardType={keyboardType}
-          cursorColor={Colors.LIGHT_GRAY}
+          cursorColor={Colors.DEFAULT_BLACK}
           outlineColor={Colors.INPUT_BORDER}
           mode="flat"
           underlineColor={Colors.DEFAULT_BLACK}
