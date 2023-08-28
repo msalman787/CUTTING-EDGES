@@ -31,25 +31,23 @@ import {useDispatch, useSelector} from 'react-redux';
 const Stack = createStackNavigator();
 
 const StackNavigator = () => {
-  const [initialLaunch, setInitialLaunch] = useState(true);
+  const dispatch = useDispatch();
   const isAuthenticated = useSelector(
     (state: any) => state.auth.isAuthenticated,
   );
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setInitialLaunch(false);
-    }, 3000);
-    return () => clearTimeout(timer);
-  }, []);
 
   useEffect(() => {
     const checkAuthentication = async () => {
-      const authenticated = await AsyncStorage.getItem('authenticated');
-      dispatch(setAuthenticated(authenticated === 'true'));
+      try {
+        const authenticated = await AsyncStorage.getItem('authenticated');  
+        if (authenticated) {
+          dispatch(setAuthenticated(true));
+        }
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
     };
-
+  
     checkAuthentication();
   }, [dispatch]);
 
@@ -99,7 +97,7 @@ const StackNavigator = () => {
         component={NewPackage}
         options={{headerShown: false}}
       />
-       {!isAuthenticated && (
+      {!isAuthenticated && (
         <>
           <Stack.Screen
             name="SignInScreen"

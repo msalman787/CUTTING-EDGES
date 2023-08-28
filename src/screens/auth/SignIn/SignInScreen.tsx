@@ -61,15 +61,13 @@ const SignInScreen = ({navigation}: any) => {
         body: data,
       });
       if (response) {
+        await AsyncStorage.setItem('authenticated', response.token);
+        dispatch(setAuthenticated(true));
         if (response.data.role === 'admin') {
-          await AsyncStorage.setItem('authenticated', response.token);
-          dispatch(setAuthenticated(true));
           navigation.navigate('ApointmentScreen');
         } else {
           // sufiyankhanzada12541@gmail.com
           // 1123456789
-          await AsyncStorage.setItem('authenticated', response.token);
-          dispatch(setAuthenticated(true));
           navigation.navigate('AllPackageScreen');
         }
       }
