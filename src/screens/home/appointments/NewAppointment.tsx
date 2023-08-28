@@ -120,6 +120,8 @@ const NewAppointment = ({navigation}: any) => {
   const HandleNewAppo = async (data: any) => {
     try {
       data.descsion="pending"
+      data.customer_id= 1
+      data.package_id= 2
       dispatch(startLoading());
       const response = await apiResponseGenerator({
         url: 'api/addappointment',
@@ -299,6 +301,25 @@ const NewAppointment = ({navigation}: any) => {
               />
             )}
             name="gender"
+            defaultValue=""
+          />
+        </View>
+        <View style={styles.input}>
+          <Controller
+            control={control}
+            rules={{
+              required: true,
+            }}
+            render={({field: {onChange, onBlur, value}}) => (
+              <AnimatedInput
+                label="Appointment date time"
+                keyboardType={'default'}
+                value={value}
+                onChangeText={onChange}
+                errorMsg={errors.appointment_date_time?.message}
+              />
+            )}
+            name="appointment_date_time"
             defaultValue=""
           />
         </View>

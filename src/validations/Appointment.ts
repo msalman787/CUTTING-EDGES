@@ -9,6 +9,7 @@ export const appointmentInputSchema = yup.object().shape({
   address: yup.string().optional(),
   lastName: yup.string().required('Last Name is a required field'),
   mobile_no: yup.string().required('Mobile is a required field'),
+  appointment_date_time: yup.string().required('Appointment date time is a required field'),
   email: yup
     .string()
     .matches(emailRegex, 'Invalid email format')

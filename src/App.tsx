@@ -31,7 +31,7 @@ const App = () => {
     };
   }, []);
 
-  console.log({isLoading});
+  // console.log({isLoading});
   return (
     <NavigationContainer>
       <StackNavigator />
