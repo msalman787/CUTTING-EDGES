@@ -339,34 +339,6 @@ const NewAppointment = ({navigation, route}: any) => {
             <Text style={styles.text}>Upload Hair Style Picture</Text>
           </TouchableOpacity>
         </View>
-        {/* {images.map((image: any, index: number) => (
-          <View style={styles.imageContainer} key={index}>
-            <View style={{flexDirection: 'row', justifyContent:"space-between"}}>
-              <View>
-                <Image source={{uri: image.path}} style={styles.image} />
-              </View>
-
-              <TouchableOpacity style={styles.selectedImage} key={index}>
-                <Text
-                  key={index}
-                  style={[
-                    styles.text,
-                    {
-                      fontSize: 12,
-                    },
-                  ]}>
-                  {getFileNameFromPath(image.path)}
-                </Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                style={{marginTop: 10}}
-                onPress={() => handleRemoveImage(index)}>
-                <Images.CloseIcon />
-              </TouchableOpacity>
-            </View>
-          </View>
-        ))} */}
         <View style={{marginHorizontal: 10}}>
           <LargeButton onPress={handleSubmit(HandleNewAppo)} text={'Submit'} />
         </View>
