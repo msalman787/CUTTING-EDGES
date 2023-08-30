@@ -22,45 +22,6 @@ import {showModal} from '../../../store/model/modelSlice';
 const ApointmentScreen = ({navigation}: any) => {
   const dispatch = useDispatch();
   const [appointment, setAppointment] = useState([]);
-  const appointment_data = [
-    {
-      id: 1,
-      title: "Gentleman's Grooming Deluxe",
-      date: '16 May 2023',
-    },
-    {
-      id: 2,
-      title: 'Suave Swagger Package',
-      date: '16 May 2023',
-    },
-    {
-      id: 3,
-      title: "Gentleman's Grooming Deluxe",
-      date: '16 May 2023',
-      status: 'Rejected',
-    },
-    {
-      id: 4,
-      title: 'Suave Swagger Package',
-      date: '16 May 2023',
-    },
-    {
-      id: 5,
-      title: "Gentleman's Grooming Deluxe",
-      date: '16 May 2023',
-    },
-    {
-      id: 6,
-      title: 'Suave Swagger Package',
-      date: '16 May 2023',
-    },
-    {
-      id: 7,
-      title: "Gentleman's Grooming Deluxe",
-      date: '16 May 2023',
-      status: 'Rejected',
-    },
-  ];
 
   useEffect(() => {
     getAllAppointments();
@@ -182,7 +143,7 @@ const styles = StyleSheet.create({
   cardsContainer: {
     paddingVertical: verticalScale(5),
     paddingHorizontal: verticalScale(10),
-    paddingBottom: 100,
+    paddingBottom: 80,
   },
   fab: {
     position: 'absolute',

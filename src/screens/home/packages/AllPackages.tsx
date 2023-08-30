@@ -141,7 +141,7 @@ const styles = StyleSheet.create({
   cardsContainer: {
     paddingVertical: verticalScale(5),
     paddingHorizontal: verticalScale(10),
-    paddingBottom: 100,
+    paddingBottom: 80,
   },
 });
 

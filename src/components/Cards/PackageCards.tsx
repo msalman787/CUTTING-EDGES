@@ -25,7 +25,7 @@ const PackageCards = ({id,title, description, price, image,onPress}: any) => {
       </View>
       <View style={styles.horizontalBorder} />
       <View style={styles.rowContainer}>
-        <Text style={styles.phoneNo}>Price: {price} Pkr</Text>
+        <Text style={styles.phoneNo}>Price: {price}</Text>
         <TouchableOpacity style={styles.button} onPress={()=>onPress(id)} >
           <Text style={styles.buttonText}>Book Appointment</Text>
         </TouchableOpacity>

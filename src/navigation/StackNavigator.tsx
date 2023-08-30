@@ -77,11 +77,11 @@ const StackNavigator = () => {
         options={{headerShown: false}}
       /> 
       */}
-      {/* <Stack.Screen
+      <Stack.Screen
         name="AllPackageScreen"
         component={AllPackages}
         options={{headerShown: false}}
-      /> */}
+      />
       <Stack.Screen
         name="ApointmentScreen"
         component={ApointmentScreen}
