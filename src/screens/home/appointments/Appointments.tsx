@@ -1,5 +1,5 @@
 import {FlatList, StyleSheet, Text, View} from 'react-native';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {Colors} from '../../../constants';
 import {
   AppointmentCards,
@@ -9,12 +9,19 @@ import {
 import {verticalScale} from '../../../utils/Dimentions';
 import {FAB} from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { setAuthenticated } from '../../../store/auth/authSlice';
-import { CommonActions } from '@react-navigation/native';
-import { useDispatch } from 'react-redux';
+import {setAuthenticated} from '../../../store/auth/authSlice';
+import {CommonActions} from '@react-navigation/native';
+import {useDispatch} from 'react-redux';
+import apiResponseGenerator from '../../../service/apiGenerator';
+import {
+  finishLoading,
+  startLoading,
+} from '../../../store/apiLoader/apiLoaderSlice';
+import {showModal} from '../../../store/model/modelSlice';
 
 const ApointmentScreen = ({navigation}: any) => {
   const dispatch = useDispatch();
+  const [appointment, setAppointment] = useState([]);
   const appointment_data = [
     {
       id: 1,
@@ -23,7 +30,7 @@ const ApointmentScreen = ({navigation}: any) => {
     },
     {
       id: 2,
-      title: "Suave Swagger Package",
+      title: 'Suave Swagger Package',
       date: '16 May 2023',
     },
     {
@@ -34,7 +41,7 @@ const ApointmentScreen = ({navigation}: any) => {
     },
     {
       id: 4,
-      title: "Suave Swagger Package",
+      title: 'Suave Swagger Package',
       date: '16 May 2023',
     },
     {
@@ -44,7 +51,7 @@ const ApointmentScreen = ({navigation}: any) => {
     },
     {
       id: 6,
-      title: "Suave Swagger Package",
+      title: 'Suave Swagger Package',
       date: '16 May 2023',
     },
     {
@@ -55,6 +62,28 @@ const ApointmentScreen = ({navigation}: any) => {
     },
   ];
 
+  useEffect(() => {
+    getAllAppointments();
+    return () => {
+      dispatch(finishLoading());
+    };
+  }, []);
+
+  const getAllAppointments = async () => {
+    try {
+      dispatch(startLoading());
+      const response = await apiResponseGenerator({
+        url: 'api/allappointments',
+      });
+      if (response) {
+        setAppointment(response.data);
+        return dispatch(finishLoading());
+      }
+    } catch (error: any) {
+      dispatch(showModal({description: error.message}));
+    }
+  };
+
   const handleLogout = async () => {
     await AsyncStorage.removeItem('authenticated');
     dispatch(setAuthenticated(false));
@@ -63,28 +92,49 @@ const ApointmentScreen = ({navigation}: any) => {
       routes: [{name: 'SignInScreen'}],
     });
     navigation.dispatch(resetAction);
-  };;
-
-
+  };
 
   const handlePress = () => {
     navigation.navigate('NewPackageScreen');
   };
 
-  const handleAccept = () => {
-    console.log("handle accept")
+  const handleAccept = async (id: number) => {
+    try {
+      dispatch(startLoading());
+      const response = await apiResponseGenerator({
+        url: `api/accept_appointments/${id}`,
+      });
+      if (response) {
+        return getAllAppointments();
+      }
+    } catch (error: any) {
+      dispatch(showModal({description: error.message}));
+    }
   };
-  const handleReject = () => {
-    console.log("handle reject")
+
+  const handleReject = async (id: number) => {
+    try {
+      dispatch(startLoading());
+      const response = await apiResponseGenerator({
+        url: `api/accept_appointments/${id}`,
+      });
+      if (response) {
+        return getAllAppointments();
+      }
+    } catch (error: any) {
+      dispatch(showModal({description: error.message}));
+    }
   };
 
   const renderCardRow = ({item}: any) => (
     <AppointmentCards
       onAccept={handleAccept}
       onReject={handleReject}
-      title={item.title}
-      status={item.status}
-      date={item.date}
+      id={item.id}
+      title={item.packages.Plan_title}
+      phone={item.mobile_number}
+      date={item.appointment_date_time}
+      customer_name={`${item.first_name} ${item.last_name}`}
     />
   );
   return (
@@ -94,14 +144,14 @@ const ApointmentScreen = ({navigation}: any) => {
         <HeaderWithSearchInput
           title="APPOINTMENTS"
           showIcon={true}
-          image={"log-out"}
+          image={'log-out'}
           onIconPress={handleLogout}
           titleStyle={-55}
         />
       </View>
       <View style={styles.cardsContainer}>
         <FlatList
-          data={appointment_data}
+          data={appointment}
           renderItem={renderCardRow}
           keyExtractor={(item: any) => item.id}
         />

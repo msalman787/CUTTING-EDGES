@@ -2,39 +2,63 @@ import React from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import {Colors, Fonts} from '../../constants';
 
-const AppointmentCards = ({title, date, onAccept , onReject}: any) => {
+const AppointmentCards = ({
+  id,
+  title,
+  customer_name,
+  phone,
+  date,
+  onAccept,
+  onReject,
+}: any) => {
   return (
     <View style={styles.card}>
       <View style={styles.rowContainer}>
         <View style={styles.titleDescriptionContainer}>
-          <Text style={styles.title}>{title}</Text>
-          <View style={{flexDirection: 'row'}}>
-            <Text style={styles.description}>{date}</Text>
-          </View>
+          <Text style={styles.title}>
+            Package:
+            <Text style={styles.description}> {title}</Text>
+          </Text>
+          <Text style={styles.title}>
+            Customer:
+            <Text style={styles.description}> {customer_name}</Text>
+          </Text>
+          <Text style={styles.title}>
+            Phone no:
+            <Text style={styles.description}> {phone}</Text>
+          </Text>
+          <Text style={styles.title}>
+            Appointment date/time:
+            <Text style={styles.description}> {date}</Text>
+          </Text>
         </View>
       </View>
       <View style={styles.horizontalBorder} />
       <View style={styles.rowContainer}>
         <TouchableOpacity
-        onPress={onAccept}
+          onPress={() => {
+            onAccept(id);
+          }}
           style={[
             styles.button,
             {
-              backgroundColor: "rgba(227, 255, 233, 1)",
-              marginRight:10
+              backgroundColor: 'rgba(227, 255, 233, 1)',
+              marginRight: 10,
             },
           ]}>
           <Text
             style={[
               styles.buttonText,
               {
-                color: "rgba(41, 172, 68, 1)",
+                color: 'rgba(41, 172, 68, 1)',
               },
             ]}>
             Accept
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={onReject} style={styles.button}>
+        <TouchableOpacity
+          onPress={()=>{onReject(id)}}
+          style={styles.button}>
           <Text style={styles.buttonText}>Reject</Text>
         </TouchableOpacity>
       </View>
@@ -62,8 +86,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   title: {
-    fontSize: 16,
-    fontFamily: Fonts.POPPINS_SEMI_BOLD,
+    fontSize: 14,
+    fontFamily: Fonts.POPPINS_REGULAR,
   },
   description: {
     fontSize: 12,
@@ -80,11 +104,11 @@ const styles = StyleSheet.create({
   button: {
     paddingVertical: 8,
     paddingHorizontal: 16,
-    backgroundColor:"rgba(255, 226, 226, 1)",
+    backgroundColor: 'rgba(255, 226, 226, 1)',
     borderRadius: 10,
   },
   buttonText: {
-    color: "rgba(255, 65, 65, 1)",
+    color: 'rgba(255, 65, 65, 1)',
     fontSize: 12,
     fontFamily: Fonts.POPPINS_REGULAR,
   },

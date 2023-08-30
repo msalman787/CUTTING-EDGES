@@ -67,10 +67,10 @@ const AllPackages = ({navigation}: any) => {
     navigation.dispatch(resetAction);
   };
 
-  const handleNavigation = () => {
+  const handleNavigation = (package_id: string) => {
     setConfirmationVisible(true);
     if (isAuthenticated) {
-      navigation.navigate('NewAppointmentScreen');
+      navigation.navigate('NewAppointmentScreen', {package_id});
     }
   };
   const handleCreateAccount = async () => {
@@ -84,9 +84,10 @@ const AllPackages = ({navigation}: any) => {
 
   const renderCardRow = ({item}: any) => (
     <PackageCards
+      id={item.id}
       title={item.Plan_title}
       description={item.Plan_description}
-      image={item.id % 2 === 0 ? Images.New_Look1 : Images.New_Look2 }
+      image={item.id % 2 === 0 ? Images.New_Look1 : Images.New_Look2}
       price={item.Plan_price}
       onPress={handleNavigation}
     />

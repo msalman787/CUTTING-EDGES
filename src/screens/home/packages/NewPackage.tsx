@@ -14,10 +14,6 @@ import {yupResolver} from '@hookform/resolvers/yup';
 import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
 import ImagePicker from 'react-native-image-crop-picker';
 import {packageInputSchema} from '../../../validations/Package';
-import {
-  finishLoading,
-  startLoading,
-} from '../../../store/apiLoader/apiLoaderSlice';
 import apiResponseGenerator from '../../../service/apiGenerator';
 import {useDispatch} from 'react-redux';
 import {showModal} from '../../../store/model/modelSlice';
@@ -30,12 +26,12 @@ const NewPackage = ({navigation}: any) => {
     title: 'Sorry!',
     bgColor: '',
     image: Images.WrongIcon,
-    description: 'You can only added up to 3 images.',
+    description: 'You can only added upto 1 image.',
     buttonText: 'Ok',
     isValidate: false,
   });
 
-  const [images, setImages]: any = useState([]);
+  const [images, setImages]: any = useState();
   const {
     control,
     handleSubmit,
@@ -49,7 +45,7 @@ const NewPackage = ({navigation}: any) => {
   };
 
   const handleCaptureImage = () => {
-    if (images.length < 3) {
+    if (!images) {
       ImagePicker.openCamera({
         width: 300,
         height: 400,
@@ -58,7 +54,7 @@ const NewPackage = ({navigation}: any) => {
         .then(async (image: any) => {
           console.log(image);
           setShowModal(false);
-          await setImages([...images, image]);
+          await setImages(image);
         })
         .catch(error => {
           console.log(error);
@@ -69,23 +65,11 @@ const NewPackage = ({navigation}: any) => {
         isValidate: !prevState.isValidate,
       }));
       setShowModal(false);
-      console.log('You can only capture up to 3 images.');
     }
   };
 
-  const getFileNameFromPath = (path: any) => {
-    const parts = path.split('/');
-    return parts[parts.length - 1];
-  };
-
-  const handleRemoveImage = (index: number) => {
-    const updatedImages = [...images];
-    updatedImages.splice(index, 1);
-    setImages(updatedImages);
-  };
-
   const choosePhotoFromLibrary = () => {
-    if (images.length < 3) {
+    if (!images) {
       ImagePicker.openPicker({
         width: 300,
         height: 400,
@@ -93,9 +77,8 @@ const NewPackage = ({navigation}: any) => {
         includeBase64: false,
       })
         .then(async (image: any) => {
-          console.log(image);
           setShowModal(false);
-          await setImages([...images, image]);
+          await setImages(image);
         })
         .catch(error => {
           console.log(error);
@@ -122,15 +105,14 @@ const NewPackage = ({navigation}: any) => {
 
   const HandleNewPackage = async (data: any) => {
     try {
-      dispatch(startLoading());
+      data.image = images.path;
       const response = await apiResponseGenerator({
         url: 'api/addpricing',
         method: 'post',
         body: data,
       });
       if (response) {
-        dispatch(finishLoading());
-        return handleCloseInput()
+        return handleCloseInput();
       }
     } catch (error: any) {
       dispatch(showModal({description: error.message}));

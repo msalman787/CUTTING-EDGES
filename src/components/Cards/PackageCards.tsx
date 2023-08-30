@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import {Colors, Fonts, Images} from '../../constants';
 
-const PackageCards = ({title, description, price, image,onPress}: any) => {
+const PackageCards = ({id,title, description, price, image,onPress}: any) => {
 
   return (
     <View style={styles.card}>
@@ -26,7 +26,7 @@ const PackageCards = ({title, description, price, image,onPress}: any) => {
       <View style={styles.horizontalBorder} />
       <View style={styles.rowContainer}>
         <Text style={styles.phoneNo}>Price: {price} Pkr</Text>
-        <TouchableOpacity style={styles.button} onPress={onPress} >
+        <TouchableOpacity style={styles.button} onPress={()=>onPress(id)} >
           <Text style={styles.buttonText}>Book Appointment</Text>
         </TouchableOpacity>
       </View>

@@ -1,5 +1,5 @@
 import {Image, Modal, StyleSheet, Text, View} from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   AnimatedInput,
   DynamicStatusBar,
@@ -13,13 +13,14 @@ import {Controller, useForm} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
 import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
 import ImagePicker from 'react-native-image-crop-picker';
-import { appointmentInputSchema } from '../../../validations/Appointment';
+import {appointmentInputSchema} from '../../../validations/Appointment';
 import apiResponseGenerator from '../../../service/apiGenerator';
-import { useDispatch } from 'react-redux';
-import { finishLoading, startLoading } from '../../../store/apiLoader/apiLoaderSlice';
-import { showModal } from '../../../store/model/modelSlice';
+import {useDispatch} from 'react-redux';
+import {showModal} from '../../../store/model/modelSlice';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const NewAppointment = ({navigation}: any) => {
+const NewAppointment = ({navigation, route}: any) => {
+  const {package_id} = route.params;
   const [showModel, setShowModal] = useState<boolean>(false);
   const [state, setState] = useState({
     title: 'Sorry!',
@@ -30,7 +31,7 @@ const NewAppointment = ({navigation}: any) => {
     isValidate: false,
   });
 
-  const [images, setImages]: any = useState([]);
+  const [images, setImages]: any = useState();
   const dispatch = useDispatch();
 
   const {
@@ -45,8 +46,21 @@ const NewAppointment = ({navigation}: any) => {
     navigation.goBack();
   };
 
+  const getCustomerId = async () => {
+    try {
+      const jsonValue = await AsyncStorage.getItem('customer');
+      if (jsonValue) {
+        return jsonValue;
+      }
+      return null;
+    } catch (error) {
+      console.error('Error fetching token:', error);
+      return null;
+    }
+  };
+
   const handleCaptureImage = () => {
-    if (images.length < 3) {
+    if (!images) {
       ImagePicker.openCamera({
         width: 300,
         height: 400,
@@ -70,19 +84,8 @@ const NewAppointment = ({navigation}: any) => {
     }
   };
 
-  const getFileNameFromPath = (path: any) => {
-    const parts = path.split('/');
-    return parts[parts.length - 1];
-  };
-
-  const handleRemoveImage = (index: number) => {
-    const updatedImages = [...images];
-    updatedImages.splice(index, 1);
-    setImages(updatedImages);
-  };
-
   const choosePhotoFromLibrary = () => {
-    if (images.length < 3) {
+    if (!images) {
       ImagePicker.openPicker({
         width: 300,
         height: 400,
@@ -119,18 +122,18 @@ const NewAppointment = ({navigation}: any) => {
 
   const HandleNewAppo = async (data: any) => {
     try {
-      data.descsion="pending"
-      data.customer_id= 1
-      data.package_id= 2
-      dispatch(startLoading());
+      data.descsion = 'pending';
+      data.hair_style = images?.path ;
+      data.customer_id = await getCustomerId();
+      data.package_id = package_id.toString();
+      console.log(data)
       const response = await apiResponseGenerator({
         url: 'api/addappointment',
         method: 'post',
         body: data,
       });
-      if (response) {
-        dispatch(finishLoading());
-        return handleCloseInput()
+      if (response.success) {
+        return handleCloseInput();
       }
     } catch (error: any) {
       dispatch(showModal({description: error.message}));
@@ -202,10 +205,10 @@ const NewAppointment = ({navigation}: any) => {
                 keyboardType={'default'}
                 value={value}
                 onChangeText={onChange}
-                errorMsg={errors.firstName?.message}
+                errorMsg={errors.first_name?.message}
               />
             )}
-            name="firstName"
+            name="first_name"
             defaultValue=""
           />
         </View>
@@ -221,10 +224,10 @@ const NewAppointment = ({navigation}: any) => {
                 keyboardType={'default'}
                 value={value}
                 onChangeText={onChange}
-                errorMsg={errors.lastName?.message}
+                errorMsg={errors.last_name?.message}
               />
             )}
-            name="lastName"
+            name="last_name"
             defaultValue=""
           />
         </View>
@@ -259,10 +262,10 @@ const NewAppointment = ({navigation}: any) => {
                 keyboardType={'phone-pad'}
                 value={value}
                 onChangeText={onChange}
-                errorMsg={errors.mobile_no?.message}
+                errorMsg={errors.mobile_number?.message}
               />
             )}
-            name="mobile_no"
+            name="mobile_number"
             defaultValue=""
           />
         </View>
@@ -334,7 +337,6 @@ const NewAppointment = ({navigation}: any) => {
               padding: 10,
             }}>
             <Text style={styles.text}>Upload Hair Style Picture</Text>
-
           </TouchableOpacity>
         </View>
         {/* {images.map((image: any, index: number) => (
@@ -366,10 +368,7 @@ const NewAppointment = ({navigation}: any) => {
           </View>
         ))} */}
         <View style={{marginHorizontal: 10}}>
-          <LargeButton
-            onPress={handleSubmit(HandleNewAppo)}
-            text={'Submit'}
-          />
+          <LargeButton onPress={handleSubmit(HandleNewAppo)} text={'Submit'} />
         </View>
       </View>
     </ScrollView>
