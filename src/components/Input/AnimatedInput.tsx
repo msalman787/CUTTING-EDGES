@@ -61,15 +61,15 @@ const AnimatedInput = forwardRef(
           //     />
           //   ) : null
           // }
-          // left={
-          //   leftIcon ? (
-          //     <TextInput.Icon
-          //       style={{marginTop: 6}}
-          //       color={Colors.DEFAULT_BLACK}
-          //       icon={leftIcon}
-          //     />
-          //   ) : null
-          // }
+          left={
+            leftIcon ? (
+              <TextInput.Icon
+                style={{marginTop: 6}}
+                color={Colors.DEFAULT_BLACK}
+                icon={leftIcon}
+              />
+            ) : null
+          }
           onChangeText={onChangeText}
           theme={theme}
         />

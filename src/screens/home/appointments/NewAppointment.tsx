@@ -43,7 +43,7 @@ const NewAppointment = ({navigation, route}: any) => {
   });
 
   const handleCloseInput = () => {
-    navigation.goBack();
+    // navigation.goBack();
   };
 
   const getCustomerId = async () => {
@@ -205,6 +205,7 @@ const NewAppointment = ({navigation, route}: any) => {
                 keyboardType={'default'}
                 value={value}
                 onChangeText={onChange}
+                leftIcon={'text-account'}
                 errorMsg={errors.first_name?.message}
               />
             )}
@@ -222,6 +223,7 @@ const NewAppointment = ({navigation, route}: any) => {
               <AnimatedInput
                 label="Last Name"
                 keyboardType={'default'}
+                leftIcon={'text-account'}
                 value={value}
                 onChangeText={onChange}
                 errorMsg={errors.last_name?.message}
@@ -241,6 +243,7 @@ const NewAppointment = ({navigation, route}: any) => {
               <AnimatedInput
                 label="Email"
                 keyboardType={'default'}
+                leftIcon={'email'}
                 value={value}
                 onChangeText={onChange}
                 errorMsg={errors.email?.message}
@@ -259,6 +262,7 @@ const NewAppointment = ({navigation, route}: any) => {
             render={({field: {onChange, onBlur, value}}) => (
               <AnimatedInput
                 label="Phone Number"
+                leftIcon={'phone'}
                 keyboardType={'phone-pad'}
                 value={value}
                 onChangeText={onChange}
@@ -278,6 +282,7 @@ const NewAppointment = ({navigation, route}: any) => {
             render={({field: {onChange, onBlur, value}}) => (
               <AnimatedInput
                 label="Address"
+                leftIcon={'home'}
                 keyboardType={'default'}
                 value={value}
                 onChangeText={onChange}
@@ -297,6 +302,7 @@ const NewAppointment = ({navigation, route}: any) => {
             render={({field: {onChange, onBlur, value}}) => (
               <AnimatedInput
                 label="Gender"
+                leftIcon={'human'}
                 keyboardType={'default'}
                 value={value}
                 onChangeText={onChange}
@@ -316,6 +322,7 @@ const NewAppointment = ({navigation, route}: any) => {
             render={({field: {onChange, onBlur, value}}) => (
               <AnimatedInput
                 label="Appointment date time"
+                leftIcon={'calendar'}
                 keyboardType={'default'}
                 value={value}
                 onChangeText={onChange}

@@ -134,6 +134,7 @@ const SignUpScreen = ({navigation}: any) => {
                 label="First name"
                 keyboardType={'default'}
                 value={value}
+                leftIcon={'text-account'}
                 onChangeText={onChange}
                 errorMsg={errors.firstName?.message}
               />
@@ -152,6 +153,7 @@ const SignUpScreen = ({navigation}: any) => {
             render={({field: {onChange, onBlur, value}}) => (
               <AnimatedInput
                 label="Last name"
+                leftIcon={'text-account'}
                 keyboardType={'default'}
                 value={value}
                 onChangeText={onChange}
@@ -176,6 +178,7 @@ const SignUpScreen = ({navigation}: any) => {
             render={({field: {onChange, onBlur, value}}) => (
               <AnimatedInput
                 keyboardType={'email-address'}
+                leftIcon={'email'}
                 label="Email"
                 value={value}
                 onChangeText={onChange}
@@ -196,6 +199,7 @@ const SignUpScreen = ({navigation}: any) => {
               <AnimatedInput
                 label="Phone number"
                 keyboardType={'phone-pad'}
+                leftIcon={'phone'}
                 value={value}
                 onChangeText={onChange}
                 errorMsg={errors.phone?.message}
@@ -215,6 +219,7 @@ const SignUpScreen = ({navigation}: any) => {
               <AnimatedInput
                 label="CNIC number"
                 keyboardType={'phone-pad'}
+                leftIcon={'card-account-details'}
                 value={value}
                 onChangeText={onChange}
                 errorMsg={errors.cnic?.message}
@@ -230,6 +235,7 @@ const SignUpScreen = ({navigation}: any) => {
             render={({field: {onChange, onBlur, value}}) => (
               <AnimatedInput
                 label="Gender"
+                leftIcon={'human'}
                 keyboardType={'default'}
                 value={value}
                 onChangeText={onChange}
@@ -245,6 +251,7 @@ const SignUpScreen = ({navigation}: any) => {
           <TouchableOpacity onPress={showDatePicker}>
             <AnimatedInput
               label="Date Of Birth"
+              leftIcon={'calendar'}
               editable={false}
               value={date?.formated}
             />
@@ -268,6 +275,7 @@ const SignUpScreen = ({navigation}: any) => {
               <AnimatedInput
                 label="Password"
                 keyboardType={'default'}
+                leftIcon={'lock'}
                 value={value}
                 onChangeText={onChange}
                 secureTextEntry={true}
@@ -289,6 +297,7 @@ const SignUpScreen = ({navigation}: any) => {
               <AnimatedInput
                 label="Confirm Password"
                 keyboardType={'default'}
+                leftIcon={'lock'}
                 value={value}
                 secureTextEntry={true}
                 onChangeText={onChange}

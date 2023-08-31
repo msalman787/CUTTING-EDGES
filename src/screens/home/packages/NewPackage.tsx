@@ -181,6 +181,7 @@ const NewPackage = ({navigation}: any) => {
             render={({field: {onChange, onBlur, value}}) => (
               <AnimatedInput
                 label="Title"
+                leftIcon={'format-title'}
                 keyboardType={'default'}
                 value={value}
                 onChangeText={onChange}
@@ -200,6 +201,7 @@ const NewPackage = ({navigation}: any) => {
             render={({field: {onChange, onBlur, value}}) => (
               <AnimatedInput
                 label="Description"
+                leftIcon={'sticker-text'}
                 keyboardType={'default'}
                 value={value}
                 onChangeText={onChange}
@@ -218,6 +220,7 @@ const NewPackage = ({navigation}: any) => {
             }}
             render={({field: {onChange, onBlur, value}}) => (
               <AnimatedInput
+                leftIcon={'currency-usd'}
                 label="Price"
                 keyboardType={'default'}
                 value={value}
@@ -239,6 +242,7 @@ const NewPackage = ({navigation}: any) => {
             render={({field: {onChange, onBlur, value}}) => (
               <AnimatedInput
                 label="Tag Line"
+                leftIcon={'package'}
                 keyboardType={'default'}
                 value={value}
                 onChangeText={onChange}

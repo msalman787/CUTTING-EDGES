@@ -117,13 +117,14 @@ const SignInScreen = ({navigation}: any) => {
             <AnimatedInput
               keyboardType={'email-address'}
               label="Email"
+              leftIcon={"email"}
               value={value}
               onChangeText={onChange}
               errorMsg={errors.email?.message}
-            />
-          )}
-          name="email"
-          defaultValue=""
+              />
+              )}
+              name="email"
+              defaultValue=""
         />
       </View>
       <View style={styles.input}>
@@ -137,6 +138,7 @@ const SignInScreen = ({navigation}: any) => {
               label="Password"
               keyboardType={'default'}
               value={value}
+              leftIcon={"lock"}
               onChangeText={onChange}
               secureTextEntry={true}
               errorMsg={errors.password?.message}
