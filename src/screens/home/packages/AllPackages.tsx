@@ -115,6 +115,7 @@ const AllPackages = ({navigation}: any) => {
         <HeaderWithSearchInput
           onIconPress={handleLogout}
           showIcon={isAuthenticated}
+          titleStyle={!isAuthenticated ? 50:0}
           image={'log-out'}
           title="PACKAGES"
         />
