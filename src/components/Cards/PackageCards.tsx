@@ -9,24 +9,31 @@ import {
   Image,
 } from 'react-native';
 import {Colors, Fonts, Images} from '../../constants';
+import Icon from 'react-native-vector-icons/Feather';
+import Icon2 from 'react-native-vector-icons/FontAwesome';
+import Icon3 from 'react-native-vector-icons/Entypo';
 
-const PackageCards = ({id,title, description, price, image,onPress}: any) => {
-
+const PackageCards = ({id, title, description, price, image, onPress}: any) => {
   return (
     <View style={styles.card}>
       <View style={styles.rowContainer}>
         <Image source={image} style={styles.image} resizeMode="cover" />
         <View style={styles.titleDescriptionContainer}>
-          <Text style={styles.title}>{title}</Text>
-            <View style={{flexDirection: 'row'}}>
-            <Text style={styles.description}>{description}</Text>
+          <View style={{flexDirection: 'row'}}>
+            <Icon name="package" size={24} color="black" />
+            <Text style={[styles.description,{marginTop:3, marginLeft:5}]}>{title}</Text>
+          </View>
+          <View style={{flexDirection: 'row'}}>
+            <Icon3 name="text-document" size={22} color="black" />
+            <Text style={[styles.description,{marginTop:3, marginLeft:5}]}>{description}</Text>
           </View>
         </View>
       </View>
       <View style={styles.horizontalBorder} />
       <View style={styles.rowContainer}>
-        <Text style={styles.phoneNo}>Price: {price}</Text>
-        <TouchableOpacity style={styles.button} onPress={()=>onPress(id)} >
+        <Icon2 name="dollar" size={20} color="black" />
+        <Text style={[styles.phoneNo,{marginTop:5}]}>{price}</Text>
+        <TouchableOpacity style={styles.button} onPress={() => onPress(id)}>
           <Text style={styles.buttonText}>Book Appointment</Text>
         </TouchableOpacity>
       </View>
@@ -79,7 +86,7 @@ const styles = StyleSheet.create({
   },
   phoneNo: {
     flex: 1,
-    fontSize: 12,
+    fontSize: 14,
     marginLeft: 5,
     fontFamily: Fonts.POPPINS_REGULAR,
     color: 'rgba(105, 119, 132, 1)',

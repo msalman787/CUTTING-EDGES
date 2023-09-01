@@ -1,6 +1,7 @@
 import React from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import {Colors, Fonts} from '../../constants';
+import Icon from 'react-native-vector-icons/Feather';
 
 const AppointmentCards = ({
   id,
@@ -16,19 +17,19 @@ const AppointmentCards = ({
       <View style={styles.rowContainer}>
         <View style={styles.titleDescriptionContainer}>
           <Text style={styles.title}>
-            Package:
+            <Icon name="package" size={22} color="black" />
             <Text style={styles.description}> {title}</Text>
           </Text>
           <Text style={styles.title}>
-            Customer:
+            <Icon name="user" size={22} color="black" />
             <Text style={styles.description}> {customer_name}</Text>
           </Text>
           <Text style={styles.title}>
-            Phone no:
+            <Icon name="phone" size={22} color="black" />
             <Text style={styles.description}> {phone}</Text>
           </Text>
           <Text style={styles.title}>
-            Appointment date/time:
+            <Icon name="calendar" size={22} color="black" />
             <Text style={styles.description}> {date}</Text>
           </Text>
         </View>
@@ -57,7 +58,9 @@ const AppointmentCards = ({
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={()=>{onReject(id)}}
+          onPress={() => {
+            onReject(id);
+          }}
           style={styles.button}>
           <Text style={styles.buttonText}>Reject</Text>
         </TouchableOpacity>
@@ -90,7 +93,7 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.POPPINS_REGULAR,
   },
   description: {
-    fontSize: 12,
+    fontSize: 14,
     flex: 1,
     flexWrap: 'wrap',
     fontFamily: Fonts.POPPINS_REGULAR,
