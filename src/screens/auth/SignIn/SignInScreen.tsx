@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
+import {View, Text, TouchableOpacity, StyleSheet, Image} from 'react-native';
 import LargeButton from '../../../components/Buttons/Button';
 import {Fonts, Colors} from '../../../constants';
 import Header from '../../../components/Header/Header';
@@ -61,9 +61,9 @@ const SignInScreen = ({navigation}: any) => {
         body: data,
       });
       if (response) {
-        console.log(response)
+        console.log(response);
         await AsyncStorage.setItem('authenticated', response.token);
-        await AsyncStorage.setItem('customer', response.data.id+"");
+        await AsyncStorage.setItem('customer', response.data.id + '');
         dispatch(setAuthenticated(true));
         if (response.data.role === 'admin') {
           navigation.navigate('ApointmentScreen');
@@ -98,11 +98,15 @@ const SignInScreen = ({navigation}: any) => {
         buttonText={state.buttonText}
       />
       <DynamicStatusBar />
-      <Header
-        mainHeaderText={'Welcome'}
-        subHeaderText={'Sign in to continue'}
-      />
-
+      <Image source={Images.LOGO} style={styles.image} resizeMode="cover" />
+      <Text
+        style={{
+          fontFamily: Fonts.POPPINS_SEMI_BOLD,
+          color: Colors.DEFAULT_BLACK,
+          fontSize: 30,
+        }}>
+        Sign In
+      </Text>
       <View style={[styles.input, {marginTop: -20}]}>
         <Controller
           control={control}
@@ -117,14 +121,14 @@ const SignInScreen = ({navigation}: any) => {
             <AnimatedInput
               keyboardType={'email-address'}
               label="Email"
-              leftIcon={"email"}
+              leftIcon={'email'}
               value={value}
               onChangeText={onChange}
               errorMsg={errors.email?.message}
-              />
-              )}
-              name="email"
-              defaultValue=""
+            />
+          )}
+          name="email"
+          defaultValue=""
         />
       </View>
       <View style={styles.input}>
@@ -138,7 +142,7 @@ const SignInScreen = ({navigation}: any) => {
               label="Password"
               keyboardType={'default'}
               value={value}
-              leftIcon={"lock"}
+              leftIcon={'lock'}
               onChangeText={onChange}
               secureTextEntry={true}
               errorMsg={errors.password?.message}
@@ -203,6 +207,13 @@ const styles = StyleSheet.create({
     marginLeft: 3,
     color: Colors.DEFAULT_BLACK,
     fontFamily: Fonts.POPPINS_MEDIUM,
+  },
+  image: {
+    width: 250,
+    height: 250,
+    marginRight: 16,
+    borderRadius: 150,
+    marginBottom: 20,
   },
 });
 

@@ -24,9 +24,11 @@ import {
 } from '../../../store/apiLoader/apiLoaderSlice';
 import apiResponseGenerator from '../../../service/apiGenerator';
 import {showModal} from '../../../store/model/modelSlice';
+import {ActivityIndicator} from 'react-native-paper';
 
 const AllPackages = ({navigation}: any) => {
   const [isConfirmationVisible, setConfirmationVisible] = useState(false);
+  const isLoading = useSelector((state: any) => state.apiloader.isLoading);
   const [packages, setPackages] = useState([]);
   const dispatch = useDispatch();
   const isAuthenticated = useSelector(
@@ -115,16 +117,21 @@ const AllPackages = ({navigation}: any) => {
           showIcon={isAuthenticated}
           image={'log-out'}
           title="PACKAGES"
-          titleStyle={isAuthenticated ? -55 : -35}
         />
       </View>
-      <View style={styles.cardsContainer}>
-        <FlatList
-          data={packages}
-          renderItem={renderCardRow}
-          keyExtractor={(item: any) => item.id}
-        />
-      </View>
+      {isLoading ? (
+        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+          <ActivityIndicator size="large" color={Colors.DEFAULT_BLACK} />
+        </View>
+      ) : (
+        <View style={styles.cardsContainer}>
+          <FlatList
+            data={packages}
+            renderItem={renderCardRow}
+            keyExtractor={(item: any) => item.id}
+          />
+        </View>
+      )}
     </View>
   );
 };

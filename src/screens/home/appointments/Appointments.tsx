@@ -7,11 +7,11 @@ import {
   HeaderWithSearchInput,
 } from '../../../components';
 import {verticalScale} from '../../../utils/Dimentions';
-import {FAB} from 'react-native-paper';
+import {ActivityIndicator, FAB} from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {setAuthenticated} from '../../../store/auth/authSlice';
 import {CommonActions} from '@react-navigation/native';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import apiResponseGenerator from '../../../service/apiGenerator';
 import {
   finishLoading,
@@ -21,6 +21,8 @@ import {showModal} from '../../../store/model/modelSlice';
 
 const ApointmentScreen = ({navigation}: any) => {
   const dispatch = useDispatch();
+  const isLoading = useSelector((state: any) => state.apiloader.isLoading);
+
   const [appointment, setAppointment] = useState([]);
 
   useEffect(() => {
@@ -107,24 +109,31 @@ const ApointmentScreen = ({navigation}: any) => {
           showIcon={true}
           image={'log-out'}
           onIconPress={handleLogout}
-          titleStyle={-55}
         />
       </View>
-      <View style={styles.cardsContainer}>
-        <FlatList
-          data={appointment}
-          renderItem={renderCardRow}
-          keyExtractor={(item: any) => item.id}
-        />
-      </View>
-      <FAB
-        icon="plus"
-        mode="elevated"
-        animated={true}
-        color="white"
-        style={styles.fab}
-        onPress={handlePress}
-      />
+      {isLoading ? (
+        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+          <ActivityIndicator size="large" color={Colors.DEFAULT_BLACK} />
+        </View>
+      ) : (
+        <>
+          <View style={styles.cardsContainer}>
+            <FlatList
+              data={appointment}
+              renderItem={renderCardRow}
+              keyExtractor={(item: any) => item.id}
+            />
+          </View>
+          <FAB
+            icon="plus"
+            mode="elevated"
+            animated={true}
+            color="white"
+            style={styles.fab}
+            onPress={handlePress}
+          />
+        </>
+      )}
     </View>
   );
 };
@@ -134,11 +143,11 @@ export default ApointmentScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.DEFAULT_WHITE,
   },
   header: {
     paddingHorizontal: 10,
     paddingVertical: 10,
+    backgroundColor: Colors.DEFAULT_WHITE,
   },
   cardsContainer: {
     paddingVertical: verticalScale(5),

@@ -5,9 +5,10 @@ import {
   TouchableOpacity,
   StyleSheet,
   Text,
+  Image,
 } from 'react-native';
 import {horizontalScale, verticalScale} from '../../utils/Dimentions';
-import {Colors, Fonts} from '../../constants';
+import {Colors, Fonts, Images} from '../../constants';
 import BackButton from '../Buttons/BackButton';
 import ButtonIcon from 'react-native-vector-icons/Feather';
 
@@ -26,6 +27,7 @@ const HeaderWithSearchInput = ({
   const Icon = image;
   return (
     <View style={styles.container}>
+      {!onBackBtnPress && <Image source={Images.LOGO} style={styles.image} resizeMode="cover" />}
       {onBackBtnPress && <BackButton onBackBtnPress={onBackBtnPress} />}
       {!isInputVisible && (
         <View
@@ -47,7 +49,6 @@ const HeaderWithSearchInput = ({
           </Text>
           {showIcon && (
             <TouchableOpacity style={styles.icon} onPress={onIconPress}>
-              {/* <Icon color="black" style={styles.searchIcon} /> */}
               <ButtonIcon name={image} size={24} color="black" />
             </TouchableOpacity>
           )}
@@ -119,6 +120,13 @@ const styles = StyleSheet.create({
     elevation: 10,
     shadowRadius: 10,
     shadowOpacity: 0.9,
+  },
+  image: {
+    width: 40,
+    alignItems: 'center',
+    height: 40,
+    marginRight: 16,
+    borderRadius: 150,
   },
 });
 

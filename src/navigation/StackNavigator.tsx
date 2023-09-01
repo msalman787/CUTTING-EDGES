@@ -8,6 +8,7 @@ import {
   NewPackage,
   SignInScreen,
   SignUpScreen,
+  WelcomeScreen,
 } from '../screens';
 import {setAuthenticated} from '../store/auth/authSlice';
 import {useDispatch, useSelector} from 'react-redux';
@@ -23,7 +24,7 @@ const StackNavigator = () => {
   useEffect(() => {
     const checkAuthentication = async () => {
       try {
-        const authenticated = await AsyncStorage.getItem('authenticated');  
+        const authenticated = await AsyncStorage.getItem('authenticated');
         if (authenticated) {
           dispatch(setAuthenticated(true));
         }
@@ -31,12 +32,31 @@ const StackNavigator = () => {
         console.error('Error fetching data:', error);
       }
     };
-  
+
     checkAuthentication();
   }, [dispatch]);
 
   return (
     <Stack.Navigator>
+      {!isAuthenticated && (
+        <>
+          <Stack.Screen
+            name="WelcomeScreen"
+            component={WelcomeScreen}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="SignInScreen"
+            component={SignInScreen}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="SignUpScreen"
+            component={SignUpScreen}
+            options={{headerShown: false}}
+          />
+        </>
+      )}
       <Stack.Screen
         name="AllPackageScreen"
         component={AllPackages}
@@ -57,21 +77,6 @@ const StackNavigator = () => {
         component={NewPackage}
         options={{headerShown: false}}
       />
-      {!isAuthenticated && (
-        <>
-          <Stack.Screen
-            name="SignInScreen"
-            component={SignInScreen}
-            options={{headerShown: false}}
-          />
-          <Stack.Screen
-            name="SignUpScreen"
-            component={SignUpScreen}
-            options={{headerShown: false}}
-          />
-        </>
-      )}
-    
     </Stack.Navigator>
   );
 };
