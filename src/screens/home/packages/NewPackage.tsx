@@ -17,6 +17,7 @@ import {packageInputSchema} from '../../../validations/Package';
 import apiResponseGenerator from '../../../service/apiGenerator';
 import {useDispatch} from 'react-redux';
 import {showModal} from '../../../store/model/modelSlice';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const NewPackage = ({navigation}: any) => {
   const [showModel, setShowModal] = useState<boolean>(false);
@@ -102,10 +103,23 @@ const NewPackage = ({navigation}: any) => {
   const onPageRedirect = async () => {
     await navigation.goBack();
   };
+  const getAdminId = async () => {
+    try {
+      const jsonValue = await AsyncStorage.getItem('customer');
+      if (jsonValue) {
+        return jsonValue;
+      }
+      return null;
+    } catch (error) {
+      console.error('Error fetching token:', error);
+      return null;
+    }
+  };
 
   const HandleNewPackage = async (data: any) => {
     try {
-      data.image = images.path;
+      data.admin_id = await getAdminId();
+      data.image = images.path || "";
       const response = await apiResponseGenerator({
         url: 'api/addpricing',
         method: 'post',
@@ -241,6 +255,27 @@ const NewPackage = ({navigation}: any) => {
             }}
             render={({field: {onChange, onBlur, value}}) => (
               <AnimatedInput
+                label="Location"
+                leftIcon={'home'}
+                keyboardType={'default'}
+                value={value}
+                onChangeText={onChange}
+                errorMsg={errors.location?.message}
+              />
+            )}
+            name="location"
+            defaultValue=""
+          />
+        </View>
+
+        <View style={styles.input}>
+          <Controller
+            control={control}
+            rules={{
+              required: true,
+            }}
+            render={({field: {onChange, onBlur, value}}) => (
+              <AnimatedInput
                 label="Tag Line"
                 leftIcon={'package'}
                 keyboardType={'default'}
@@ -295,7 +330,7 @@ const styles = StyleSheet.create({
   },
   input: {
     paddingHorizontal: 10,
-    marginBottom: 5,
+    marginBottom: 10,
     width: '100%',
   },
   dashedBorder: {

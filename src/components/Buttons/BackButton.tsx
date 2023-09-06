@@ -9,7 +9,7 @@ const BackButton = ({onBackBtnPress}:any) => {
     <TouchableOpacity
       onPress={onBackBtnPress}
       style={styles.backArrowContainer}>
-      <ButtonIcon name="chevron-left" size={24} color="black" />
+      <ButtonIcon name="chevron-left" size={30} color="black" />
     </TouchableOpacity>
   );
 };
@@ -18,15 +18,11 @@ export default BackButton;
 
 const styles = StyleSheet.create({
   backArrowContainer: {
-    backgroundColor: Colors.DEFAULT_WHITE,
     height: verticalScale(50),
     width: verticalScale(50),
     justifyContent: 'center',
-    borderRadius: 12,
     alignItems: 'center',
     marginRight: 7,
     marginVertical: verticalScale(5),
-    elevation: 10,
-    shadowOpacity: 0.9,
   },
 });

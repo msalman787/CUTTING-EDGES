@@ -110,16 +110,10 @@ const styles = StyleSheet.create({
     width: horizontalScale(250),
   },
   icon: {
-    backgroundColor: Colors.DEFAULT_WHITE,
-    height: verticalScale(50),
-    width: verticalScale(50),
     justifyContent: 'center',
-    borderRadius: 12,
     alignItems: 'center',
-    marginLeft: 7,
-    elevation: 10,
-    shadowRadius: 10,
-    shadowOpacity: 0.9,
+    marginRight: 7,
+    marginVertical: verticalScale(5)
   },
   image: {
     width: 40,

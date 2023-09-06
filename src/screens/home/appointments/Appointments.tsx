@@ -25,18 +25,31 @@ const ApointmentScreen = ({navigation}: any) => {
 
   const [appointment, setAppointment] = useState([]);
 
+  const getAdminId = async () => {
+    try {
+      const jsonValue = await AsyncStorage.getItem('customer');
+      if (jsonValue) {
+        getAllAppointments(jsonValue);
+        return jsonValue;
+      }
+      return null;
+    } catch (error) {
+      console.error('Error fetching token:', error);
+      return null;
+    }
+  };
   useEffect(() => {
-    getAllAppointments();
+    getAdminId();
     return () => {
       dispatch(finishLoading());
     };
   }, []);
 
-  const getAllAppointments = async () => {
+  const getAllAppointments = async (id: string) => {
     try {
       dispatch(startLoading());
       const response = await apiResponseGenerator({
-        url: 'api/allappointments',
+        url: `api/allappointments/${id}`,
       });
       if (response) {
         setAppointment(response.data);
@@ -68,7 +81,8 @@ const ApointmentScreen = ({navigation}: any) => {
         url: `api/accept_appointments/${id}`,
       });
       if (response) {
-        return getAllAppointments();
+        getAdminId();
+        return;
       }
     } catch (error: any) {
       dispatch(showModal({description: error.message}));
@@ -82,7 +96,8 @@ const ApointmentScreen = ({navigation}: any) => {
         url: `api/accept_appointments/${id}`,
       });
       if (response) {
-        return getAllAppointments();
+        getAdminId();
+        return;
       }
     } catch (error: any) {
       dispatch(showModal({description: error.message}));

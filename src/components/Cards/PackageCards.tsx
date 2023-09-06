@@ -13,7 +13,7 @@ import Icon from 'react-native-vector-icons/Feather';
 import Icon2 from 'react-native-vector-icons/FontAwesome';
 import Icon3 from 'react-native-vector-icons/Entypo';
 
-const PackageCards = ({id, title, description, price, image, onPress}: any) => {
+const PackageCards = ({id, title, description, location,price, image, onPress}: any) => {
   return (
     <View style={styles.card}>
       <View style={styles.rowContainer}>
@@ -26,6 +26,10 @@ const PackageCards = ({id, title, description, price, image, onPress}: any) => {
           <View style={{flexDirection: 'row'}}>
             <Icon3 name="text-document" size={22} color="black" />
             <Text style={[styles.description,{marginTop:3, marginLeft:5}]}>{description}</Text>
+          </View>
+          <View style={{flexDirection: 'row'}}>
+            <Icon3 name="home" size={22} color="black" />
+            <Text style={[styles.description,{marginTop:3, marginLeft:5}]}>{location}</Text>
           </View>
         </View>
       </View>

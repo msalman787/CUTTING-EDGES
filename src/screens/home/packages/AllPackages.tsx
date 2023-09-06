@@ -91,6 +91,7 @@ const AllPackages = ({navigation}: any) => {
       description={item.Plan_description}
       image={item.id % 2 === 0 ? Images.New_Look1 : Images.New_Look2}
       price={item.Plan_price}
+      location={item.location || ''}
       onPress={handleNavigation}
     />
   );
@@ -115,7 +116,7 @@ const AllPackages = ({navigation}: any) => {
         <HeaderWithSearchInput
           onIconPress={handleLogout}
           showIcon={isAuthenticated}
-          titleStyle={!isAuthenticated ? 50:0}
+          titleStyle={!isAuthenticated ? 50 : 0}
           image={'log-out'}
           title="PACKAGES"
         />

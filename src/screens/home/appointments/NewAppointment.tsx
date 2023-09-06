@@ -188,7 +188,7 @@ const NewAppointment = ({navigation, route}: any) => {
       <View style={styles.header}>
         <HeaderWithSearchInput
           title="New Appointment"
-          onBackBtnPress={handleCloseInput}
+          onBackBtnPress={onPageRedirect}
           titleStyle={30}
         />
       </View>

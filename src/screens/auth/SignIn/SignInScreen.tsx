@@ -63,7 +63,7 @@ const SignInScreen = ({navigation}: any) => {
       if (response) {
         console.log(response);
         await AsyncStorage.setItem('authenticated', response.token);
-        await AsyncStorage.setItem('customer', response.data.id + '');
+        await AsyncStorage.setItem('customer', JSON.stringify(response.data.id ));
         dispatch(setAuthenticated(true));
         if (response.data.role === 'admin') {
           navigation.navigate('ApointmentScreen');
