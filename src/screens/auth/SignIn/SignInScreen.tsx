@@ -62,6 +62,11 @@ const SignInScreen = ({navigation}: any) => {
       });
       if (response) {
         console.log(response);
+        let data ={
+          token:response.token,
+          customer_id:response.data.id,
+          admin_id:response.data.admin_id,
+        }
         await AsyncStorage.setItem('authenticated', response.token);
         await AsyncStorage.setItem('customer', JSON.stringify(response.data.id ));
         dispatch(setAuthenticated(true));
