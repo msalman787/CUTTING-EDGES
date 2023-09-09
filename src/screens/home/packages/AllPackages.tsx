@@ -24,7 +24,7 @@ import {
 } from '../../../store/apiLoader/apiLoaderSlice';
 import apiResponseGenerator from '../../../service/apiGenerator';
 import {showModal} from '../../../store/model/modelSlice';
-import {ActivityIndicator} from 'react-native-paper';
+import {ActivityIndicator, Searchbar} from 'react-native-paper';
 
 const AllPackages = ({navigation}: any) => {
   const [isConfirmationVisible, setConfirmationVisible] = useState(false);
@@ -69,10 +69,10 @@ const AllPackages = ({navigation}: any) => {
     navigation.dispatch(resetAction);
   };
 
-  const handleNavigation = (package_id: string,admin_id:string) => {
+  const handleNavigation = (package_id: string, admin_id: string) => {
     setConfirmationVisible(true);
     if (isAuthenticated) {
-      navigation.navigate('NewAppointmentScreen', {package_id,admin_id});
+      navigation.navigate('NewAppointmentScreen', {package_id, admin_id});
     }
   };
   const handleCreateAccount = async () => {
@@ -96,7 +96,15 @@ const AllPackages = ({navigation}: any) => {
       onPress={handleNavigation}
     />
   );
+  const [searchQuery, setSearchQuery] = useState('');
 
+  const onChangeSearch = (query: any) => {
+    setSearchQuery(query);
+  };
+  const filteredData = packages.filter((item:any) => {
+    const location = item.location || ''; 
+    return location.toLowerCase().includes(searchQuery.toLowerCase());
+  });
   return (
     <View style={styles.container}>
       <DynamicStatusBar />
@@ -128,8 +136,21 @@ const AllPackages = ({navigation}: any) => {
         </View>
       ) : (
         <View style={styles.cardsContainer}>
+          <Searchbar
+            placeholder="Search location"
+            cursorColor={Colors.DEFAULT_BLACK}
+            selectionColor={Colors.LIGHT_GRAY}
+            style={{
+              borderRadius: 10,
+              marginHorizontal: 10,
+              marginVertical: 10,
+              backgroundColor: Colors.DEFAULT_WHITE,
+            }}
+            onChangeText={onChangeSearch}
+            value={searchQuery}
+          />
           <FlatList
-            data={packages}
+            data={filteredData}
             renderItem={renderCardRow}
             keyExtractor={(item: any) => item.id}
           />
