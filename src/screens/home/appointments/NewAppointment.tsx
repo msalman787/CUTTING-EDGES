@@ -20,7 +20,8 @@ import {showModal} from '../../../store/model/modelSlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const NewAppointment = ({navigation, route}: any) => {
-  const {package_id} = route.params;
+  const {package_id,admin_id} = route.params;
+  console.log(admin_id)
   const [showModel, setShowModal] = useState<boolean>(false);
   const [state, setState] = useState({
     title: 'Sorry!',
@@ -123,9 +124,10 @@ const NewAppointment = ({navigation, route}: any) => {
   const HandleNewAppo = async (data: any) => {
     try {
       data.descsion = 'pending';
-      data.hair_style = images?.path ;
+      data.hair_style = images?.path || "" ;
       data.customer_id = await getCustomerId();
       data.package_id = package_id.toString();
+      data.admin_id = admin_id.toString();
       console.log(data)
       const response = await apiResponseGenerator({
         url: 'api/addappointment',

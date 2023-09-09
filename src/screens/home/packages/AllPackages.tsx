@@ -69,10 +69,10 @@ const AllPackages = ({navigation}: any) => {
     navigation.dispatch(resetAction);
   };
 
-  const handleNavigation = (package_id: string) => {
+  const handleNavigation = (package_id: string,admin_id:string) => {
     setConfirmationVisible(true);
     if (isAuthenticated) {
-      navigation.navigate('NewAppointmentScreen', {package_id});
+      navigation.navigate('NewAppointmentScreen', {package_id,admin_id});
     }
   };
   const handleCreateAccount = async () => {
@@ -88,6 +88,7 @@ const AllPackages = ({navigation}: any) => {
     <PackageCards
       id={item.id}
       title={item.Plan_title}
+      admin_id={item.admin_id}
       description={item.Plan_description}
       image={item.id % 2 === 0 ? Images.New_Look1 : Images.New_Look2}
       price={item.Plan_price}

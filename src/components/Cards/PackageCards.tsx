@@ -13,7 +13,7 @@ import Icon from 'react-native-vector-icons/Feather';
 import Icon2 from 'react-native-vector-icons/FontAwesome';
 import Icon3 from 'react-native-vector-icons/Entypo';
 
-const PackageCards = ({id, title, description, location,price, image, onPress}: any) => {
+const PackageCards = ({id, admin_id,title, description, location,price, image, onPress}: any) => {
   return (
     <View style={styles.card}>
       <View style={styles.rowContainer}>
@@ -37,7 +37,7 @@ const PackageCards = ({id, title, description, location,price, image, onPress}: 
       <View style={styles.rowContainer}>
         <Icon2 name="dollar" size={20} color="black" />
         <Text style={[styles.phoneNo,{marginTop:5}]}>{price}</Text>
-        <TouchableOpacity style={styles.button} onPress={() => onPress(id)}>
+        <TouchableOpacity style={styles.button} onPress={() => onPress(id,admin_id)}>
           <Text style={styles.buttonText}>Book Appointment</Text>
         </TouchableOpacity>
       </View>
