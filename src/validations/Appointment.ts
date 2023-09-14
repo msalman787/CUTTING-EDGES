@@ -11,7 +11,4 @@ export const appointmentInputSchema = yup.object().shape({
   mobile_number: yup.string().required('Mobile is a required field'),
   address: yup.string().required('Address is a required field'),
   gender: yup.string().required('Gender is a required field'),
-  appointment_date_time: yup
-    .string()
-    .required('Appointment date time is a required field'),
 });

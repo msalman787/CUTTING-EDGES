@@ -117,15 +117,15 @@ const NewPackage = ({navigation}: any) => {
   };
 
   const HandleNewPackage = async (data: any) => {
+    data.admin_id = await getAdminId();
+    data.image = images.path || "";
     try {
-      data.admin_id = await getAdminId();
-      data.image = images.path || "";
       const response = await apiResponseGenerator({
         url: 'api/addpricing',
         method: 'post',
         body: data,
       });
-      if (response) {
+      if (response.success) {
         return handleCloseInput();
       }
     } catch (error: any) {
@@ -247,6 +247,26 @@ const NewPackage = ({navigation}: any) => {
           />
         </View>
 
+        <View style={styles.input}>
+          <Controller
+            control={control}
+            rules={{
+              required: true,
+            }}
+            render={({field: {onChange, onBlur, value}}) => (
+              <AnimatedInput
+                label="Map location"
+                leftIcon={'home-map-marker'}
+                keyboardType={'default'}
+                value={value}
+                onChangeText={onChange}
+                errorMsg={errors.google_map_link?.message}
+              />
+            )}
+            name="google_map_link"
+            defaultValue=""
+          />
+        </View>
         <View style={styles.input}>
           <Controller
             control={control}

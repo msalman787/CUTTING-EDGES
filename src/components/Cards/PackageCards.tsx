@@ -13,23 +13,27 @@ import Icon from 'react-native-vector-icons/Feather';
 import Icon2 from 'react-native-vector-icons/FontAwesome';
 import Icon3 from 'react-native-vector-icons/Entypo';
 
-const PackageCards = ({id, admin_id,title, description, location,price, image, onPress}: any) => {
+const PackageCards = ({id, admin_id,title, google_map_link,description, location,price, image, onPress}: any) => {
   return (
     <View style={styles.card}>
       <View style={styles.rowContainer}>
         <Image source={image} style={styles.image} resizeMode="cover" />
         <View style={styles.titleDescriptionContainer}>
           <View style={{flexDirection: 'row'}}>
-            <Icon name="package" size={24} color="black" />
+            <Icon name="package" size={22} color="black" />
             <Text style={[styles.description,{marginTop:3, marginLeft:5}]}>{title}</Text>
           </View>
           <View style={{flexDirection: 'row'}}>
-            <Icon3 name="text-document" size={22} color="black" />
+            <Icon3 name="text-document" size={20} color="black" />
             <Text style={[styles.description,{marginTop:3, marginLeft:5}]}>{description}</Text>
           </View>
           <View style={{flexDirection: 'row'}}>
-            <Icon3 name="home" size={22} color="black" />
+            <Icon3 name="home" size={20} color="black" />
             <Text style={[styles.description,{marginTop:3, marginLeft:5}]}>{location}</Text>
+          </View>
+          <View style={{flexDirection: 'row'}}>
+            <Icon3 name="location" size={20} color="black" />
+            <Text style={[styles.description,{marginTop:3, marginLeft:5}]}>{google_map_link}</Text>
           </View>
         </View>
       </View>
@@ -61,8 +65,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   image: {
-    width: 60,
-    height: 60,
+    width: 80,
+    height: 80,
     marginRight: 16,
     borderRadius: 8,
   },

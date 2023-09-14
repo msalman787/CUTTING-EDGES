@@ -90,6 +90,7 @@ const AllPackages = ({navigation}: any) => {
       title={item.Plan_title}
       admin_id={item.admin_id}
       description={item.Plan_description}
+      google_map_link={item.google_map_link}
       image={item.id % 2 === 0 ? Images.New_Look1 : Images.New_Look2}
       price={item.Plan_price}
       location={item.location || ''}
@@ -102,8 +103,8 @@ const AllPackages = ({navigation}: any) => {
     setSearchQuery(query);
   };
   const filteredData = packages.filter((item:any) => {
-    const location = item.location || ''; 
-    return location.toLowerCase().includes(searchQuery.toLowerCase());
+    const google_map_link = item.google_map_link || ''; 
+    return google_map_link.toLowerCase().includes(searchQuery.toLowerCase());
   });
   return (
     <View style={styles.container}>
@@ -137,7 +138,7 @@ const AllPackages = ({navigation}: any) => {
       ) : (
         <View style={styles.cardsContainer}>
           <Searchbar
-            placeholder="Search location"
+            placeholder="Search map location..."
             cursorColor={Colors.DEFAULT_BLACK}
             selectionColor={Colors.LIGHT_GRAY}
             style={{

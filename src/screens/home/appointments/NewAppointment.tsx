@@ -18,10 +18,16 @@ import apiResponseGenerator from '../../../service/apiGenerator';
 import {useDispatch} from 'react-redux';
 import {showModal} from '../../../store/model/modelSlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
 
 const NewAppointment = ({navigation, route}: any) => {
   const {package_id,admin_id} = route.params;
   const [showModel, setShowModal] = useState<boolean>(false);
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+  const [date, setDate] = useState({
+    simple: '',
+  });
+
   const [state, setState] = useState({
     title: 'Sorry!',
     bgColor: '',
@@ -121,9 +127,17 @@ const NewAppointment = ({navigation, route}: any) => {
   };
 
   const HandleNewAppo = async (data: any) => {
+    if (!date.simple) {
+      return setState(prevState => ({
+        ...prevState,
+        isValidate: !prevState.isValidate,
+        description: 'Appointment date time is required feild.',
+      }));
+    }
     try {
       data.descsion = 'pending';
-      data.hair_style = images?.path || "" ;
+      data.appointment_date_time = date?.simple;
+      data.hair_style = images?.path || '';
       data.customer_id = await getCustomerId();
       data.package_id = package_id.toString();
       data.admin_id = admin_id.toString();
@@ -139,7 +153,37 @@ const NewAppointment = ({navigation, route}: any) => {
       dispatch(showModal({description: error.message}));
     }
   };
+  const showDatePicker = () => {
+    setDatePickerVisibility(true);
+  };
 
+  const hideDatePicker = () => {
+    setDatePickerVisibility(false);
+  };
+
+  const convertToCustomFormat = (inputDateTime: string) => {
+    const date = new Date(inputDateTime);
+
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+    const hours: any = date.getHours().toString().padStart(2, '0');
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+    const amOrPm = date.getHours() < 12 ? 'AM' : 'PM';
+
+    const formattedDate = `${month}/${day}/${year} ${
+      hours % 12 || 12
+    }:${minutes} ${amOrPm}`;
+
+    return formattedDate;
+  };
+  const handleConfirmDate = (data: any) => {
+    setDate(prevState => ({
+      ...prevState,
+      simple: convertToCustomFormat(data),
+    }));
+    hideDatePicker();
+  };
   return (
     <ScrollView style={styles.container}>
       {/* Validation Model */}
@@ -314,6 +358,23 @@ const NewAppointment = ({navigation, route}: any) => {
           />
         </View>
         <View style={styles.input}>
+          <TouchableOpacity onPress={showDatePicker}>
+            <AnimatedInput
+              label="Appointment date time"
+              leftIcon={'calendar'}
+              editable={false}
+              value={date?.simple}
+            />
+          </TouchableOpacity>
+        </View>
+
+        <DateTimePickerModal
+          isVisible={isDatePickerVisible}
+          mode="datetime"
+          onConfirm={handleConfirmDate}
+          onCancel={hideDatePicker}
+        />
+        {/* <View style={styles.input}>
           <Controller
             control={control}
             rules={{
@@ -332,7 +393,7 @@ const NewAppointment = ({navigation, route}: any) => {
             name="appointment_date_time"
             defaultValue=""
           />
-        </View>
+        </View> */}
         <View style={styles.dashedBorder}>
           <TouchableOpacity
             onPress={() => {
