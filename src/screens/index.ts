@@ -6,6 +6,7 @@ import ApointmentScreen from './home/appointments/Appointments';
 import NewPackage from './home/packages/NewPackage';
 import AllPackages from './home/packages/AllPackages';
 import WelcomeScreen from './welcome/WelcomeScreen';
+import HomeScreen from './welcome/HomeScreen';
 export {
   WelcomeScreen,
   SignInScreen,
@@ -13,5 +14,6 @@ export {
   NewAppointment,
   ApointmentScreen,
   NewPackage,
-  AllPackages
+  AllPackages,
+  HomeScreen,
 };

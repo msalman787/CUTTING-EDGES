@@ -118,7 +118,7 @@ const NewPackage = ({navigation}: any) => {
 
   const HandleNewPackage = async (data: any) => {
     data.admin_id = await getAdminId();
-    data.image = images.path || "";
+    data.image = images?.path ? images?.path  :"";
     try {
       const response = await apiResponseGenerator({
         url: 'api/addpricing',

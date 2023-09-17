@@ -27,7 +27,7 @@ const WelcomeScreen = ({navigation}: any) => {
       </TouchableOpacity>
       <TouchableOpacity
         onPress={() => {
-          handleNavigation('AllPackageScreen');
+          handleNavigation('HomeScreen');
         }}
         style={styles.buttonContainer}>
         <Text style={styles.buttonText}>Book Now</Text>

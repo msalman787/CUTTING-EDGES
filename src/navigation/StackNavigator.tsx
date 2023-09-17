@@ -4,6 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   AllPackages,
   ApointmentScreen,
+  HomeScreen,
   NewAppointment,
   NewPackage,
   SignInScreen,
@@ -57,6 +58,11 @@ const StackNavigator = () => {
           />
         </>
       )}
+      <Stack.Screen
+        name="HomeScreen"
+        component={HomeScreen}
+        options={{headerShown: false}}
+      />
       <Stack.Screen
         name="AllPackageScreen"
         component={AllPackages}
