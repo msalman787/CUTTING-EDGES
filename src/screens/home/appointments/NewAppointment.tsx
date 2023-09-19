@@ -19,6 +19,7 @@ import {useDispatch} from 'react-redux';
 import {showModal} from '../../../store/model/modelSlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
+import { FAB } from 'react-native-paper';
 
 const NewAppointment = ({navigation, route}: any) => {
   const {package_id, admin_id} = route.params;
@@ -125,6 +126,9 @@ const NewAppointment = ({navigation, route}: any) => {
   const onPageRedirect = async () => {
     await navigation.goBack();
   };
+  const HomeRedirect = async () => {
+    await navigation.navigate("HomeScreen");
+  };
 
   const HandleNewAppo = async (data: any) => {
     if (!date.simple) {
@@ -147,7 +151,14 @@ const NewAppointment = ({navigation, route}: any) => {
         body: data,
       });
       if (response.success) {
-        return handleCloseInput();
+        setState(prevState => ({
+          ...prevState,
+          image:"",
+          bgColor:"rgba(41, 172, 68, 1)",
+          title:"Success",
+          description:"Your appointment has been created.",
+          isValidate: !prevState.isValidate,
+        }));
       } else {
         dispatch(showModal({description: response.message}));
       }
@@ -197,7 +208,7 @@ const NewAppointment = ({navigation, route}: any) => {
         description={state.description}
         onClose={handleHideModal}
         buttonText={state.buttonText}
-        onPageRedirect={onPageRedirect}
+        onPageRedirect={handleHideModal}
       />
       {/* Image Picker Model */}
       <Modal animationType="fade" transparent={true} visible={showModel}>
@@ -413,6 +424,14 @@ const NewAppointment = ({navigation, route}: any) => {
           <LargeButton onPress={handleSubmit(HandleNewAppo)} text={'Submit'} />
         </View>
       </View>
+      <FAB
+            icon="plus"
+            mode="elevated"
+            animated={true}
+            color="white"
+            style={styles.fab}
+            onPress={HomeRedirect}
+          />
     </ScrollView>
   );
 };
@@ -496,5 +515,12 @@ const styles = StyleSheet.create({
     width: '75%',
     marginLeft: 10,
     marginTop: 5,
+  },
+  fab: {
+    position: 'absolute',
+    margin: 16,
+    right: 1,
+    color: Colors.DEFAULT_WHITE,
+    backgroundColor: Colors.DEFAULT_BLACK,
   },
 });

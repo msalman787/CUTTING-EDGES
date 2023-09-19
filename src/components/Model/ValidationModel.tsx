@@ -35,7 +35,7 @@ const ValidationModel = ({
             {backgroundColor: bgColor ? bgColor : 'rgba(255, 65, 65, 1)'},
           ]}
           onStartShouldSetResponder={() => true}>
-          <ModalImage style={styles.image} />
+          {ModalImage && <ModalImage style={styles.image} />}
           {title && <Text style={styles.title}>{title}</Text>}
           <Text style={styles.description}>{description}</Text>
           <View style={{height: 50, width: 320, borderColor: 'pink'}}>

@@ -39,7 +39,6 @@ const PackageCards = ({id, admin_id,title, google_map_link,description, location
       </View>
       <View style={styles.horizontalBorder} />
       <View style={styles.rowContainer}>
-        <Icon2 name="dollar" size={20} color="black" />
         <Text style={[styles.phoneNo,{marginTop:5}]}>{price}</Text>
         <TouchableOpacity style={styles.button} onPress={() => onPress(id,admin_id)}>
           <Text style={styles.buttonText}>Book Appointment</Text>

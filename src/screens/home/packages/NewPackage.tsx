@@ -246,6 +246,26 @@ const NewPackage = ({navigation}: any) => {
             defaultValue=""
           />
         </View>
+        <View style={styles.input}>
+          <Controller
+            control={control}
+            rules={{
+              required: true,
+            }}
+            render={({field: {onChange, onBlur, value}}) => (
+              <AnimatedInput
+                leftIcon={'package'}
+                label="Package type"
+                keyboardType={'default'}
+                value={value}
+                onChangeText={onChange}
+                errorMsg={errors.type?.message}
+              />
+            )}
+            name="type"
+            defaultValue=""
+          />
+        </View>
 
         <View style={styles.input}>
           <Controller
@@ -297,7 +317,7 @@ const NewPackage = ({navigation}: any) => {
             render={({field: {onChange, onBlur, value}}) => (
               <AnimatedInput
                 label="Tag Line"
-                leftIcon={'package'}
+                leftIcon={'tag'}
                 keyboardType={'default'}
                 value={value}
                 onChangeText={onChange}
