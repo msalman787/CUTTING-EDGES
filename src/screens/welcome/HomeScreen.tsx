@@ -9,16 +9,31 @@ import {
 import React from 'react';
 import {Colors, Fonts} from '../../constants';
 import {HeaderWithSearchInput} from '../../components';
-import { useSelector } from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {setAuthenticated} from '../../store/auth/authSlice';
+import {CommonActions} from '@react-navigation/native';
 
 const HomeScreen = ({navigation}: any) => {
   const isAuthenticated = useSelector(
     (state: any) => state.auth.isAuthenticated,
   );
+  const dispatch = useDispatch();
+
+  const handleLogout = async () => {
+    await AsyncStorage.removeItem('authenticated');
+    dispatch(setAuthenticated(false));
+    const resetAction = CommonActions.reset({
+      index: 0,
+      routes: [{ name: 'SignInScreen' }],
+    });
+    navigation.dispatch(resetAction);
+  };
   return (
     <ScrollView style={styles.container}>
       <View style={styles.header}>
         <HeaderWithSearchInput
+          onIconPress={handleLogout}
           showIcon={isAuthenticated}
           titleStyle={!isAuthenticated ? 50 : 0}
           image={'log-out'}
@@ -35,7 +50,7 @@ const HomeScreen = ({navigation}: any) => {
         <TouchableOpacity
           style={styles.card}
           onPress={() => {
-            navigation.navigate('AllPackageScreen');
+            navigation.navigate('AllPackageScreen', {name: 'haircuts'});
           }}>
           <Image
             source={require('../../assets/images/new-look1.jpg')}
@@ -46,7 +61,7 @@ const HomeScreen = ({navigation}: any) => {
         <TouchableOpacity
           style={styles.card}
           onPress={() => {
-            navigation.navigate('AllPackageScreen');
+            navigation.navigate('AllPackageScreen', {name: 'grooms'});
           }}>
           <Image
             source={require('../../assets/images/groom.jpg')}
@@ -59,24 +74,24 @@ const HomeScreen = ({navigation}: any) => {
         <TouchableOpacity
           style={styles.card}
           onPress={() => {
-            navigation.navigate('AllPackageScreen');
+            navigation.navigate('AllPackageScreen', {name: 'massage'});
           }}>
           <Image
             source={require('../../assets/images/massage.jpg')}
             style={[styles.image]}
           />
-          <Text style={styles.text}>Massage</Text>
+          <Text style={styles.text}>Massage Packages</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.card}
           onPress={() => {
-            navigation.navigate('AllPackageScreen');
+            navigation.navigate('AllPackageScreen', {name: 'faicials'});
           }}>
           <Image
             source={require('../../assets/images/facial.jpg')}
             style={[styles.image]}
           />
-          <Text style={styles.text}>Facial</Text>
+          <Text style={styles.text}>Facial Packages</Text>
         </TouchableOpacity>
       </View>
     </ScrollView>

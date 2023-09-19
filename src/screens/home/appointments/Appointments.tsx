@@ -112,6 +112,7 @@ const ApointmentScreen = ({navigation}: any) => {
       title={item.packages.Plan_title}
       phone={item.mobile_number}
       date={item.appointment_date_time}
+      type={item.packages.type}
       customer_name={`${item.first_name} ${item.last_name}`}
     />
   );

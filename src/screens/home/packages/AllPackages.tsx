@@ -26,7 +26,9 @@ import apiResponseGenerator from '../../../service/apiGenerator';
 import {showModal} from '../../../store/model/modelSlice';
 import {ActivityIndicator, Searchbar} from 'react-native-paper';
 
-const AllPackages = ({navigation}: any) => {
+const AllPackages = ({navigation, route}: any) => {
+  const data:any = route.params;
+
   const [isConfirmationVisible, setConfirmationVisible] = useState(false);
   const isLoading = useSelector((state: any) => state.apiloader.isLoading);
   const [packages, setPackages] = useState([]);
@@ -34,22 +36,21 @@ const AllPackages = ({navigation}: any) => {
   const isAuthenticated = useSelector(
     (state: any) => state.auth.isAuthenticated,
   );
-
   useEffect(() => {
-    getAllProducts();
+    getAllProducts(data.name);
     return () => {
       dispatch(finishLoading());
     };
   }, []);
 
-  const getAllProducts = async () => {
+  const getAllProducts = async (name:any) => {
     try {
       dispatch(startLoading());
       const response = await apiResponseGenerator({
-        url: 'api/allpricing',
+        url: `api/singlepacktype/${name}`,
       });
       if (response) {
-        setPackages(response.data);
+        setPackages(response.Pricing);
         return dispatch(finishLoading());
       }
     } catch (error: any) {
@@ -102,8 +103,8 @@ const AllPackages = ({navigation}: any) => {
   const onChangeSearch = (query: any) => {
     setSearchQuery(query);
   };
-  const filteredData = packages.filter((item:any) => {
-    const google_map_link = item.google_map_link || ''; 
+  const filteredData = packages?.filter((item: any) => {
+    const google_map_link = item?.google_map_link || '';
     return google_map_link.toLowerCase().includes(searchQuery.toLowerCase());
   });
   return (
@@ -173,7 +174,7 @@ const styles = StyleSheet.create({
   cardsContainer: {
     paddingVertical: verticalScale(5),
     paddingHorizontal: verticalScale(10),
-    paddingBottom: 80,
+    paddingBottom: 150,
   },
 });
 
