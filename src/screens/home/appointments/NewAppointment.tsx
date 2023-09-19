@@ -21,7 +21,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 
 const NewAppointment = ({navigation, route}: any) => {
-  const {package_id,admin_id} = route.params;
+  const {package_id, admin_id} = route.params;
   const [showModel, setShowModal] = useState<boolean>(false);
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [date, setDate] = useState({
@@ -148,6 +148,8 @@ const NewAppointment = ({navigation, route}: any) => {
       });
       if (response.success) {
         return handleCloseInput();
+      } else {
+        dispatch(showModal({description: response.message}));
       }
     } catch (error: any) {
       dispatch(showModal({description: error.message}));

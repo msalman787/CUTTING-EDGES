@@ -1,13 +1,29 @@
-import {Image, ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import React from 'react';
 import {Colors, Fonts} from '../../constants';
 import {HeaderWithSearchInput} from '../../components';
+import { useSelector } from 'react-redux';
 
 const HomeScreen = ({navigation}: any) => {
+  const isAuthenticated = useSelector(
+    (state: any) => state.auth.isAuthenticated,
+  );
   return (
     <ScrollView style={styles.container}>
       <View style={styles.header}>
-        <HeaderWithSearchInput titleStyle={50} title="CUTTING EDGES" />
+        <HeaderWithSearchInput
+          showIcon={isAuthenticated}
+          titleStyle={!isAuthenticated ? 50 : 0}
+          image={'log-out'}
+          title="CUTTING EDGES"
+        />
       </View>
       <View style={styles.row}>
         <Image
@@ -21,7 +37,7 @@ const HomeScreen = ({navigation}: any) => {
           onPress={() => {
             navigation.navigate('AllPackageScreen');
           }}>
-          <Image  
+          <Image
             source={require('../../assets/images/new-look1.jpg')}
             style={[styles.image]}
           />

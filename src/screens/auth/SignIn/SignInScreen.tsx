@@ -44,15 +44,6 @@ const SignInScreen = ({navigation}: any) => {
   };
 
   const HandleSignIn = async (data: any) => {
-    console.log(data);
-    // if (
-    //   data.email === 'admin@cuttingedges.com' &&
-    //   data.password == 'admin123'
-    // ) {
-    //   await AsyncStorage.setItem('authenticated', 'response.remember_token');
-    //   dispatch(setAuthenticated(true));
-    //   navigation.navigate('ApointmentScreen');
-    // }
     try {
       setDisabled(true);
       const response = await apiResponseGenerator({
@@ -61,21 +52,16 @@ const SignInScreen = ({navigation}: any) => {
         body: data,
       });
       if (response) {
-        console.log(response);
-        let data ={
-          token:response.token,
-          customer_id:response.data.id,
-          admin_id:response.data.admin_id,
-        }
         await AsyncStorage.setItem('authenticated', response.token);
-        await AsyncStorage.setItem('customer', JSON.stringify(response.data.id ));
+        await AsyncStorage.setItem(
+          'customer',
+          JSON.stringify(response.data.id),
+        );
         dispatch(setAuthenticated(true));
         if (response.data.role === 'admin') {
           navigation.navigate('ApointmentScreen');
         } else {
-          // sufiyankhanzada12541@gmail.com
-          // 1123456789
-          navigation.navigate('AllPackageScreen');
+          navigation.navigate('HomeScreen');
         }
       }
     } catch (error: any) {
