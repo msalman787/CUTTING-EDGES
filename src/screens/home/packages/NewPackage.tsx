@@ -18,11 +18,18 @@ import apiResponseGenerator from '../../../service/apiGenerator';
 import {useDispatch} from 'react-redux';
 import {showModal} from '../../../store/model/modelSlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {SelectList} from 'react-native-dropdown-select-list';
 
 const NewPackage = ({navigation}: any) => {
   const [showModel, setShowModal] = useState<boolean>(false);
   const dispatch = useDispatch();
-
+  const [selected, setSelected] = useState('');
+  const data = [
+    {value: 'haircuts', key: 'Hair Cut / Beard'},
+    {value: 'grooms', key: 'Groom'},
+    {value: 'massage', key: 'Massage'},
+    {value: 'faicials', key: 'Faicial'},
+  ];
   const [state, setState] = useState({
     title: 'Sorry!',
     bgColor: '',
@@ -118,7 +125,8 @@ const NewPackage = ({navigation}: any) => {
 
   const HandleNewPackage = async (data: any) => {
     data.admin_id = await getAdminId();
-    data.image = images?.path ? images?.path  :"";
+    data.image = images?.path ? images?.path : '';
+    data.type = selected
     try {
       const response = await apiResponseGenerator({
         url: 'api/addpricing',
@@ -186,6 +194,20 @@ const NewPackage = ({navigation}: any) => {
         />
       </View>
       <View style={styles.subContainer}>
+        <View
+          style={{
+            paddingHorizontal: 10,
+          }}>
+          <SelectList
+            placeholder="select a package type"
+            setSelected={(val: any) => {
+              console.log(val);
+              setSelected(val);
+            }}
+            data={data}
+            save="value"
+          />
+        </View>
         <View style={styles.input}>
           <Controller
             control={control}
@@ -234,7 +256,7 @@ const NewPackage = ({navigation}: any) => {
             }}
             render={({field: {onChange, onBlur, value}}) => (
               <AnimatedInput
-                leftIcon={'currency-usd'}
+                leftIcon={'hand-coin'}
                 label="Price"
                 keyboardType={'default'}
                 value={value}
@@ -243,26 +265,6 @@ const NewPackage = ({navigation}: any) => {
               />
             )}
             name="Plan_price"
-            defaultValue=""
-          />
-        </View>
-        <View style={styles.input}>
-          <Controller
-            control={control}
-            rules={{
-              required: true,
-            }}
-            render={({field: {onChange, onBlur, value}}) => (
-              <AnimatedInput
-                leftIcon={'package'}
-                label="Package type"
-                keyboardType={'default'}
-                value={value}
-                onChangeText={onChange}
-                errorMsg={errors.type?.message}
-              />
-            )}
-            name="type"
             defaultValue=""
           />
         </View>

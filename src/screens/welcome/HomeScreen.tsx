@@ -56,7 +56,7 @@ const HomeScreen = ({navigation}: any) => {
             source={require('../../assets/images/new-look1.jpg')}
             style={[styles.image]}
           />
-          <Text style={styles.text}>Hair Cut / Bread</Text>
+          <Text style={styles.text}>Hair Cut / Beard</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.card}

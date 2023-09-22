@@ -108,12 +108,12 @@ const ApointmentScreen = ({navigation}: any) => {
     <AppointmentCards
       onAccept={handleAccept}
       onReject={handleReject}
-      id={item.id}
-      title={item.packages.Plan_title}
-      phone={item.mobile_number}
-      date={item.appointment_date_time}
-      type={item.packages.type}
-      customer_name={`${item.first_name} ${item.last_name}`}
+      id={item?.id}
+      title={item?.packages?.Plan_title}
+      phone={item?.mobile_number}
+      date={item?.appointment_date_time}
+      type={item?.packages?.type}
+      customer_name={`${item?.first_name} ${item?.last_name}`}
     />
   );
   return (
