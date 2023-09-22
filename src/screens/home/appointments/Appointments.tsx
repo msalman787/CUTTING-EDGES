@@ -89,6 +89,22 @@ const ApointmentScreen = ({navigation}: any) => {
     }
   };
 
+  const handleRemovePackage = async (id: number) => {
+    try {
+      dispatch(startLoading());
+      const response = await apiResponseGenerator({
+        method: 'post',
+        url: `api/deletepricing/${id}`,
+      });
+      if (response) {
+        console.log(response);
+        getAdminId();
+        return;
+      }
+    } catch (error: any) {
+      dispatch(showModal({description: error.message}));
+    }
+  };
   const handleReject = async (id: number) => {
     try {
       dispatch(startLoading());
@@ -108,7 +124,9 @@ const ApointmentScreen = ({navigation}: any) => {
     <AppointmentCards
       onAccept={handleAccept}
       onReject={handleReject}
+      onRemovePackage={handleRemovePackage}
       id={item?.id}
+      packageId={item?.packages?.id}
       title={item?.packages?.Plan_title}
       others={item?.others}
       phone={item?.mobile_number}

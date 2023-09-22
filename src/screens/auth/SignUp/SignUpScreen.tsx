@@ -305,7 +305,7 @@ const SignUpScreen = ({navigation}: any) => {
             defaultValue=""
           />
         </View>
-        <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
+        <View style={{flexDirection: 'row', marginTop:20,justifyContent: 'space-around'}}>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <Text>Gender</Text>
           </View>
@@ -355,7 +355,7 @@ const styles = StyleSheet.create({
   },
   SignUpBtn: {
     width: '100%',
-    marginVertical: 30,
+    marginVertical: 20,
     paddingHorizontal: 10,
   },
 });

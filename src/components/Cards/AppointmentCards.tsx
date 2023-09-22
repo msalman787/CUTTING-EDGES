@@ -12,7 +12,9 @@ const AppointmentCards = ({
   onAccept,
   onReject,
   others,
-  type
+  type,
+  packageId,
+  onRemovePackage,
 }: any) => {
   return (
     <View style={styles.card}>
@@ -24,7 +26,7 @@ const AppointmentCards = ({
           </Text>
           <Text style={styles.title}>
             <Icon name="tag" size={22} color="black" />
-            <Text style={styles.description}> {type||""}</Text>
+            <Text style={styles.description}> {type || ''}</Text>
           </Text>
           <Text style={styles.title}>
             <Icon name="user" size={22} color="black" />
@@ -48,13 +50,19 @@ const AppointmentCards = ({
       <View style={styles.rowContainer}>
         <TouchableOpacity
           onPress={() => {
+            onRemovePackage(packageId);
+          }}
+          style={styles.button}>
+          <Text style={styles.buttonText}>Remove package</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
             onAccept(id);
           }}
           style={[
             styles.button,
             {
               backgroundColor: 'rgba(227, 255, 233, 1)',
-              marginRight: 10,
             },
           ]}>
           <Text
@@ -92,7 +100,7 @@ const styles = StyleSheet.create({
   },
   rowContainer: {
     flexDirection: 'row',
-    justifyContent: 'flex-end',
+    justifyContent: 'space-around',
   },
 
   titleDescriptionContainer: {

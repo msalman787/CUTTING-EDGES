@@ -27,10 +27,10 @@ const WelcomeScreen = ({navigation}: any) => {
       </TouchableOpacity>
       <TouchableOpacity
         onPress={() => {
-          handleNavigation('HomeScreen');
+          handleNavigation('SignUpScreen');
         }}
         style={styles.buttonContainer}>
-        <Text style={styles.buttonText}>Book Now</Text>
+        <Text style={styles.buttonText}>Sign Up</Text>
       </TouchableOpacity>
     </View>
   );
