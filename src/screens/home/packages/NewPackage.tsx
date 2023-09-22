@@ -201,7 +201,6 @@ const NewPackage = ({navigation}: any) => {
           <SelectList
             placeholder="select a package type"
             setSelected={(val: any) => {
-              console.log(val);
               setSelected(val);
             }}
             data={data}

@@ -11,6 +11,7 @@ const AppointmentCards = ({
   date,
   onAccept,
   onReject,
+  others,
   type
 }: any) => {
   return (
@@ -36,6 +37,10 @@ const AppointmentCards = ({
           <Text style={styles.title}>
             <Icon name="calendar" size={22} color="black" />
             <Text style={styles.description}> {date}</Text>
+          </Text>
+          <Text style={styles.title}>
+            <Icon name="package" size={22} color="black" />
+            <Text style={styles.description}> {others}</Text>
           </Text>
         </View>
       </View>

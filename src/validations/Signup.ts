@@ -11,7 +11,6 @@ export const signUpScreenInputSchema = yup.object().shape({
   phone: yup.string().min(11).required('Phone number is a required field'),
   cnic: yup.string().min(13).required('CNIC number is a required field'),
   password: yup.string().min(8).required('Password is a required field'),
-  gender: yup.string().required('Gender is a required field'),
   confirm_password: yup
     .string()
     .oneOf([yup.ref('password'), ''], 'Passwords must match')

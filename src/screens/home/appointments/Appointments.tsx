@@ -110,6 +110,7 @@ const ApointmentScreen = ({navigation}: any) => {
       onReject={handleReject}
       id={item?.id}
       title={item?.packages?.Plan_title}
+      others={item?.others}
       phone={item?.mobile_number}
       date={item?.appointment_date_time}
       type={item?.packages?.type}

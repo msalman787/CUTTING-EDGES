@@ -20,6 +20,7 @@ import apiResponseGenerator from '../../../service/apiGenerator';
 import {ValidationModel} from '../../../components';
 import {showModal} from '../../../store/model/modelSlice';
 import {useDispatch} from 'react-redux';
+import { Checkbox } from 'react-native-paper';
 
 const SignUpScreen = ({navigation}: any) => {
   const {
@@ -35,6 +36,19 @@ const SignUpScreen = ({navigation}: any) => {
     description: '',
     isValidate: false,
   });
+  const [maleChecked, setMaleChecked] = useState(true);
+  const [femaleChecked, setFemaleChecked] = useState(false);
+  console.log(maleChecked)
+
+  const handleMaleChange = () => {
+    setMaleChecked(!maleChecked);
+    setFemaleChecked(false);
+  };
+
+  const handleFemaleChange = () => {
+    setFemaleChecked(!femaleChecked);
+    setMaleChecked(false);
+  };
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [disabled, setDisabled] = useState(false);
   const [date, setDate] = useState({
@@ -83,7 +97,7 @@ const SignUpScreen = ({navigation}: any) => {
 
     data.DOB = dateToTimeStamp;
     data.role = 'Customer';
-    console.log(data);
+    data.gender = maleChecked ? 'Male' : 'Female';
     try {
       setDisabled(true);
       const response = await apiResponseGenerator({
@@ -229,23 +243,6 @@ const SignUpScreen = ({navigation}: any) => {
             defaultValue=""
           />
         </View>
-        <View style={styles.input}>
-          <Controller
-            control={control}
-            render={({field: {onChange, onBlur, value}}) => (
-              <AnimatedInput
-                label="Gender"
-                leftIcon={'human'}
-                keyboardType={'default'}
-                value={value}
-                onChangeText={onChange}
-                errorMsg={errors.gender?.message}
-              />
-            )}
-            name="gender"
-            defaultValue=""
-          />
-        </View>
 
         <View style={styles.input}>
           <TouchableOpacity onPress={showDatePicker}>
@@ -308,7 +305,28 @@ const SignUpScreen = ({navigation}: any) => {
             defaultValue=""
           />
         </View>
+        <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <Text>Gender</Text>
+          </View>
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <Checkbox
+              color={Colors.DEFAULT_BLACK}
+              status={maleChecked ? 'checked' : 'unchecked'}
+              onPress={handleMaleChange}
+            />
+            <Text>Male</Text>
+          </View>
 
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <Checkbox
+              color={Colors.DEFAULT_BLACK}
+              status={femaleChecked ? 'checked' : 'unchecked'}
+              onPress={handleFemaleChange}
+            />
+            <Text>Female</Text>
+          </View>
+        </View>
         <TouchableOpacity style={styles.SignUpBtn}>
           <LargeButton
             disabled={disabled}

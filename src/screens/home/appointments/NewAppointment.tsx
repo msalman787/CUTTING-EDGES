@@ -19,7 +19,8 @@ import {useDispatch} from 'react-redux';
 import {showModal} from '../../../store/model/modelSlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
-import { FAB } from 'react-native-paper';
+import {SelectList} from 'react-native-dropdown-select-list';
+import {Checkbox} from 'react-native-paper';
 
 const NewAppointment = ({navigation, route}: any) => {
   const {package_id, admin_id} = route.params;
@@ -28,7 +29,25 @@ const NewAppointment = ({navigation, route}: any) => {
   const [date, setDate] = useState({
     simple: '',
   });
+  const [selected, setSelected] = useState('');
+  const data = [
+    {value: 'haircuts', key: 'Hair Cut / Beard'},
+    {value: 'grooms', key: 'Groom'},
+    {value: 'massage', key: 'Massage'},
+    {value: 'faicials', key: 'Faicial'},
+  ];
+  const [maleChecked, setMaleChecked] = useState(true);
+  const [femaleChecked, setFemaleChecked] = useState(false);
 
+  const handleMaleChange = () => {
+    setMaleChecked(!maleChecked);
+    setFemaleChecked(false);
+  };
+
+  const handleFemaleChange = () => {
+    setFemaleChecked(!femaleChecked);
+    setMaleChecked(false);
+  };
   const [state, setState] = useState({
     title: 'Sorry!',
     bgColor: '',
@@ -127,7 +146,7 @@ const NewAppointment = ({navigation, route}: any) => {
     await navigation.goBack();
   };
   const HomeRedirect = async () => {
-    await navigation.navigate("HomeScreen");
+    await navigation.navigate('HomeScreen');
   };
 
   const HandleNewAppo = async (data: any) => {
@@ -145,6 +164,8 @@ const NewAppointment = ({navigation, route}: any) => {
       data.customer_id = await getCustomerId();
       data.package_id = package_id.toString();
       data.admin_id = admin_id.toString();
+      data.others = selected;
+      data.gender = maleChecked ? 'Male' : 'Female';
       const response = await apiResponseGenerator({
         url: 'api/addappointment',
         method: 'post',
@@ -153,10 +174,10 @@ const NewAppointment = ({navigation, route}: any) => {
       if (response.success) {
         setState(prevState => ({
           ...prevState,
-          image:"",
-          bgColor:"rgba(41, 172, 68, 1)",
-          title:"Success",
-          description:"Your appointment has been created.",
+          image: '',
+          bgColor: 'rgba(41, 172, 68, 1)',
+          title: 'Success',
+          description: 'Your appointment has been created.',
           isValidate: !prevState.isValidate,
         }));
       } else {
@@ -250,6 +271,7 @@ const NewAppointment = ({navigation, route}: any) => {
         />
       </View>
       <View style={styles.subContainer}>
+        
         <View style={styles.input}>
           <Controller
             control={control}
@@ -350,7 +372,8 @@ const NewAppointment = ({navigation, route}: any) => {
             defaultValue=""
           />
         </View>
-        <View style={styles.input}>
+        
+        {/* <View style={styles.input}>
           <Controller
             control={control}
             rules={{
@@ -369,7 +392,7 @@ const NewAppointment = ({navigation, route}: any) => {
             name="gender"
             defaultValue=""
           />
-        </View>
+        </View> */}
         <View style={styles.input}>
           <TouchableOpacity onPress={showDatePicker}>
             <AnimatedInput
@@ -387,26 +410,42 @@ const NewAppointment = ({navigation, route}: any) => {
           onConfirm={handleConfirmDate}
           onCancel={hideDatePicker}
         />
-        {/* <View style={styles.input}>
-          <Controller
-            control={control}
-            rules={{
-              required: true,
+        <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <Text>Gender</Text>
+          </View>
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <Checkbox
+              color={Colors.DEFAULT_BLACK}
+              status={maleChecked ? 'checked' : 'unchecked'}
+              onPress={handleMaleChange}
+            />
+            <Text>Male</Text>
+          </View>
+
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <Checkbox
+              color={Colors.DEFAULT_BLACK}
+              status={femaleChecked ? 'checked' : 'unchecked'}
+              onPress={handleFemaleChange}
+            />
+            <Text>Female</Text>
+          </View>
+        </View>
+        <View
+          style={{
+            paddingHorizontal: 10,
+            paddingTop: 20,
+          }}>
+          <SelectList
+            placeholder="Select more packages"
+            setSelected={(val: any) => {
+              setSelected(val);
             }}
-            render={({field: {onChange, onBlur, value}}) => (
-              <AnimatedInput
-                label="Appointment date time"
-                leftIcon={'calendar'}
-                keyboardType={'default'}
-                value={value}
-                onChangeText={onChange}
-                errorMsg={errors.appointment_date_time?.message}
-              />
-            )}
-            name="appointment_date_time"
-            defaultValue=""
+            data={data}
+            save="value"
           />
-        </View> */}
+        </View>
         <View style={styles.dashedBorder}>
           <TouchableOpacity
             onPress={() => {
@@ -424,14 +463,6 @@ const NewAppointment = ({navigation, route}: any) => {
           <LargeButton onPress={handleSubmit(HandleNewAppo)} text={'Submit'} />
         </View>
       </View>
-      <FAB
-            icon="plus"
-            mode="elevated"
-            animated={true}
-            color="white"
-            style={styles.fab}
-            onPress={HomeRedirect}
-          />
     </ScrollView>
   );
 };
