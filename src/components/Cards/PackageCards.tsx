@@ -13,34 +13,59 @@ import Icon from 'react-native-vector-icons/Feather';
 import Icon2 from 'react-native-vector-icons/FontAwesome';
 import Icon3 from 'react-native-vector-icons/Entypo';
 
-const PackageCards = ({id, admin_id,title, google_map_link,description, location,price, image, onPress}: any) => {
+const PackageCards = ({
+  id,
+  imageLink,
+  admin_id,
+  title,
+  google_map_link,
+  description,
+  location,
+  price,
+  image,
+  onPress,
+}: any) => {
   return (
     <View style={styles.card}>
       <View style={styles.rowContainer}>
-        <Image source={image} style={styles.image} resizeMode="cover" />
+        {!imageLink ? (
+          <Image source={image} style={styles.image} resizeMode="cover" />
+          ) : (
+          <Image source={{ uri: imageLink }} style={styles.image} resizeMode="cover" />
+        )}
         <View style={styles.titleDescriptionContainer}>
           <View style={{flexDirection: 'row'}}>
             <Icon name="package" size={22} color="black" />
-            <Text style={[styles.description,{marginTop:3, marginLeft:5}]}>{title}</Text>
+            <Text style={[styles.description, {marginTop: 3, marginLeft: 5}]}>
+              {title}
+            </Text>
           </View>
           <View style={{flexDirection: 'row'}}>
             <Icon3 name="text-document" size={20} color="black" />
-            <Text style={[styles.description,{marginTop:3, marginLeft:5}]}>{description}</Text>
+            <Text style={[styles.description, {marginTop: 3, marginLeft: 5}]}>
+              {description}
+            </Text>
           </View>
           <View style={{flexDirection: 'row'}}>
             <Icon3 name="home" size={20} color="black" />
-            <Text style={[styles.description,{marginTop:3, marginLeft:5}]}>{location}</Text>
+            <Text style={[styles.description, {marginTop: 3, marginLeft: 5}]}>
+              {location}
+            </Text>
           </View>
           <View style={{flexDirection: 'row'}}>
             <Icon3 name="location" size={20} color="black" />
-            <Text style={[styles.description,{marginTop:3, marginLeft:5}]}>{google_map_link}</Text>
+            <Text style={[styles.description, {marginTop: 3, marginLeft: 5}]}>
+              {google_map_link}
+            </Text>
           </View>
         </View>
       </View>
       <View style={styles.horizontalBorder} />
       <View style={styles.rowContainer}>
-        <Text style={[styles.phoneNo,{marginTop:5}]}>Rs: {price}</Text>
-        <TouchableOpacity style={styles.button} onPress={() => onPress(id,admin_id)}>
+        <Text style={[styles.phoneNo, {marginTop: 5}]}>Rs: {price}</Text>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => onPress(id, admin_id)}>
           <Text style={styles.buttonText}>Book Appointment</Text>
         </TouchableOpacity>
       </View>

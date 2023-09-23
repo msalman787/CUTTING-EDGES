@@ -1,4 +1,4 @@
-import {Image, Modal, StyleSheet, Text, View} from 'react-native';
+import {Image, Modal, PermissionsAndroid, StyleSheet, Text, View} from 'react-native';
 import React, {useState} from 'react';
 import {
   AnimatedInput,
@@ -19,6 +19,7 @@ import {useDispatch} from 'react-redux';
 import {showModal} from '../../../store/model/modelSlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {SelectList} from 'react-native-dropdown-select-list';
+import axios from 'axios';
 
 const NewPackage = ({navigation}: any) => {
   const [showModel, setShowModal] = useState<boolean>(false);
@@ -60,7 +61,6 @@ const NewPackage = ({navigation}: any) => {
         cropping: true,
       })
         .then(async (image: any) => {
-          console.log(image);
           setShowModal(false);
           await setImages(image);
         })
@@ -75,7 +75,28 @@ const NewPackage = ({navigation}: any) => {
       setShowModal(false);
     }
   };
-
+  const requestGalleryPermission = async () => {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+        {
+          title: 'Permission to Access Gallery',
+          message: 'Your app needs permission to access the gallery.',
+          buttonPositive: 'OK',
+        }
+      );
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        // Permission granted, you can now use the ImagePicker
+        choosePhotoFromLibrary();
+      } else {
+        // Permission denied, handle it gracefully (e.g., show a message)
+        console.log('Gallery permission denied');
+      }
+    } catch (err) {
+      console.warn(err);
+    }
+  };
+  
   const choosePhotoFromLibrary = () => {
     if (!images) {
       ImagePicker.openPicker({
@@ -126,7 +147,7 @@ const NewPackage = ({navigation}: any) => {
   const HandleNewPackage = async (data: any) => {
     data.admin_id = await getAdminId();
     data.image = images?.path ? images?.path : '';
-    data.type = selected
+    data.type = selected;
     try {
       const response = await apiResponseGenerator({
         url: 'api/addpricing',
@@ -140,7 +161,35 @@ const NewPackage = ({navigation}: any) => {
       dispatch(showModal({description: error.message}));
     }
   };
-
+  const uploadImageToAPI = async (data: any) => {
+    const formData = new FormData();
+    formData.append('image', {
+      uri: images?.path,
+      type: 'image/jpeg',
+      name: 'image.jpg',
+    });
+    formData.append('Plan_title', data.Plan_title);
+    formData.append('Plan_tag_line', data.Plan_tag_line);
+    formData.append('Plan_price', data.Plan_price);
+    formData.append('Plan_description', data.Plan_description);
+    formData.append('location', data.location);
+    formData.append('google_map_link', data.google_map_link);
+    formData.append('admin_id', await getAdminId());
+    formData.append('type', selected);
+    axios
+      .post('https://api.thesafetytags.com/api/addpricing', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      })
+      .then((response: any) => {
+        console.log('Image upload success:', response.data);
+        return handleCloseInput();
+      })
+      .catch(error => {
+        console.error('Image upload error:', error);
+      });
+  };
   return (
     <ScrollView style={styles.container}>
       {/* Validation Model */}
@@ -345,7 +394,7 @@ const NewPackage = ({navigation}: any) => {
         </View>
         <View style={{marginHorizontal: 10}}>
           <LargeButton
-            onPress={handleSubmit(HandleNewPackage)}
+            onPress={handleSubmit(uploadImageToAPI)}
             text={'Submit'}
           />
         </View>
