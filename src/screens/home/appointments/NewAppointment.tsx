@@ -68,7 +68,7 @@ const NewAppointment = ({navigation, route}: any) => {
     resolver: yupResolver(appointmentInputSchema),
   });
 
-  const handleCloseInput = () => {
+  const handleGoback= () => {
     navigation.goBack();
   };
 
@@ -229,7 +229,7 @@ const NewAppointment = ({navigation, route}: any) => {
         description={state.description}
         onClose={handleHideModal}
         buttonText={state.buttonText}
-        onPageRedirect={handleHideModal}
+        onPageRedirect={state.title == "Success" ? handleGoback : handleHideModal}
       />
       {/* Image Picker Model */}
       <Modal animationType="fade" transparent={true} visible={showModel}>
