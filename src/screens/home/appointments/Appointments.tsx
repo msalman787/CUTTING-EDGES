@@ -94,7 +94,7 @@ const ApointmentScreen = ({navigation}: any) => {
     try {
       dispatch(startLoading());
       const response = await apiResponseGenerator({
-        url: `api/accept_appointments/${id}`,
+        url: `api/rejectappointment/${id}`,
       });
       if (response) {
         getAdminId();
