@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
+  AdminPackages,
   AllPackages,
   ApointmentScreen,
   HomeScreen,
@@ -71,6 +72,11 @@ const StackNavigator = () => {
       <Stack.Screen
         name="ApointmentScreen"
         component={ApointmentScreen}
+        options={{headerShown: false}}
+      /> 
+      <Stack.Screen
+        name="AdminPackageScreen"
+        component={AdminPackages}
         options={{headerShown: false}}
       />
       <Stack.Screen

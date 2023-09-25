@@ -48,13 +48,13 @@ const AppointmentCards = ({
       </View>
       <View style={styles.horizontalBorder} />
       <View style={styles.rowContainer}>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           onPress={() => {
             onRemovePackage(packageId);
           }}
           style={styles.button}>
           <Text style={styles.buttonText}>Remove package</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         <TouchableOpacity
           onPress={() => {
             onAccept(id);

@@ -7,6 +7,7 @@ import NewPackage from './home/packages/NewPackage';
 import AllPackages from './home/packages/AllPackages';
 import WelcomeScreen from './welcome/WelcomeScreen';
 import HomeScreen from './welcome/HomeScreen';
+import AdminPackages from './home/packages/AdminPackages ';
 export {
   WelcomeScreen,
   SignInScreen,
@@ -15,5 +16,6 @@ export {
   ApointmentScreen,
   NewPackage,
   AllPackages,
+  AdminPackages,
   HomeScreen,
 };

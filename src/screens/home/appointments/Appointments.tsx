@@ -1,6 +1,6 @@
-import {FlatList, StyleSheet, Text, View} from 'react-native';
+import {FlatList, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
-import {Colors} from '../../../constants';
+import {Colors, Fonts} from '../../../constants';
 import {
   AppointmentCards,
   DynamicStatusBar,
@@ -89,22 +89,7 @@ const ApointmentScreen = ({navigation}: any) => {
     }
   };
 
-  const handleRemovePackage = async (id: number) => {
-    try {
-      dispatch(startLoading());
-      const response = await apiResponseGenerator({
-        method: 'post',
-        url: `api/deletepricing/${id}`,
-      });
-      if (response) {
-        console.log(response);
-        getAdminId();
-        return;
-      }
-    } catch (error: any) {
-      dispatch(showModal({description: error.message}));
-    }
-  };
+
   const handleReject = async (id: number) => {
     try {
       dispatch(startLoading());
@@ -124,7 +109,6 @@ const ApointmentScreen = ({navigation}: any) => {
     <AppointmentCards
       onAccept={handleAccept}
       onReject={handleReject}
-      onRemovePackage={handleRemovePackage}
       id={item?.id}
       packageId={item?.packages?.id}
       title={item?.packages?.Plan_title}
@@ -145,6 +129,28 @@ const ApointmentScreen = ({navigation}: any) => {
           image={'log-out'}
           onIconPress={handleLogout}
         />
+      </View>
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'flex-end',
+          alignItems: 'center',
+          paddingHorizontal: 20,
+          paddingTop: 10,
+        }}>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate('AdminPackageScreen')
+          }}>
+          <Text
+            style={{
+              color: Colors.DEFAULT_BLACK,
+              fontFamily: Fonts.POPPINS_REGULAR,
+              fontSize:14
+            }}>
+            All Packages
+          </Text>
+        </TouchableOpacity>
       </View>
       {isLoading ? (
         <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>

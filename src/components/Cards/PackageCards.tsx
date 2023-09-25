@@ -23,6 +23,8 @@ const PackageCards = ({
   location,
   price,
   image,
+  admin,
+  onRemovePackage,
   onPress,
 }: any) => {
   return (
@@ -30,8 +32,12 @@ const PackageCards = ({
       <View style={styles.rowContainer}>
         {!imageLink ? (
           <Image source={image} style={styles.image} resizeMode="cover" />
-          ) : (
-          <Image source={{ uri: imageLink }} style={styles.image} resizeMode="cover" />
+        ) : (
+          <Image
+            source={{uri: imageLink}}
+            style={styles.image}
+            resizeMode="cover"
+          />
         )}
         <View style={styles.titleDescriptionContainer}>
           <View style={{flexDirection: 'row'}}>
@@ -61,14 +67,25 @@ const PackageCards = ({
         </View>
       </View>
       <View style={styles.horizontalBorder} />
-      <View style={styles.rowContainer}>
-        <Text style={[styles.phoneNo, {marginTop: 5}]}>Rs: {price}</Text>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => onPress(id, admin_id)}>
-          <Text style={styles.buttonText}>Book Appointment</Text>
-        </TouchableOpacity>
-      </View>
+      {admin ? (
+        <View style={styles.rowContainer}>
+          <Text style={[styles.phoneNo, {marginTop: 5}]}>Rs: {price}</Text>
+          <TouchableOpacity
+            style={[styles.button,{backgroundColor:"rgba(255, 226, 226, 1)"}]}
+            onPress={() => onRemovePackage(id)}>
+            <Text style={[styles.buttonText,{color:'rgba(255, 65, 65, 1)'}]}>Remove Package</Text>
+          </TouchableOpacity>
+        </View>
+      ) : (
+        <View style={styles.rowContainer}>
+          <Text style={[styles.phoneNo, {marginTop: 5}]}>Rs: {price}</Text>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => onPress(id, admin_id)}>
+            <Text style={styles.buttonText}>Book Appointment</Text>
+          </TouchableOpacity>
+        </View>
+      )}
     </View>
   );
 };
