@@ -1,4 +1,11 @@
-import {Image, Modal, PermissionsAndroid, StyleSheet, Text, View} from 'react-native';
+import {
+  Image,
+  Modal,
+  PermissionsAndroid,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import React, {useState} from 'react';
 import {
   AnimatedInput,
@@ -20,6 +27,7 @@ import {showModal} from '../../../store/model/modelSlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {SelectList} from 'react-native-dropdown-select-list';
 import axios from 'axios';
+import {Checkbox} from 'react-native-paper';
 
 const NewPackage = ({navigation}: any) => {
   const [showModel, setShowModal] = useState<boolean>(false);
@@ -48,6 +56,19 @@ const NewPackage = ({navigation}: any) => {
   } = useForm({
     resolver: yupResolver(packageInputSchema),
   });
+  const [isDealYes, setIsDealYes] = useState(false);
+  const [isDealNo, setIsDealNo] = useState(true);
+  console.log(isDealYes);
+
+  const handleIsDealYesChanger = () => {
+    setIsDealYes(!isDealYes);
+    setIsDealNo(false);
+  };
+
+  const handleIsDealNoChanger = () => {
+    setIsDealNo(!isDealNo);
+    setIsDealYes(false);
+  };
 
   const handleCloseInput = () => {
     navigation.goBack();
@@ -83,7 +104,7 @@ const NewPackage = ({navigation}: any) => {
           title: 'Permission to Access Gallery',
           message: 'Your app needs permission to access the gallery.',
           buttonPositive: 'OK',
-        }
+        },
       );
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
         // Permission granted, you can now use the ImagePicker
@@ -96,7 +117,7 @@ const NewPackage = ({navigation}: any) => {
       console.warn(err);
     }
   };
-  
+
   const choosePhotoFromLibrary = () => {
     if (!images) {
       ImagePicker.openPicker({
@@ -176,6 +197,9 @@ const NewPackage = ({navigation}: any) => {
     formData.append('google_map_link', data.google_map_link);
     formData.append('admin_id', await getAdminId());
     formData.append('type', selected);
+    formData.append('Plan_dealprice', data.Plan_dealprice);
+    formData.append('deal', isDealYes);
+    console.log(formData)
     axios
       .post('https://api.thesafetytags.com/api/addpricing', formData, {
         headers: {
@@ -316,6 +340,26 @@ const NewPackage = ({navigation}: any) => {
             defaultValue=""
           />
         </View>
+        <View style={styles.input}>
+          <Controller
+            control={control}
+            rules={{
+              required: true,
+            }}
+            render={({field: {onChange, onBlur, value}}) => (
+              <AnimatedInput
+                leftIcon={'hand-coin'}
+                label="Deal Price"
+                keyboardType={'default'}
+                value={value}
+                onChangeText={onChange}
+                errorMsg={errors.Plan_dealprice?.message}
+              />
+            )}
+            name="Plan_dealprice"
+            defaultValue=""
+          />
+        </View>
 
         <View style={styles.input}>
           <Controller
@@ -377,6 +421,33 @@ const NewPackage = ({navigation}: any) => {
             name="Plan_tag_line"
             defaultValue=""
           />
+        </View>
+        <View
+          style={{
+            flexDirection: 'row',
+            marginTop: 20,
+            justifyContent: 'space-around',
+          }}>
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <Text>Deal</Text>
+          </View>
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <Checkbox
+              color={Colors.DEFAULT_BLACK}
+              status={isDealYes ? 'checked' : 'unchecked'}
+              onPress={handleIsDealYesChanger}
+            />
+            <Text>Yes</Text>
+          </View>
+
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <Checkbox
+              color={Colors.DEFAULT_BLACK}
+              status={isDealNo ? 'checked' : 'unchecked'}
+              onPress={handleIsDealNoChanger}
+            />
+            <Text>No</Text>
+          </View>
         </View>
 
         <View style={styles.dashedBorder}>

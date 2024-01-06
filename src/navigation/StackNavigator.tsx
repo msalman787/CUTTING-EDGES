@@ -11,6 +11,8 @@ import {
   SignInScreen,
   SignUpScreen,
   WelcomeScreen,
+  AboutUsScreen,
+  DealOffersScreen,
 } from '../screens';
 import {setAuthenticated} from '../store/auth/authSlice';
 import {useDispatch, useSelector} from 'react-redux';
@@ -40,7 +42,7 @@ const StackNavigator = () => {
 
   return (
     <Stack.Navigator>
-      {!isAuthenticated && (
+       {!isAuthenticated && ( 
         <>
           <Stack.Screen
             name="WelcomeScreen"
@@ -73,10 +75,20 @@ const StackNavigator = () => {
         name="ApointmentScreen"
         component={ApointmentScreen}
         options={{headerShown: false}}
-      /> 
+      />
       <Stack.Screen
         name="AdminPackageScreen"
         component={AdminPackages}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="AboutUsScreen"
+        component={AboutUsScreen}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="DealOffersScreen"
+        component={DealOffersScreen}
         options={{headerShown: false}}
       />
       <Stack.Screen

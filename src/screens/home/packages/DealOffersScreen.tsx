@@ -27,7 +27,7 @@ import apiResponseGenerator from '../../../service/apiGenerator';
 import {showModal} from '../../../store/model/modelSlice';
 import {ActivityIndicator, Searchbar} from 'react-native-paper';
 
-const AllPackages = ({navigation, route}: any) => {
+const DealOffersScreen = ({navigation, route}: any) => {
   const data: any = route.params;
 
   const [isConfirmationVisible, setConfirmationVisible] = useState(false);
@@ -51,7 +51,8 @@ const AllPackages = ({navigation, route}: any) => {
         url: `api/singlepacktype/${name}`,
       });
       if (response) {
-        setPackages(response.Pricing);
+          const data:any = response.Pricing.filter((item:any) => item.deal =="true") 
+        setPackages(data);
         return dispatch(finishLoading());
       }
     } catch (error: any) {
@@ -97,6 +98,8 @@ const AllPackages = ({navigation, route}: any) => {
       image={item.id % 2 === 0 ? Images.New_Look1 : Images.New_Look2}
       price={item.Plan_price}
       location={item.location || ''}
+      deal={item.deal}
+      dealPrice={item.Plan_dealprice}
       onPress={handleNavigation}
     />
   );
@@ -131,7 +134,7 @@ const AllPackages = ({navigation, route}: any) => {
           showIcon={isAuthenticated}
           titleStyle={!isAuthenticated ? 50 : 0}
           image={'log-out'}
-          title="PACKAGES"
+          title="Deal & Offers"
         />
       </View>
       {isLoading ? (
@@ -153,24 +156,7 @@ const AllPackages = ({navigation, route}: any) => {
             onChangeText={onChangeSearch}
             value={searchQuery}
           />
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate('DealOffersScreen', {name: data.name});
-            }}
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'flex-end',
-              marginHorizontal: 10,
-            }}>
-            <Text
-              style={{
-                color: Colors.DEFAULT_BLACK,
-                fontWeight: 'bold',
-                fontFamily: Fonts.POPPINS_REGULAR,
-              }}>
-              Deals & Offers
-            </Text>
-          </TouchableOpacity>
+
           <FlatList
             data={filteredData}
             renderItem={renderCardRow}
@@ -198,4 +184,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AllPackages;
+export default DealOffersScreen;

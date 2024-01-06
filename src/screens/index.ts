@@ -8,6 +8,8 @@ import AllPackages from './home/packages/AllPackages';
 import WelcomeScreen from './welcome/WelcomeScreen';
 import HomeScreen from './welcome/HomeScreen';
 import AdminPackages from './home/packages/AdminPackages ';
+import DealOffersScreen from './home/packages/DealOffersScreen';
+import AboutUsScreen from './auth/AboutUsScreen';
 export {
   WelcomeScreen,
   SignInScreen,
@@ -18,4 +20,6 @@ export {
   AllPackages,
   AdminPackages,
   HomeScreen,
+  AboutUsScreen,
+  DealOffersScreen
 };

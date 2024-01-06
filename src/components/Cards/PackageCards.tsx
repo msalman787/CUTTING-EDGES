@@ -26,7 +26,13 @@ const PackageCards = ({
   admin,
   onRemovePackage,
   onPress,
+  deal,
+  dealPrice,
 }: any) => {
+  const openGoogleMaps = (name:string) => {
+    const url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(name)}`;
+    Linking.openURL(url);
+  };
   return (
     <View style={styles.card}>
       <View style={styles.rowContainer}>
@@ -58,27 +64,43 @@ const PackageCards = ({
               {location}
             </Text>
           </View>
-          <View style={{flexDirection: 'row'}}>
+          <TouchableOpacity style={{flexDirection: 'row'}} onPress={()=>{
+            openGoogleMaps(google_map_link)
+          }}>
             <Icon3 name="location" size={20} color="black" />
             <Text style={[styles.description, {marginTop: 3, marginLeft: 5}]}>
               {google_map_link}
             </Text>
-          </View>
+          </TouchableOpacity>
         </View>
       </View>
       <View style={styles.horizontalBorder} />
       {admin ? (
         <View style={styles.rowContainer}>
-          <Text style={[styles.phoneNo, {marginTop: 5}]}>Rs: {price}</Text>
+          <Text style={[styles.oldrate, {marginTop: 5}]}>Rs: {price}</Text>
           <TouchableOpacity
-            style={[styles.button,{backgroundColor:"rgba(255, 226, 226, 1)"}]}
+            style={[styles.button, {backgroundColor: 'rgba(255, 226, 226, 1)'}]}
             onPress={() => onRemovePackage(id)}>
-            <Text style={[styles.buttonText,{color:'rgba(255, 65, 65, 1)'}]}>Remove Package</Text>
+            <Text style={[styles.buttonText, {color: 'rgba(255, 65, 65, 1)'}]}>
+              Remove Package
+            </Text>
           </TouchableOpacity>
         </View>
       ) : (
-        <View style={styles.rowContainer}>
-          <Text style={[styles.phoneNo, {marginTop: 5}]}>Rs: {price}</Text>
+        <View
+          style={[
+            styles.rowContainer,
+            {
+              justifyContent: 'space-between',
+            },
+          ]}>
+          {/* <Text style={[styles.phoneNo, {marginTop: 5}]}>Rs: {price}</Text> */}
+          <View style={{flexDirection: 'row', justifyContent: 'flex-start'}}>
+            <Text style={styles.rate}>
+              Rs: {deal=="true" && <Text style={styles.oldrate}>{dealPrice}/</Text>}
+              {price}
+            </Text>
+          </View>
           <TouchableOpacity
             style={styles.button}
             onPress={() => onPress(id, admin_id)}>
@@ -150,6 +172,18 @@ const styles = StyleSheet.create({
     color: Colors.DEFAULT_WHITE,
     fontSize: 12,
     fontFamily: Fonts.POPPINS_REGULAR,
+  },
+  rate: {
+    fontSize: 14,
+    color: Colors.DEFAULT_BLACK,
+    fontWeight: 'bold',
+  },
+  oldrate: {
+    fontSize: 14,
+    marginLeft: 10,
+    color: 'red',
+    textDecorationLine: 'line-through',
+    fontWeight: 'bold',
   },
 });
 

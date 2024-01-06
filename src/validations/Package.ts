@@ -6,5 +6,6 @@ export const packageInputSchema = yup.object().shape({
     google_map_link: yup.string().required('Map location is a required field'),
     Plan_tag_line: yup.string().required('Tagline Tag is a required field'),
     Plan_price: yup.string().required('Price is a required field'),
+    Plan_dealprice: yup.string().optional(),
     Plan_description: yup.string().required('Description is a required field'),
 });

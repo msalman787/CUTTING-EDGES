@@ -11,6 +11,7 @@ import {horizontalScale, verticalScale} from '../../utils/Dimentions';
 import {Colors, Fonts, Images} from '../../constants';
 import BackButton from '../Buttons/BackButton';
 import ButtonIcon from 'react-native-vector-icons/Feather';
+import { useNavigation } from '@react-navigation/native';
 
 const HeaderWithSearchInput = ({
   title,
@@ -25,6 +26,8 @@ const HeaderWithSearchInput = ({
   titleColor,
 }: any) => {
   const Icon = image;
+  const navigation:any = useNavigation();
+
   return (
     <View style={styles.container}>
       {!onBackBtnPress && <Image source={Images.LOGO} style={styles.image} resizeMode="cover" />}
@@ -47,6 +50,13 @@ const HeaderWithSearchInput = ({
             ]}>
             {title}
           </Text>
+          {/* {showIcon && ( */}
+            <TouchableOpacity style={styles.icon} onPress={()=>{
+              navigation.navigate("AboutUsScreen")
+            }}>
+              <ButtonIcon name="info" size={25} color="black" />
+            </TouchableOpacity>
+          {/* )} */}
           {showIcon && (
             <TouchableOpacity style={styles.icon} onPress={onIconPress}>
               <ButtonIcon name={image} size={24} color="black" />
