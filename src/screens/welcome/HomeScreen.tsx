@@ -6,29 +6,51 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import {Colors, Fonts} from '../../constants';
-import {HeaderWithSearchInput} from '../../components';
+import {HeaderWithSearchInput, RattingModal} from '../../components';
 import {useDispatch, useSelector} from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {setAuthenticated} from '../../store/auth/authSlice';
 import {CommonActions} from '@react-navigation/native';
+import {startLoading} from '../../store/apiLoader/apiLoaderSlice';
+import apiResponseGenerator from '../../service/apiGenerator';
+import {showModal} from '../../store/model/modelSlice';
 
-const HomeScreen = ({navigation}: any) => {
+const HomeScreen = ({navigation, route}: any) => {
   const isAuthenticated = useSelector(
     (state: any) => state.auth.isAuthenticated,
   );
   const dispatch = useDispatch();
-
+  const [ratingValue, setRatingValue] = useState(0);
+  const rating: any = route.params?.rating;
+  const [isVisible, setIsVisible]: any = useState(true);
+  console.log({rating})
   const handleLogout = async () => {
     await AsyncStorage.removeItem('authenticated');
     dispatch(setAuthenticated(false));
     const resetAction = CommonActions.reset({
       index: 0,
-      routes: [{ name: 'SignInScreen' }],
+      routes: [{name: 'SignInScreen'}],
     });
     navigation.dispatch(resetAction);
   };
+  const handleRatting = async () => {
+    try {
+      dispatch(startLoading());
+      const response = await apiResponseGenerator({
+        method: 'post',
+        url: `api/saveratings/${rating[0]?.package_id}/${ratingValue}`,
+      });
+      if (response) {
+        setIsVisible(false);
+        return;
+      }
+    } catch (error: any) {
+      dispatch(showModal({description: error.message}));
+    }
+  };
+
   return (
     <ScrollView style={styles.container}>
       <View style={styles.header}>
@@ -40,6 +62,14 @@ const HomeScreen = ({navigation}: any) => {
           title="CUTTING EDGES"
         />
       </View>
+      {rating?.length > 0 && isVisible && (
+        <RattingModal
+          isVisible={isVisible}
+          onPress={handleRatting}
+          ratingValue={ratingValue}
+          setRatingValue={setRatingValue}
+        />
+      )}
       <View style={styles.row}>
         <Image
           source={require('../../assets/images/banner.jpg')}

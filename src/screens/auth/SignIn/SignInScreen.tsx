@@ -61,7 +61,7 @@ const SignInScreen = ({navigation}: any) => {
         if (response.data.role === 'admin') {
           navigation.navigate('ApointmentScreen');
         } else {
-          navigation.navigate('HomeScreen');
+          await navigation.navigate('HomeScreen',{rating : response?.invoice_status});
         }
       }
     } catch (error: any) {

@@ -25,6 +25,7 @@ const apiResponseGenerator = async ({method, url, body}: any) => {
       Authorization: authToken ? `Bearer ${authToken}` : undefined,
     },
   };
+  console.log({axiosConfig})
   try {
     const response = await axios(axiosConfig);
     return response.data;
