@@ -105,10 +105,26 @@ const ApointmentScreen = ({navigation}: any) => {
     }
   };
 
+  const handlePaid = async (id: number) => {
+    try {
+      dispatch(startLoading());
+      const response = await apiResponseGenerator({
+        url: `api/paid_appointments/${id}`,
+      });
+      if (response) {
+        getAdminId();
+        return;
+      }
+    } catch (error: any) {
+      dispatch(showModal({description: error.message}));
+    }
+  };
+
   const renderCardRow = ({item}: any) => (
     <AppointmentCards
       onAccept={handleAccept}
       onReject={handleReject}
+      onPaid={handlePaid}
       id={item?.id}
       packageId={item?.packages?.id}
       title={item?.packages?.Plan_title}
@@ -116,6 +132,7 @@ const ApointmentScreen = ({navigation}: any) => {
       phone={item?.mobile_number}
       date={item?.appointment_date_time}
       type={item?.packages?.type}
+      isPaid={item?.isPaid == "Not Paid" && item?.descsion === "Accepted" ? true : false} 
       customer_name={`${item?.first_name} ${item?.last_name}`}
     />
   );

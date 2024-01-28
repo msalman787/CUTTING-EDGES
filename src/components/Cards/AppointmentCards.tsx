@@ -14,7 +14,8 @@ const AppointmentCards = ({
   others,
   type,
   packageId,
-  onRemovePackage,
+  onPaid,
+  isPaid
 }: any) => {
   return (
     <View style={styles.card}>
@@ -48,13 +49,20 @@ const AppointmentCards = ({
       </View>
       <View style={styles.horizontalBorder} />
       <View style={styles.rowContainer}>
-        {/* <TouchableOpacity
+        {isPaid? <TouchableOpacity
           onPress={() => {
-            onRemovePackage(packageId);
+            onPaid(packageId);
           }}
-          style={styles.button}>
-          <Text style={styles.buttonText}>Remove package</Text>
-        </TouchableOpacity> */}
+          style={[styles.button,{
+            backgroundColor: Colors.DEFAULT_BLACK,
+            width:"50%",
+            alignItems:"center"
+          }]}>
+          <Text style={[styles.buttonText,{
+            color: Colors.DEFAULT_WHITE
+          }]}>Paid</Text>
+        </TouchableOpacity> :
+        <>
         <TouchableOpacity
           onPress={() => {
             onAccept(id);
@@ -82,6 +90,7 @@ const AppointmentCards = ({
           style={styles.button}>
           <Text style={styles.buttonText}>Reject</Text>
         </TouchableOpacity>
+        </>}
       </View>
     </View>
   );
