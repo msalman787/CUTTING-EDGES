@@ -1,11 +1,11 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {
   View,
   Text,
   Modal,
   StyleSheet,
-  Button,
   TouchableOpacity,
+  TextInput,
 } from 'react-native';
 import {Colors, Fonts} from '../../constants';
 import {horizontalScale} from '../../utils/Dimentions';
@@ -17,25 +17,33 @@ const RattingModal = ({
   ratingValue,
   setRatingValue,
   onPress,
+  commentText,
+  setCommentText,
 }: any) => {
-    console.log({isVisible})
+
   return (
-    <Modal
-      visible={isVisible}
-      animationType="fade"
-      transparent={true}
-      >
-      <TouchableOpacity style={styles.modalContainer} >
+    <Modal visible={isVisible} animationType="fade" transparent={true}>
+      <TouchableOpacity style={styles.modalContainer}>
         <View
           style={styles.modalContent}
           onStartShouldSetResponder={() => true}>
           <Text style={styles.title}>Review</Text>
           <Text style={styles.description}>
-           Rate your previous appointment experience.
+            Rate your previous appointment experience.
           </Text>
           <StarRating rating={ratingValue} onChange={setRatingValue} />
+          <TextInput
+            style={styles.commentInput}
+            placeholder="Add a comment..."
+            multiline={true}
+            value={commentText}
+            onChangeText={text => setCommentText(text)}
+          />
           <TouchableOpacity style={{height: 50, width: 320, marginTop: 10}}>
-            <LargeButton onPress={onPress} text={'Save'} />
+            <LargeButton
+              onPress={() => onPress(ratingValue, commentText)}
+              text={'Save'}
+            />
           </TouchableOpacity>
         </View>
       </TouchableOpacity>
@@ -57,10 +65,6 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     alignItems: 'center',
   },
-  image: {
-    width: 100,
-    height: 100,
-  },
   title: {
     fontSize: 22,
     fontFamily: Fonts.POPPINS_REGULAR,
@@ -72,7 +76,17 @@ const styles = StyleSheet.create({
     color: Colors.LIGHT_GRAY,
     fontSize: 15,
     textAlign: 'center',
-    marginVertical: 10,
+    marginVertical: 10
+  },
+  commentInput: {
+    fontFamily: Fonts.POPPINS_REGULAR,
+    height: 50,
+    width: 320,
+    borderWidth: 1,
+    borderColor: Colors.LIGHT_GRAY,
+    borderRadius: 5,
+    padding: 10,
+    marginTop: 10,
   },
 });
 

@@ -23,9 +23,10 @@ const HomeScreen = ({navigation, route}: any) => {
   );
   const dispatch = useDispatch();
   const [ratingValue, setRatingValue] = useState(0);
+  const [commentText, setCommentText] = useState('');
   const rating: any = route.params?.rating;
   const [isVisible, setIsVisible]: any = useState(true);
-  console.log({rating})
+  console.log({rating});
   const handleLogout = async () => {
     await AsyncStorage.removeItem('authenticated');
     dispatch(setAuthenticated(false));
@@ -40,7 +41,7 @@ const HomeScreen = ({navigation, route}: any) => {
       dispatch(startLoading());
       const response = await apiResponseGenerator({
         method: 'post',
-        url: `api/saveratings/${rating[0]?.package_id}/${ratingValue}`,
+        url: `api/saveratings/${rating[0]?.package_id}/${ratingValue}/${commentText}`,
       });
       if (response) {
         setIsVisible(false);
@@ -67,6 +68,8 @@ const HomeScreen = ({navigation, route}: any) => {
           isVisible={isVisible}
           onPress={handleRatting}
           ratingValue={ratingValue}
+          commentText={commentText}
+          setCommentText={setCommentText}
           setRatingValue={setRatingValue}
         />
       )}
