@@ -16,6 +16,7 @@ import StarRating from 'react-native-star-rating-widget';
 
 const PackageCards = ({
   id,
+  comment,
   ratingCount,
   imageLink,
   admin_id,
@@ -87,6 +88,17 @@ const PackageCards = ({
         }}>
         <Text style={styles.rate}>Package Rating:</Text>
         <StarRating starSize={20} rating={ratingCount} onChange={() => {}} />
+      </View>
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          marginBottom: 10,
+        }}>
+        <Text style={styles.rate}>Customer Comments:</Text>
+        <Text style={[styles.description, {marginTop: 3, marginLeft: 5}]}>
+          {comment}
+        </Text>
       </View>
       {admin ? (
         <View style={styles.rowContainer}>

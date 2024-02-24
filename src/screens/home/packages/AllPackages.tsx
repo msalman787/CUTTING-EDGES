@@ -90,6 +90,7 @@ const AllPackages = ({navigation, route}: any) => {
     return (
       <PackageCards
         id={item.id}
+        comment={item?.comment}
         ratingCount={item?.count}
         title={item.Plan_title}
         admin_id={item.admin_id}
