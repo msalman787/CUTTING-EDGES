@@ -86,20 +86,23 @@ const AllPackages = ({navigation, route}: any) => {
     setConfirmationVisible(false);
   };
 
-  const renderCardRow = ({item}: any) => (
-    <PackageCards
-      id={item.id}
-      title={item.Plan_title}
-      admin_id={item.admin_id}
-      description={item.Plan_description}
-      google_map_link={item.google_map_link}
-      imageLink={item.image}
-      image={item.id % 2 === 0 ? Images.New_Look1 : Images.New_Look2}
-      price={item.Plan_price}
-      location={item.location || ''}
-      onPress={handleNavigation}
-    />
-  );
+  const renderCardRow = ({item}: any) => {
+    return (
+      <PackageCards
+        id={item.id}
+        ratingCount={item?.count}
+        title={item.Plan_title}
+        admin_id={item.admin_id}
+        description={item.Plan_description}
+        google_map_link={item.google_map_link}
+        imageLink={item.image}
+        image={item.id % 2 === 0 ? Images.New_Look1 : Images.New_Look2}
+        price={item.Plan_price}
+        location={item.location || ''}
+        onPress={handleNavigation}
+      />
+    );
+  };
   const [searchQuery, setSearchQuery] = useState('');
 
   const onChangeSearch = (query: any) => {

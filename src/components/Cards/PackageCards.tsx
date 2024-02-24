@@ -12,9 +12,11 @@ import {Colors, Fonts, Images} from '../../constants';
 import Icon from 'react-native-vector-icons/Feather';
 import Icon2 from 'react-native-vector-icons/FontAwesome';
 import Icon3 from 'react-native-vector-icons/Entypo';
+import StarRating from 'react-native-star-rating-widget';
 
 const PackageCards = ({
   id,
+  ratingCount,
   imageLink,
   admin_id,
   title,
@@ -64,9 +66,11 @@ const PackageCards = ({
               {location}
             </Text>
           </View>
-          <TouchableOpacity style={{flexDirection: 'row'}} onPress={()=>{
-            openGoogleMaps(google_map_link)
-          }}>
+          <TouchableOpacity
+            style={{flexDirection: 'row'}}
+            onPress={() => {
+              openGoogleMaps(google_map_link);
+            }}>
             <Icon3 name="location" size={20} color="black" />
             <Text style={[styles.description, {marginTop: 3, marginLeft: 5}]}>
               {google_map_link}
@@ -75,6 +79,15 @@ const PackageCards = ({
         </View>
       </View>
       <View style={styles.horizontalBorder} />
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          marginBottom: 10,
+        }}>
+        <Text style={styles.rate}>Package Rating:</Text>
+        <StarRating starSize={20} rating={ratingCount} onChange={() => {}} />
+      </View>
       {admin ? (
         <View style={styles.rowContainer}>
           <Text style={[styles.oldrate, {marginTop: 5}]}>Rs: {price}</Text>
@@ -97,7 +110,10 @@ const PackageCards = ({
           {/* <Text style={[styles.phoneNo, {marginTop: 5}]}>Rs: {price}</Text> */}
           <View style={{flexDirection: 'row', justifyContent: 'flex-start'}}>
             <Text style={styles.rate}>
-              Rs: {deal=="true" && <Text style={styles.oldrate}>{dealPrice}/</Text>}
+              Rs:{' '}
+              {deal == 'true' && (
+                <Text style={styles.oldrate}>{dealPrice}/</Text>
+              )}
               {price}
             </Text>
           </View>
