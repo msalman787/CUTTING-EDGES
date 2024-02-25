@@ -51,7 +51,7 @@ const AppointmentCards = ({
       <View style={styles.rowContainer}>
         {isPaid? <TouchableOpacity
           onPress={() => {
-            onPaid(packageId);
+            onPaid(id);
           }}
           style={[styles.button,{
             backgroundColor: Colors.DEFAULT_BLACK,

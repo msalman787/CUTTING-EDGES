@@ -68,7 +68,7 @@ const NewAppointment = ({navigation, route}: any) => {
     resolver: yupResolver(appointmentInputSchema),
   });
 
-  const handleGoback= () => {
+  const handleGoback = () => {
     navigation.goBack();
   };
 
@@ -229,24 +229,26 @@ const NewAppointment = ({navigation, route}: any) => {
         description={state.description}
         onClose={handleHideModal}
         buttonText={state.buttonText}
-        onPageRedirect={state.title == "Success" ? handleGoback : handleHideModal}
+        onPageRedirect={
+          state.title == 'Success' ? handleGoback : handleHideModal
+        }
       />
       {/* Image Picker Model */}
       <Modal animationType="fade" transparent={true} visible={showModel}>
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <View style={styles.modelButtons}>
+              {/* <LargeButton
+                onPress={choosePhotoFromLibrary}
+                colorChanger={true}
+                text={'Upload Photo'}
+              /> */}
+            </View>
+            <View style={[styles.modelButtons, {paddingVertical: 70}]}>
               <LargeButton
                 onPress={handleCaptureImage}
                 colorChanger={true}
                 text={'Take Photo'}
-              />
-            </View>
-            <View style={[styles.modelButtons, {paddingVertical: 70}]}>
-              <LargeButton
-                onPress={choosePhotoFromLibrary}
-                colorChanger={true}
-                text={'Upload Photo'}
               />
             </View>
             <View style={styles.modelButtons}>
@@ -271,7 +273,6 @@ const NewAppointment = ({navigation, route}: any) => {
         />
       </View>
       <View style={styles.subContainer}>
-        
         <View style={styles.input}>
           <Controller
             control={control}
@@ -372,7 +373,7 @@ const NewAppointment = ({navigation, route}: any) => {
             defaultValue=""
           />
         </View>
-        
+
         {/* <View style={styles.input}>
           <Controller
             control={control}

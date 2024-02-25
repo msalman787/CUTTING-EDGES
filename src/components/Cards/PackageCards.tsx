@@ -32,8 +32,10 @@ const PackageCards = ({
   deal,
   dealPrice,
 }: any) => {
-  const openGoogleMaps = (name:string) => {
-    const url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(name)}`;
+  const openGoogleMaps = (name: string) => {
+    const url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+      name,
+    )}`;
     Linking.openURL(url);
   };
   return (
@@ -87,22 +89,35 @@ const PackageCards = ({
           marginBottom: 10,
         }}>
         <Text style={styles.rate}>Package Rating:</Text>
-        <StarRating starSize={20} rating={ratingCount} onChange={() => {}} />
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+          }}>
+          <StarRating starSize={20} rating={ratingCount} onChange={() => {}} />
+          {ratingCount && <Text style={styles.rate}>{`(${ratingCount})`}</Text>}
+        </View>
       </View>
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          marginBottom: 10,
-        }}>
-        <Text style={styles.rate}>Customer Comments:</Text>
-        <Text style={[styles.description, {marginTop: 3, marginLeft: 5}]}>
-          {comment}
-        </Text>
-      </View>
+      {admin && (
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            marginBottom: 10,
+          }}>
+          <Text style={styles.rate}>Customer Comments:</Text>
+          <Text style={[styles.description, {marginTop: 3, marginLeft: 5}]}>
+            {comment}
+          </Text>
+        </View>
+      )}
       {admin ? (
-        <View style={styles.rowContainer}>
-          <Text style={[styles.oldrate, {marginTop: 5}]}>Rs: {price}</Text>
+        <View style={[styles.rowContainer, {justifyContent: 'space-between'}]}>
+          <Text style={styles.rate}>
+            Rs:{' '}
+            {deal == 'true' && <Text style={styles.oldrate}>{dealPrice}/</Text>}
+            {price}
+          </Text>
           <TouchableOpacity
             style={[styles.button, {backgroundColor: 'rgba(255, 226, 226, 1)'}]}
             onPress={() => onRemovePackage(id)}>
