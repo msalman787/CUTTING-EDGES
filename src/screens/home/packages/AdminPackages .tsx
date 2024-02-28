@@ -117,6 +117,7 @@ const AdminPackages = ({navigation, route}: any) => {
   const renderCardRow = ({item}: any) => (
     <PackageCards
       admin={true}
+      dealPrice={item.Plan_dealprice}
       onRemovePackage={handleRemovePackage}
       id={item.id}
       title={item.Plan_title}

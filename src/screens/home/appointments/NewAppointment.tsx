@@ -25,6 +25,7 @@ import {Checkbox} from 'react-native-paper';
 const NewAppointment = ({navigation, route}: any) => {
   const {package_id, admin_id} = route.params;
   const [showModel, setShowModal] = useState<boolean>(false);
+  const [disabled, setDisabled] = useState(false);
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [date, setDate] = useState({
     simple: '',
@@ -166,6 +167,8 @@ const NewAppointment = ({navigation, route}: any) => {
       data.admin_id = admin_id.toString();
       data.others = selected;
       data.gender = maleChecked ? 'Male' : 'Female';
+      setDisabled(!disabled);
+
       const response = await apiResponseGenerator({
         url: 'api/addappointment',
         method: 'post',
@@ -180,11 +183,15 @@ const NewAppointment = ({navigation, route}: any) => {
           description: 'Your appointment has been created.',
           isValidate: !prevState.isValidate,
         }));
+
+        setDisabled(!disabled);
       } else {
         dispatch(showModal({description: response.message}));
+        setDisabled(!disabled);
       }
     } catch (error: any) {
       dispatch(showModal({description: error.message}));
+      setDisabled(!disabled);
     }
   };
   const showDatePicker = () => {
@@ -461,7 +468,11 @@ const NewAppointment = ({navigation, route}: any) => {
           </TouchableOpacity>
         </View>
         <View style={{marginHorizontal: 10}}>
-          <LargeButton onPress={handleSubmit(HandleNewAppo)} text={'Submit'} />
+          <LargeButton
+            disabled={disabled}
+            onPress={handleSubmit(HandleNewAppo)}
+            text={'Submit'}
+          />
         </View>
       </View>
     </ScrollView>

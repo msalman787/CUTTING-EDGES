@@ -113,11 +113,14 @@ const PackageCards = ({
       )}
       {admin ? (
         <View style={[styles.rowContainer, {justifyContent: 'space-between'}]}>
-          <Text style={styles.rate}>
-            Rs:{' '}
-            {deal == 'true' && <Text style={styles.oldrate}>{dealPrice}/</Text>}
-            {price}
-          </Text>
+          {dealPrice ? (
+            <Text style={styles.rate}>
+              Rs: <Text style={styles.oldrate}>{price}/</Text>
+              {dealPrice}
+            </Text>
+          ) : (
+            <Text style={styles.rate}>Rs: {price}</Text>
+          )}
           <TouchableOpacity
             style={[styles.button, {backgroundColor: 'rgba(255, 226, 226, 1)'}]}
             onPress={() => onRemovePackage(id)}>
@@ -136,13 +139,14 @@ const PackageCards = ({
           ]}>
           {/* <Text style={[styles.phoneNo, {marginTop: 5}]}>Rs: {price}</Text> */}
           <View style={{flexDirection: 'row', justifyContent: 'flex-start'}}>
-            <Text style={styles.rate}>
-              Rs:{' '}
-              {deal == 'true' && (
-                <Text style={styles.oldrate}>{dealPrice}/</Text>
-              )}
-              {price}
-            </Text>
+            {deal == 'true' ? (
+              <Text style={styles.rate}>
+                Rs: <Text style={styles.oldrate}>{price}/</Text>
+                {dealPrice}
+              </Text>
+            ) : (
+              <Text style={styles.rate}>Rs: {price}</Text>
+            )}
           </View>
           <TouchableOpacity
             style={styles.button}

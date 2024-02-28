@@ -31,6 +31,7 @@ import {Checkbox} from 'react-native-paper';
 
 const NewPackage = ({navigation}: any) => {
   const [showModel, setShowModal] = useState<boolean>(false);
+  const [disabled, setDisabled] = useState(false);
   const dispatch = useDispatch();
   const [selected, setSelected] = useState('');
   const data = [
@@ -199,8 +200,9 @@ const NewPackage = ({navigation}: any) => {
     formData.append('type', selected);
     formData.append('Plan_dealprice', data.Plan_dealprice);
     formData.append('deal', isDealYes);
-    console.log(formData)
-    axios
+    console.log(formData);
+    setDisabled(!disabled);
+    await axios
       .post('https://api.thesafetytags.com/api/addpricing', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
@@ -208,9 +210,13 @@ const NewPackage = ({navigation}: any) => {
       })
       .then((response: any) => {
         console.log('Image upload success:', response.data);
-        return handleCloseInput();
+        handleCloseInput();
+        setDisabled(!disabled);
+
+        return;
       })
       .catch(error => {
+        setDisabled(!disabled);
         console.error('Image upload error:', error);
       });
   };
@@ -465,6 +471,7 @@ const NewPackage = ({navigation}: any) => {
         </View>
         <View style={{marginHorizontal: 10}}>
           <LargeButton
+            disabled={disabled}
             onPress={handleSubmit(uploadImageToAPI)}
             text={'Submit'}
           />
