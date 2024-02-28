@@ -21,6 +21,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import {SelectList} from 'react-native-dropdown-select-list';
 import {Checkbox} from 'react-native-paper';
+import axios from 'axios';
 
 const NewAppointment = ({navigation, route}: any) => {
   const {package_id, admin_id} = route.params;
@@ -31,7 +32,7 @@ const NewAppointment = ({navigation, route}: any) => {
     simple: '',
   });
   const [selected, setSelected] = useState('');
-  const [selectedImage, setSelectedImage] = useState('');
+  const [selectedImage, setSelectedImage] = useState('1');
   const data = [
     {value: 'haircuts', key: 'Hair Cut / Beard'},
     {value: 'grooms', key: 'Groom'},
@@ -95,9 +96,10 @@ const NewAppointment = ({navigation, route}: any) => {
         cropping: true,
       })
         .then(async (image: any) => {
-          console.log(image);
           setShowModal(false);
-          await setImages([...images, image]);
+          await setImages(image);
+          // await arImage();
+          return
         })
         .catch(error => {
           console.log(error);
@@ -110,6 +112,30 @@ const NewAppointment = ({navigation, route}: any) => {
       setShowModal(false);
       console.log('You can only capture up to 3 images.');
     }
+  };
+
+  const arImage = async () => {
+    console.log(images?.path);
+    const formData = new FormData();
+    formData.append('image', {
+      uri: images?.path,
+      type: 'image/jpeg',
+      name: 'image.jpg',
+    });
+    formData.append('index', selectedImage);
+    await axios
+      .post('https://api.thesafetytags.com/api/processimage', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      })
+      .then((response: any) => {
+        console.log(response?.data?.path);
+        return;
+      })
+      .catch(error => {
+        console.error('Image upload error:', error);
+      });
   };
 
   const choosePhotoFromLibrary = () => {
@@ -284,13 +310,14 @@ const NewAppointment = ({navigation, route}: any) => {
         <TouchableOpacity onPress={() => setSelectedImage('1')}>
           <Image
             source={{
-              uri: 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBwgHBgkIBwgKCgkLDRYPDQwMDRsUFRAWIB0iIiAdHx8kKDQsJCYxJx8fLT0tMTU3Ojo6Iys/RD84QzQ5OjcBCgoKDQwNGg8PGjclHyU3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3N//AABEIAJQAlAMBIgACEQEDEQH/xAAcAAEAAgIDAQAAAAAAAAAAAAAABQYEBwEDCAL/xAA9EAABAwIDBAYIBQIHAQAAAAABAAIDBBEFEiEGEzFBIlFhcYGhBxQyQpGxwdEVI2Lh8ENyJDNSY3Oy8Rf/xAAYAQEBAQEBAAAAAAAAAAAAAAAAAgEDBP/EAB8RAQEBAQACAgMBAAAAAAAAAAABAhEDIRIxIkFRMv/aAAwDAQACEQMRAD8A3iiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAuLoVS9p9s24LU1EbS0ujkayxFwOjcrLeNk6t1XWU9FCZquaOGIcXvdYLEfj+EsIHr8BJbmAa7Ncdei1jXVGLbcxRvdPGMN0dumdEk8xY/MqCqI5MBlIa6IRMuBA4dI6dd7eXJRfJ/HSeP+tzVW02D0t/WK2NhHLUnyWFiO2WF4e5rqkvbTOIHrOZoYL8Od/gNFouv2vfPSvgjp2RC1mPHG9rAajlqFgfjT4mU+Yb2NhL7P1te1xr4/FPlT4R6EO1VNLTialaJmkEh0Tg8eWqwKbaySrfaCSAFvFr4y3XxI8loB1RNRVLKjDnPpMsmaJrXHK/XS7eR5XC2CzaKor8Lp6ulklgqmxl80TB0ZACA4AHS+rTY6EE8NVzu9T9rmM1sqn2qY2YR4hTGBp/rNOZo7+YHbw7VYKeoiqIw+F2Zp5rVmD4xS4lSRT7tscZkDJQAckbzoDb3QeRGgOhHNTFLW1GBS2aXMgcbBhF2+HId3wWTy2X2y+KX6bBRQdPjfr1C6SjLWyN6Li4Zgx3K400PG6wsF2kqZah9JijIWysJGaIkXt+k/ddZ5M1z+GlpRfLHh7Q5rrgi4K+l0QIiICIiAiKH2nxV2FYXUTQtzTNjLhfgBcC/wASst4falbT+kOeDFaiiw0AR0980gAJNtD9VQjM/F8Vlmry6WJw3ryTbOTwFu/RRu0GJNpaWWMDPUzPBeRxPHUr6wSoc3DKlrznIi3jTz6JBXn1q2derGZGTXY5V4dV001I7JuXBwaOHaPmpbEqinxiijnaSBxiJHs34tI7CCPFVrG52iPVtiOkD1NP7OX1hNWH0MUbn2ZUZspPuSNP1BCjtk9KvuoDGKcwBszm5oyfba64/ZfWGtFREHXz5BqOvXRTMkbA+RpA3Tv8yJ2luRt4qMhg/D6uYR33ZZdhPEhdJexFnK76uoin3k7mh8kZIa4cDxPzv5KZwmVsVLRhrui9zc4PW4FrvKyqEjy4FgNsrr6fzt8lK09S71M2tcEZRflmb/PFLnsJfaw4Nixw3F5IZcpinBinZyeL2IPeLeIV7wOuir6WbBsTeZMshjp5ydbWuz7d453Wn8TnyY02SO3Sla9o6lYo8Tcypq2h9jYNbY63DyWnwOvgsueQl7VrwTFZtn9oGUWI9Jk53Ejw7oubxa74Eeaktpaw4bicc0l95CQHSH32Hnfr+xVW2tqRjGA0eKsGWRoDjl93gCPA/VdmPV5xTZmhr3PzSZTBN38WnyUc+lrxQY7UYfNMwS5qaQCoha4ewCekO6+quuG18VfTtljcCfeA5FaNwSvlrcAo583SpX7t9jclhBbb45SrXsHixp8Vigc4iN/5duOh1Hmuvjt7yuXkzOdjaaLgarld3AREQFR/SVVOhpXQbu7JoCS6/DK4EjxV4WvfSrnYKeT3Ny7/ALNzeSjyXmV4/wBNE1xM1UJiRYx8+R1+6zMBrGwVUbX+y4ljufH/ANXVjFH6rUuhluIpReN45g81Fb11NVZZgA5vMc+1cZ+WXf60n8cj3cAABLqVxhkHW0+yfgojDJX7qops3TYd7GO1vH4gn4KVq5xVNEkhuHRiOQ9Y5O77/MKvOdJRVbJRYSQuFweBH1Fkxn1xmr76sklQ2rhjmjAL3W0HN4HC/wCoeYCi5JBJG8NOYsY63WRx+i5Y5jJ3wg2hqAJInA6D9wV0zvMUzZrFrg+0reV+fx4+JVZzxlvWI55tdx1cCLd/8KzaR/8Ag2jrA173fso6tj3LnBrrtuC3taeC7aWUimjF/wCBdOObIrZAcVisB0bfRSkD3b0HS7pPH+alQjjfEWu45W5vgpSmly1MIOuU5jbuussJVgw17vweSjJ6Mhc0DqJcbfMLjCZzLs3idPqRG1swHVlt911UDryUsQ4XLie7X6hdmCNG7r2N0a+GVrvEKLl0mnOwUznYbibb9Fhzef7KYwp72N37SQA4kEHgP4FE7Fxmj2er3v8AakYGjtcXWHzUthI3dEy+Yku1A5gfwrZPbNX03dgVYa/Caaoc4F7mDORwzc1nqvbDGI4IDFl1kOYDkdOParCuzgIiICqvpFo5KnADLBFvH07w9wAucliHeXyVqXB7VlnZxsvL15qxKGPcNpqobyjkN4ZbXdE7qv1Ks4vh01MWxznPHximHMdq2DteY6XaHFKOembHC6U/lA6ZTqHDq6+y6pmIk07TBL+bSuN2PdxYvNmXN49N/KdRmHVDoy+ln9oDo/qHUlW3eloiaC4DofqHNpWLVgx2zas9yS/LqKOlLmg3seOYeRXbnvrn+uPmnlLqf1bNrGS+AnrPFq7nzCVglNyHjK/+62hWHM/O/etGV9+kBz7V9hxJc4DR/EdqpL6mk3lOwO9ppse4rHa8shaOYddd72ZC5p4WusSYnTtWMZbJA6fN/tjzWfSPzTSTE6E5B3c1E09xyuTopOmZcNjZrbTv60rYsGGz5HBx91ht2X1P0Xdh0hgw+ocPbk6DO88ViU0Ejoi1g6UmmnIc/opqnoLNFxZjOA/1FTaqR2NaKbBdywtAfKGDrAa391jQ40aR3Qie5jQG24aDqXNW8uc2No6MegIaSCTxWDitPO6FjnURcbaPiafPRVmM02H6M9q6eXGm4fDLmbUggxu0LXDUED4hbdXlTZCUU22+C1IJYW1kYPK4Jykea9Vq3IREQEREGjvTK3c7Sl4b7cLCT28Fr184ILX6i2i216b6IWo6se+0xO06tR8ytYYfhkmIOYyNhOZ1gGt1JXLf274vpASMJuwNLmnkeKQYXVvvkjLmnyW8dm/RY0BsuLOEYt/lM1ce88lecN2SwTDtYaGNzuuTp/NbJU61HmCPZnEHkuZC4g8bBZrNn6iOEte037l6qbTQNFmwxgDkGBcOpKZws6nhI7WBbcpm3lCfBqkggRknnpwXSzZyulOkJ+C9YfhlADf1Knv/AMQX22ipGezSwjujCfE+ceZ8L9H+M1ZDoKOZ4JtmDdPsrvgXonrnNBrSynbzDukfJboa1rWhrWgAcAAuVvxPnWvP/mscERMFU177WymPKO4G6gcVw78PidDJES4aOzGxC3CoDarCGV9G+Zjfzo23uOYWaxG53Y0hLEAQyJsrg8/0+PkorF5IwN1T1dSXNdZ7Xngf7gdVY8RdLBUmBwEjDpfr81WcVptw9zww7tw58SD9R1plmvaPweCaXaPD2xhzv8ZC4cyLPC9bLQfocwN9dtDHWzAltHd5dbTMNB8/Jb8VoEREBERBUvSdhbsS2Tn3TbyU7hMOwC4d5E/BVH0P4OJKyeumY10dO3JGCODzrfvsPNbVq4G1VLNTyDoSscx3cRYqG2OwJ2A4bLTvIL3zueSOrgPIX8VnPaprk4ngLLlEWpEREBERAREQFweBuuUQaa9J2FnC6x0sYIhnu+Me72tKoMTanFKuCkpw+TO+zI7XNzYWH2XoDb3DBiezswABfD+a246hr5FUf0Q7MubXz4tVRjdwgxwgj3zxI7hp4qeK76X/AGOwCLZ3A4aJgaZfameB7bz9uHgpxEVJEREBERAREQEREBERAREQEREBERB8yMbIxzHi7XAgjrC66Slho6dlPTsDImCzWhdyICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiIP/Z',
+              uri: 'https://api.thesafetytags.com/hair1.png',
             }}
             style={[
               styles.hairImage,
               {
                 borderWidth: selectedImage == '1' ? 4 : 2,
-                borderColor: selectedImage == '1' ? 'green' : 'grey'},
+                borderColor: selectedImage == '1' ? 'green' : 'grey',
+              },
             ]}
             resizeMode="cover"
           />
@@ -298,13 +325,14 @@ const NewAppointment = ({navigation, route}: any) => {
         <TouchableOpacity onPress={() => setSelectedImage('2')}>
           <Image
             source={{
-              uri: 'data:image/jpeg;base64,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',
+              uri: 'https://api.thesafetytags.com/hair2.png',
             }}
             style={[
               styles.hairImage,
               {
                 borderWidth: selectedImage == '2' ? 4 : 2,
-                borderColor: selectedImage == '2' ? 'green' : 'grey'},
+                borderColor: selectedImage == '2' ? 'green' : 'grey',
+              },
             ]}
             resizeMode="cover"
           />
@@ -312,7 +340,7 @@ const NewAppointment = ({navigation, route}: any) => {
         <TouchableOpacity onPress={() => setSelectedImage('3')}>
           <Image
             source={{
-              uri: 'data:image/jpeg;base64,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',
+              uri: 'https://api.thesafetytags.com/hair3.png',
             }}
             style={[
               styles.hairImage,
