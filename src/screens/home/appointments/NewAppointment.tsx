@@ -97,6 +97,7 @@ const NewAppointment = ({navigation, route}: any) => {
       cropping: true,
     })
       .then(async (image: any) => {
+        setDisabled(true);
         setShowModal(false);
         const formData = new FormData();
         formData.append('image', {
@@ -118,6 +119,7 @@ const NewAppointment = ({navigation, route}: any) => {
           );
           console.log(response?.data?.path);
           if (response?.data?.path) {
+            setDisabled(false);
             setArImage(response?.data?.path);
             return setARModal(true);
           }
@@ -284,6 +286,7 @@ const NewAppointment = ({navigation, route}: any) => {
                 },
               ]}>
               <LargeButton
+                disabled={disabled}
                 onPress={() => {
                   setARModal(false);
                 }}
@@ -352,13 +355,21 @@ const NewAppointment = ({navigation, route}: any) => {
       </View>
 
       <View style={styles.subContainer}>
-         {arImage && <Text
-          style={{marginTop:5,marginBottom:10,fontWeight:'bold',fontSize:18,alignSelf:'center'}}
+        {arImage && (
+          <Text
+            style={{
+              marginTop: 5,
+              marginBottom: 10,
+              fontWeight: 'bold',
+              fontSize: 18,
+              alignSelf: 'center',
+            }}
             onPress={() => {
               setARModal(true);
             }}>
-            AR View
-          </Text>}
+            View AR
+          </Text>
+        )}
         <View style={styles.input}>
           <Controller
             control={control}

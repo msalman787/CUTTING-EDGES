@@ -117,6 +117,7 @@ const AdminPackages = ({navigation, route}: any) => {
   const renderCardRow = ({item}: any) => (
     <PackageCards
       admin={true}
+      ratingCount={item?.count}
       comment={item?.comment}
       dealPrice={item.Plan_dealprice}
       onRemovePackage={handleRemovePackage}

@@ -89,7 +89,6 @@ const ApointmentScreen = ({navigation}: any) => {
     }
   };
 
-
   const handleReject = async (id: number) => {
     try {
       dispatch(startLoading());
@@ -120,22 +119,29 @@ const ApointmentScreen = ({navigation}: any) => {
     }
   };
 
-  const renderCardRow = ({item}: any) => (
-    <AppointmentCards
-      onAccept={handleAccept}
-      onReject={handleReject}
-      onPaid={handlePaid}
-      id={item?.id}
-      packageId={item?.packages?.id}
-      title={item?.packages?.Plan_title}
-      others={item?.others}
-      phone={item?.mobile_number}
-      date={item?.appointment_date_time}
-      type={item?.packages?.type}
-      isPaid={item?.isPaid == "Not Paid" && item?.descsion === "Accepted" ? true : false} 
-      customer_name={`${item?.first_name} ${item?.last_name}`}
-    />
-  );
+  const renderCardRow = ({item}: any) => {
+    return (
+      <AppointmentCards
+        onAccept={handleAccept}
+        onReject={handleReject}
+        onPaid={handlePaid}
+        id={item?.id}
+        packageId={item?.packages?.id}
+        title={item?.packages?.Plan_title}
+        arImage={item?.hair_style}
+        others={item?.others}
+        phone={item?.mobile_number}
+        date={item?.appointment_date_time}
+        type={item?.packages?.type}
+        isPaid={
+          item?.isPaid == 'Not Paid' && item?.descsion === 'Accepted'
+            ? true
+            : false
+        }
+        customer_name={`${item?.first_name} ${item?.last_name}`}
+      />
+    );
+  };
   return (
     <View style={styles.container}>
       <DynamicStatusBar />
@@ -157,13 +163,13 @@ const ApointmentScreen = ({navigation}: any) => {
         }}>
         <TouchableOpacity
           onPress={() => {
-            navigation.navigate('AdminPackageScreen')
+            navigation.navigate('AdminPackageScreen');
           }}>
           <Text
             style={{
               color: Colors.DEFAULT_BLACK,
               fontFamily: Fonts.POPPINS_REGULAR,
-              fontSize:14
+              fontSize: 14,
             }}>
             All Packages
           </Text>
