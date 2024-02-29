@@ -26,6 +26,7 @@ import axios from 'axios';
 const NewAppointment = ({navigation, route}: any) => {
   const {package_id, admin_id} = route.params;
   const [showModel, setShowModal] = useState<boolean>(false);
+  const [ARModal, setARModal] = useState<boolean>(false);
   const [disabled, setDisabled] = useState(false);
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [date, setDate] = useState({
@@ -33,6 +34,7 @@ const NewAppointment = ({navigation, route}: any) => {
   });
   const [selected, setSelected] = useState('');
   const [selectedImage, setSelectedImage] = useState('1');
+  const [arImage, setArImage] = useState('');
   const data = [
     {value: 'haircuts', key: 'Hair Cut / Beard'},
     {value: 'grooms', key: 'Groom'},
@@ -89,78 +91,43 @@ const NewAppointment = ({navigation, route}: any) => {
   };
 
   const handleCaptureImage = () => {
-    if (!images) {
-      ImagePicker.openCamera({
-        width: 300,
-        height: 400,
-        cropping: true,
-      })
-        .then(async (image: any) => {
-          setShowModal(false);
-          await setImages(image);
-          // await arImage();
-          return
-        })
-        .catch(error => {
-          console.log(error);
+    ImagePicker.openCamera({
+      width: 450,
+      height: 850,
+      cropping: true,
+    })
+      .then(async (image: any) => {
+        setShowModal(false);
+        const formData = new FormData();
+        formData.append('image', {
+          uri: image?.path,
+          type: 'image/jpeg',
+          name: 'image.jpg',
         });
-    } else {
-      setState(prevState => ({
-        ...prevState,
-        isValidate: !prevState.isValidate,
-      }));
-      setShowModal(false);
-      console.log('You can only capture up to 3 images.');
-    }
-  };
-
-  const arImage = async () => {
-    console.log(images?.path);
-    const formData = new FormData();
-    formData.append('image', {
-      uri: images?.path,
-      type: 'image/jpeg',
-      name: 'image.jpg',
-    });
-    formData.append('index', selectedImage);
-    await axios
-      .post('https://api.thesafetytags.com/api/processimage', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      })
-      .then((response: any) => {
-        console.log(response?.data?.path);
-        return;
+        formData.append('index', selectedImage);
+        console.log(formData);
+        try {
+          const response = await axios.post(
+            'https://api.thesafetytags.com/api/processimage',
+            formData,
+            {
+              headers: {
+                'Content-Type': 'multipart/form-data',
+              },
+            },
+          );
+          console.log(response?.data?.path);
+          if (response?.data?.path) {
+            setArImage(response?.data?.path);
+            return setARModal(true);
+          }
+        } catch (error) {
+          console.error('Image upload error:', error);
+        }
       })
       .catch(error => {
-        console.error('Image upload error:', error);
+        console.error('Image capture error:', error);
       });
-  };
-
-  const choosePhotoFromLibrary = () => {
-    if (!images) {
-      ImagePicker.openPicker({
-        width: 300,
-        height: 400,
-        cropping: true,
-        includeBase64: false,
-      })
-        .then(async (image: any) => {
-          console.log(image);
-          setShowModal(false);
-          await setImages([...images, image]);
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    } else {
-      setState(prevState => ({
-        ...prevState,
-        isValidate: !prevState.isValidate,
-      }));
-      setShowModal(false);
-    }
   };
 
   const handleHideModal = () => {
@@ -188,7 +155,7 @@ const NewAppointment = ({navigation, route}: any) => {
     try {
       data.descsion = 'pending';
       data.appointment_date_time = date?.simple;
-      data.hair_style = images?.path || '';
+      data.hair_style = arImage || '';
       data.customer_id = await getCustomerId();
       data.package_id = package_id.toString();
       data.admin_id = admin_id.toString();
@@ -296,6 +263,36 @@ const NewAppointment = ({navigation, route}: any) => {
           </View>
         </View>
       </Modal>
+      <Modal animationType="fade" transparent={true} visible={ARModal}>
+        <View style={styles.centeredView}>
+          <View style={[styles.modalView, {height: '60%'}]}>
+            <Image
+              source={{
+                uri: arImage,
+              }}
+              style={{
+                width: '100%',
+                height: '90%',
+              }}
+              resizeMode="contain"
+            />
+            <View
+              style={[
+                styles.modelButtons,
+                {
+                  marginTop: 10,
+                },
+              ]}>
+              <LargeButton
+                onPress={() => {
+                  setARModal(false);
+                }}
+                text={'Close'}
+              />
+            </View>
+          </View>
+        </View>
+      </Modal>
 
       <DynamicStatusBar />
 
@@ -346,14 +343,22 @@ const NewAppointment = ({navigation, route}: any) => {
               styles.hairImage,
               {
                 borderWidth: selectedImage == '3' ? 4 : 2,
-                borderColor: selectedImage == '3' ? 'green' : 'grey'},
+                borderColor: selectedImage == '3' ? 'green' : 'grey',
+              },
             ]}
             resizeMode="cover"
           />
         </TouchableOpacity>
-
       </View>
+
       <View style={styles.subContainer}>
+         {arImage && <Text
+          style={{marginTop:5,marginBottom:10,fontWeight:'bold',fontSize:18,alignSelf:'center'}}
+            onPress={() => {
+              setARModal(true);
+            }}>
+            AR View
+          </Text>}
         <View style={styles.input}>
           <Controller
             control={control}
