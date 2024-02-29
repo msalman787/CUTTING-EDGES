@@ -194,7 +194,7 @@ const NewAppointment = ({navigation, route}: any) => {
       data.admin_id = admin_id.toString();
       data.others = selected;
       data.gender = maleChecked ? 'Male' : 'Female';
-      setDisabled(!disabled);
+      setDisabled(true);
 
       const response = await apiResponseGenerator({
         url: 'api/addappointment',
@@ -211,14 +211,14 @@ const NewAppointment = ({navigation, route}: any) => {
           isValidate: !prevState.isValidate,
         }));
 
-        setDisabled(!disabled);
+        setDisabled(false);
       } else {
         dispatch(showModal({description: response.message}));
-        setDisabled(!disabled);
+        setDisabled(false);
       }
     } catch (error: any) {
       dispatch(showModal({description: error.message}));
-      setDisabled(!disabled);
+      setDisabled(false);
     }
   };
   const showDatePicker = () => {

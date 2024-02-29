@@ -117,6 +117,7 @@ const AdminPackages = ({navigation, route}: any) => {
   const renderCardRow = ({item}: any) => (
     <PackageCards
       admin={true}
+      comment={item?.comment}
       dealPrice={item.Plan_dealprice}
       onRemovePackage={handleRemovePackage}
       id={item.id}
@@ -143,7 +144,7 @@ const AdminPackages = ({navigation, route}: any) => {
   return (
     <View style={styles.container}>
       <DynamicStatusBar />
-      {!isAuthenticated && isConfirmationVisible && (
+      {/* {!isAuthenticated && isConfirmationVisible && (
         <Model
           isVisible={isConfirmationVisible}
           modalImage={Images.CreateAmount}
@@ -155,7 +156,7 @@ const AdminPackages = ({navigation, route}: any) => {
           onClose={handleHideModal}
           onPageRedirect={handleCreateAccount}
         />
-      )}
+      )} */}
       <View style={styles.header}>
         <HeaderWithSearchInput
           onIconPress={handleLogout}

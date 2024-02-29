@@ -201,7 +201,7 @@ const NewPackage = ({navigation}: any) => {
     formData.append('Plan_dealprice', data.Plan_dealprice);
     formData.append('deal', isDealYes);
     console.log(formData);
-    setDisabled(!disabled);
+    setDisabled(true);
     await axios
       .post('https://api.thesafetytags.com/api/addpricing', formData, {
         headers: {
@@ -211,12 +211,13 @@ const NewPackage = ({navigation}: any) => {
       .then((response: any) => {
         console.log('Image upload success:', response.data);
         handleCloseInput();
-        setDisabled(!disabled);
+        setDisabled(false);
 
         return;
       })
       .catch(error => {
-        setDisabled(!disabled);
+        setDisabled(false);
+
         console.error('Image upload error:', error);
       });
   };
